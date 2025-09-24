@@ -1,39 +1,39 @@
 {
   "metrics": {
-    "MAE": 0.5666689238310854,
-    "RMSE": 1.1987555228789406,
-    "R2": 0.46107938506475044,
-    "MAE_dashcam": 0.5666689238310854,
-    "MAE_other": 0.5666689238310856,
+    "MAE": 0.5061565589422624,
+    "RMSE": 1.1744381360723286,
+    "R2": 0.4827221945642146,
+    "MAE_dashcam": 0.5061565589422625,
+    "MAE_other": 0.5061565589422626,
     "count": 136,
     "target_basis": 10.0,
-    "cal/MAE": 0.695169299391311,
-    "cal/RMSE": 1.0646760541390563,
-    "cal/R2": 0.5748927347603252,
-    "cal/MAE_dashcam": 0.6951692993913113,
-    "cal/MAE_other": 0.6951692993913113,
+    "cal/MAE": 0.5953817181758364,
+    "cal/RMSE": 1.0068311687229115,
+    "cal/R2": 0.6198308622080392,
+    "cal/MAE_dashcam": 0.5953817181758363,
+    "cal/MAE_other": 0.5953817181758364,
     "cal/count": 136
   },
   "results": [
     {
       "idx": 0,
       "video_name": "bb_1_170527_vehicle_120_249",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Later, while the Other Vehicle was Going Straight From Left Road.",
-      "dv_pred_label": "Going Straight From The Right Entered Later",
-      "ov_pred_label": "Going Straight From Left Road",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Right Road, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
+      "dv_pred_label": "Going Straight From Right Road",
+      "ov_pred_label": "Going Straight From The Right Entered Earlier",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 7.043479510099151,
-      "pred_basis_other": 2.9565204899008495,
-      "pred_100_dashcam": 70.43479510099151,
-      "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam": 7.037747588584553,
+      "pred_basis_other": 2.962252411415446,
+      "pred_100_dashcam": 70.37747588584553,
+      "pred_100_other": 29.62252411415446,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
       "gt_100_other": 60.0,
-      "abs_err_basis_dashcam": 3.043479510099151,
-      "abs_err_basis_other": 3.0434795100991505,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "abs_err_basis_dashcam": 3.037747588584553,
+      "abs_err_basis_other": 3.037747588584554,
+      "pred_basis_dashcam_cal": 6.25,
+      "pred_basis_other_cal": 3.75
     },
     {
       "idx": 1,
@@ -52,28 +52,28 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 1.0038918397123728,
       "abs_err_basis_other": 1.0038918397123728,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 2,
       "video_name": "bb_1_191029_vehicle_126_210",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From The Right.",
-      "dv_pred_label": "Going Straight From The Right Entered Earlier",
-      "ov_pred_label": "Going Straight From The Right",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Later, while the Other Vehicle was Going Straight From Left Road.",
+      "dv_pred_label": "Going Straight From The Right Entered Later",
+      "ov_pred_label": "Going Straight From Left Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 5.996108160287627,
-      "pred_basis_other": 4.003891839712373,
-      "pred_100_dashcam": 59.96108160287627,
-      "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam": 7.043479510099151,
+      "pred_basis_other": 2.9565204899008495,
+      "pred_100_dashcam": 70.43479510099151,
+      "pred_100_other": 29.565204899008496,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
       "gt_100_other": 40.0,
-      "abs_err_basis_dashcam": 0.0038918397123728354,
-      "abs_err_basis_other": 0.0038918397123728354,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "abs_err_basis_dashcam": 1.043479510099151,
+      "abs_err_basis_other": 1.0434795100991505,
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 3,
@@ -92,8 +92,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 4,
@@ -112,8 +112,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 5,
@@ -132,8 +132,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 6,
@@ -152,8 +152,8 @@
       "gt_100_other": 20.0,
       "abs_err_basis_dashcam": 0.086512973937241,
       "abs_err_basis_other": 0.08651297393724233,
-      "pred_basis_dashcam_cal": 7.333333333333333,
-      "pred_basis_other_cal": 2.666666666666667
+      "pred_basis_dashcam_cal": 7.666666666666666,
+      "pred_basis_other_cal": 2.333333333333334
     },
     {
       "idx": 7,
@@ -192,8 +192,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.04487488792048211,
       "abs_err_basis_other": 0.044874887920482553,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 9,
@@ -212,28 +212,28 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.060657881382828904,
       "abs_err_basis_other": 0.060657881382828904,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 10,
       "video_name": "bb_1_170927_vehicle_235_21848",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From The Right",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From Main Road Entered Earlier",
+      "ov_pred_label": "Going Straight From Main Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 3.9637348515560458,
-      "pred_basis_other": 6.036265148443955,
-      "pred_100_dashcam": 39.63734851556046,
-      "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam": 7.041403166172276,
+      "pred_basis_other": 2.9585968338277246,
+      "pred_100_dashcam": 70.41403166172276,
+      "pred_100_other": 29.585968338277247,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 3.0362651484439542,
-      "abs_err_basis_other": 3.036265148443955,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "abs_err_basis_dashcam": 0.041403166172275796,
+      "abs_err_basis_other": 0.04140316617227535,
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 11,
@@ -252,8 +252,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 12,
@@ -272,8 +272,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 13,
@@ -292,8 +292,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 14,
@@ -332,8 +332,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 16,
@@ -372,8 +372,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 18,
@@ -392,8 +392,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 19,
@@ -437,8 +437,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 22,
@@ -457,8 +457,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 1.086512973937241,
       "abs_err_basis_other": 1.0865129739372423,
-      "pred_basis_dashcam_cal": 7.333333333333333,
-      "pred_basis_other_cal": 2.666666666666667
+      "pred_basis_dashcam_cal": 7.666666666666666,
+      "pred_basis_other_cal": 2.333333333333334
     },
     {
       "idx": 23,
@@ -497,8 +497,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 25,
@@ -508,22 +508,22 @@
     {
       "idx": 26,
       "video_name": "bb_1_180524_vehicle_185_065",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Right Turn Entered Later, while the Other Vehicle was Going Straight From Left Road.",
-      "dv_pred_label": "Right Turn Entered Later",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From Left Road.",
+      "dv_pred_label": "Going Straight From The Right Entered Earlier",
       "ov_pred_label": "Going Straight From Left Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 6.009792255143538,
-      "pred_basis_other": 3.9902077448564617,
-      "pred_100_dashcam": 60.09792255143538,
-      "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam": 7.0451159608602065,
+      "pred_basis_other": 2.9548840391397935,
+      "pred_100_dashcam": 70.45115960860207,
+      "pred_100_other": 29.548840391397935,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 0.9902077448564617,
-      "abs_err_basis_other": 0.9902077448564617,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "abs_err_basis_dashcam": 0.04511596086020653,
+      "abs_err_basis_other": 0.04511596086020653,
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 27,
@@ -562,28 +562,28 @@
       "gt_100_other": 0.0,
       "abs_err_basis_dashcam": 2.958596833827724,
       "abs_err_basis_other": 2.9585968338277246,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 29,
       "video_name": "bb_1_190515_vehicle_47_047",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From The Right",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From Left Road.",
+      "dv_pred_label": "Going Straight From The Right Entered Earlier",
+      "ov_pred_label": "Going Straight From Left Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 3.9637348515560458,
-      "pred_basis_other": 6.036265148443955,
-      "pred_100_dashcam": 39.63734851556046,
-      "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam": 7.0451159608602065,
+      "pred_basis_other": 2.9548840391397935,
+      "pred_100_dashcam": 70.45115960860207,
+      "pred_100_other": 29.548840391397935,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
       "gt_100_other": 60.0,
-      "abs_err_basis_dashcam": 0.03626514844395423,
-      "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "abs_err_basis_dashcam": 3.0451159608602065,
+      "abs_err_basis_other": 3.0451159608602065,
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 30,
@@ -602,8 +602,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 31,
@@ -622,8 +622,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 32,
@@ -642,8 +642,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.04395680965697313,
       "abs_err_basis_other": 0.04395680965697313,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 33,
@@ -682,8 +682,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.9954178514898508,
       "abs_err_basis_other": 0.9954178514898508,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 35,
@@ -702,8 +702,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 36,
@@ -722,8 +722,8 @@
       "gt_100_other": 70.0,
       "abs_err_basis_dashcam": 4.060657881382829,
       "abs_err_basis_other": 4.060657881382829,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 37,
@@ -733,22 +733,22 @@
     {
       "idx": 38,
       "video_name": "bb_1_180102_vehicle_125_132",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Later, while the Other Vehicle was Right Turn.",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Later, while the Other Vehicle was Right Turn Entered Earlier.",
       "dv_pred_label": "Going Straight From Main Road Entered Later",
-      "ov_pred_label": "Right Turn",
+      "ov_pred_label": "Right Turn Entered Earlier",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 5.34592180953386,
-      "pred_basis_other": 4.65407819046614,
-      "pred_100_dashcam": 53.4592180953386,
-      "pred_100_other": 46.5407819046614,
+      "pred_basis_dashcam": 5.984459554714857,
+      "pred_basis_other": 4.0155404452851435,
+      "pred_100_dashcam": 59.84459554714857,
+      "pred_100_other": 40.155404452851435,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
       "gt_100_other": 40.0,
-      "abs_err_basis_dashcam": 0.6540781904661399,
-      "abs_err_basis_other": 0.6540781904661399,
-      "pred_basis_dashcam_cal": 5.8,
-      "pred_basis_other_cal": 4.2
+      "abs_err_basis_dashcam": 0.015540445285142646,
+      "abs_err_basis_other": 0.015540445285143534,
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 39,
@@ -767,8 +767,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 40,
@@ -793,22 +793,22 @@
     {
       "idx": 41,
       "video_name": "bb_1_120318_vehicle_120_240",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Later, while the Other Vehicle was Going Straight From Left Road.",
-      "dv_pred_label": "Going Straight From The Right Entered Later",
-      "ov_pred_label": "Going Straight From Left Road",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From The Right.",
+      "dv_pred_label": "Going Straight From The Right Entered Earlier",
+      "ov_pred_label": "Going Straight From The Right",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 7.043479510099151,
-      "pred_basis_other": 2.9565204899008495,
-      "pred_100_dashcam": 70.43479510099151,
-      "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam": 5.996108160287627,
+      "pred_basis_other": 4.003891839712373,
+      "pred_100_dashcam": 59.96108160287627,
+      "pred_100_other": 40.03891839712373,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
       "gt_100_other": 40.0,
-      "abs_err_basis_dashcam": 1.043479510099151,
-      "abs_err_basis_other": 1.0434795100991505,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "abs_err_basis_dashcam": 0.0038918397123728354,
+      "abs_err_basis_other": 0.0038918397123728354,
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 42,
@@ -852,8 +852,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.04487488792048211,
       "abs_err_basis_other": 0.044874887920482553,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 45,
@@ -872,8 +872,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 46,
@@ -892,8 +892,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 47,
@@ -912,28 +912,28 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 48,
       "video_name": "bb_1_161017_vehicle_41_214",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From The Right",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Later, while the Other Vehicle was Going Straight From Left Road.",
+      "dv_pred_label": "Going Straight From The Right Entered Later",
+      "ov_pred_label": "Going Straight From Left Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 3.9637348515560458,
-      "pred_basis_other": 6.036265148443955,
-      "pred_100_dashcam": 39.63734851556046,
-      "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam": 7.043479510099151,
+      "pred_basis_other": 2.9565204899008495,
+      "pred_100_dashcam": 70.43479510099151,
+      "pred_100_other": 29.565204899008496,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 3.0362651484439542,
-      "abs_err_basis_other": 3.036265148443955,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "abs_err_basis_dashcam": 0.043479510099150964,
+      "abs_err_basis_other": 0.04347951009915052,
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 49,
@@ -952,8 +952,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.015540445285142646,
       "abs_err_basis_other": 0.015540445285143534,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 50,
@@ -972,8 +972,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 51,
@@ -992,8 +992,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 52,
@@ -1018,22 +1018,22 @@
     {
       "idx": 53,
       "video_name": "bb_1_160630_vehicle_213_21607",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Green Light Going Straight, while the Other Vehicle was Following Vehicle Going Straight Right Side Of Lane.",
-      "dv_pred_label": "Green Light Going Straight",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight Lane Change Inside Intersection, while the Other Vehicle was Following Vehicle Going Straight Right Side Of Lane.",
+      "dv_pred_label": "Going Straight Lane Change Inside Intersection",
       "ov_pred_label": "Following Vehicle Going Straight Right Side Of Lane",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 8.086512973937241,
-      "pred_basis_other": 1.9134870260627577,
-      "pred_100_dashcam": 80.8651297393724,
-      "pred_100_other": 19.134870260627576,
+      "pred_basis_dashcam": 5.548553875298467,
+      "pred_basis_other": 4.451446124701533,
+      "pred_100_dashcam": 55.48553875298467,
+      "pred_100_other": 44.51446124701533,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
       "gt_100_other": 40.0,
-      "abs_err_basis_dashcam": 2.086512973937241,
-      "abs_err_basis_other": 2.0865129739372423,
-      "pred_basis_dashcam_cal": 7.333333333333333,
-      "pred_basis_other_cal": 2.666666666666667
+      "abs_err_basis_dashcam": 0.45144612470153334,
+      "abs_err_basis_other": 0.45144612470153334,
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 54,
@@ -1052,8 +1052,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 55,
@@ -1072,8 +1072,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.015540445285142646,
       "abs_err_basis_other": 0.015540445285143534,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 56,
@@ -1092,8 +1092,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 57,
@@ -1112,12 +1112,32 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.04487488792048211,
       "abs_err_basis_other": 0.044874887920482553,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 58,
       "video_name": "bb_1_210210_vehicle_221_22209",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From The Right Entered Earlier",
+      "ov_pred_label": "Going Straight From Main Road",
+      "pl_pred_label": null,
+      "pred_basis_dashcam": 8.0863348751903,
+      "pred_basis_other": 1.9136651248096999,
+      "pred_100_dashcam": 80.863348751903,
+      "pred_100_other": 19.136651248097,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0,
+      "gt_100_dashcam": 60.0,
+      "gt_100_other": 40.0,
+      "abs_err_basis_dashcam": 2.0863348751902997,
+      "abs_err_basis_other": 2.0863348751903,
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
+    },
+    {
+      "idx": 59,
+      "video_name": "bb_1_210827_vehicle_316_051",
       "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From The Right.",
       "dv_pred_label": "Going Straight From The Right Entered Earlier",
       "ov_pred_label": "Going Straight From The Right",
@@ -1126,54 +1146,34 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
-      "gt_basis_dashcam": 6.0,
-      "gt_basis_other": 4.0,
-      "gt_100_dashcam": 60.0,
-      "gt_100_other": 40.0,
-      "abs_err_basis_dashcam": 0.0038918397123728354,
-      "abs_err_basis_other": 0.0038918397123728354,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
-    },
-    {
-      "idx": 59,
-      "video_name": "bb_1_210827_vehicle_316_051",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From The Right",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
-      "pl_pred_label": null,
-      "pred_basis_dashcam": 3.9637348515560458,
-      "pred_basis_other": 6.036265148443955,
-      "pred_100_dashcam": 39.63734851556046,
-      "pred_100_other": 60.36265148443955,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 3.0362651484439542,
-      "abs_err_basis_other": 3.036265148443955,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "abs_err_basis_dashcam": 1.0038918397123728,
+      "abs_err_basis_other": 1.0038918397123728,
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 60,
       "video_name": "bb_1_210523_vehicle_21_250",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Right Road, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From Right Road",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From Main Road Entered Earlier",
+      "ov_pred_label": "Going Straight From Main Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 7.037747588584553,
-      "pred_basis_other": 2.962252411415446,
-      "pred_100_dashcam": 70.37747588584553,
-      "pred_100_other": 29.62252411415446,
+      "pred_basis_dashcam": 7.041403166172276,
+      "pred_basis_other": 2.9585968338277246,
+      "pred_100_dashcam": 70.41403166172276,
+      "pred_100_other": 29.585968338277247,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 0.03774758858455307,
-      "abs_err_basis_other": 0.03774758858455396,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "abs_err_basis_dashcam": 0.041403166172275796,
+      "abs_err_basis_other": 0.04140316617227535,
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 61,
@@ -1217,8 +1217,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 64,
@@ -1237,8 +1237,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.04487488792048211,
       "abs_err_basis_other": 0.044874887920482553,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 65,
@@ -1257,8 +1257,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 66,
@@ -1277,8 +1277,8 @@
       "gt_100_other": 70.0,
       "abs_err_basis_dashcam": 3.0097922551435383,
       "abs_err_basis_other": 3.0097922551435383,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 67,
@@ -1303,42 +1303,42 @@
     {
       "idx": 68,
       "video_name": "bb_1_170525_vehicle_118_074",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From The Right",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Yellow Light Going Straight, while the Other Vehicle was Right Turn Right Lane.",
+      "dv_pred_label": "Yellow Light Going Straight",
+      "ov_pred_label": "Right Turn Right Lane",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 3.9637348515560458,
-      "pred_basis_other": 6.036265148443955,
-      "pred_100_dashcam": 39.63734851556046,
-      "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam": 7.043956809656973,
+      "pred_basis_other": 2.956043190343027,
+      "pred_100_dashcam": 70.43956809656973,
+      "pred_100_other": 29.56043190343027,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 3.0362651484439542,
-      "abs_err_basis_other": 3.036265148443955,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "abs_err_basis_dashcam": 0.04395680965697313,
+      "abs_err_basis_other": 0.04395680965697313,
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 69,
       "video_name": "bb_1_100222_vehicle_204_21756",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From The Right",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From Main Road Entered Earlier",
+      "ov_pred_label": "Going Straight From Main Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 3.9637348515560458,
-      "pred_basis_other": 6.036265148443955,
-      "pred_100_dashcam": 39.63734851556046,
-      "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam": 7.041403166172276,
+      "pred_basis_other": 2.9585968338277246,
+      "pred_100_dashcam": 70.41403166172276,
+      "pred_100_other": 29.585968338277247,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
       "gt_100_other": 40.0,
-      "abs_err_basis_dashcam": 2.0362651484439542,
-      "abs_err_basis_other": 2.036265148443955,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "abs_err_basis_dashcam": 1.0414031661722758,
+      "abs_err_basis_other": 1.0414031661722754,
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 70,
@@ -1357,8 +1357,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.04395680965697313,
       "abs_err_basis_other": 0.04395680965697313,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 71,
@@ -1377,28 +1377,28 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 72,
       "video_name": "bb_1_151124_vehicle_130_224",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From Main Road Entered Later.",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From The Right.",
       "dv_pred_label": "Going Straight From The Right Entered Earlier",
-      "ov_pred_label": "Going Straight From Main Road Entered Later",
+      "ov_pred_label": "Going Straight From The Right",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 5.42299347957593,
-      "pred_basis_other": 4.57700652042407,
-      "pred_100_dashcam": 54.2299347957593,
-      "pred_100_other": 45.7700652042407,
+      "pred_basis_dashcam": 5.996108160287627,
+      "pred_basis_other": 4.003891839712373,
+      "pred_100_dashcam": 59.96108160287627,
+      "pred_100_other": 40.03891839712373,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 1.57700652042407,
-      "abs_err_basis_other": 1.57700652042407,
-      "pred_basis_dashcam_cal": 5.8,
-      "pred_basis_other_cal": 4.2
+      "abs_err_basis_dashcam": 1.0038918397123728,
+      "abs_err_basis_other": 1.0038918397123728,
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 73,
@@ -1432,28 +1432,28 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 77,
       "video_name": "bb_1_150730_vehicle_223_20151",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Right Road, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Right Road, while the Other Vehicle was Going Straight From The Right.",
       "dv_pred_label": "Going Straight From Right Road",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "ov_pred_label": "Going Straight From The Right",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 7.037747588584553,
-      "pred_basis_other": 2.962252411415446,
-      "pred_100_dashcam": 70.37747588584553,
-      "pred_100_other": 29.62252411415446,
+      "pred_basis_dashcam": 7.034686367250659,
+      "pred_basis_other": 2.9653136327493415,
+      "pred_100_dashcam": 70.34686367250659,
+      "pred_100_other": 29.653136327493414,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 0.03774758858455307,
-      "abs_err_basis_other": 0.03774758858455396,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "abs_err_basis_dashcam": 0.03468636725065899,
+      "abs_err_basis_other": 0.034686367250658545,
+      "pred_basis_dashcam_cal": 6.25,
+      "pred_basis_other_cal": 3.75
     },
     {
       "idx": 78,
@@ -1463,42 +1463,42 @@
     {
       "idx": 79,
       "video_name": "bb_1_170318_vehicle_253_21783",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From Main Road.",
-      "dv_pred_label": "Going Straight From The Right",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From Main Road Entered Earlier",
       "ov_pred_label": "Going Straight From Main Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 7.674877967535179,
-      "pred_basis_other": 2.3251220324648214,
-      "pred_100_dashcam": 76.74877967535178,
-      "pred_100_other": 23.251220324648216,
+      "pred_basis_dashcam": 7.041403166172276,
+      "pred_basis_other": 2.9585968338277246,
+      "pred_100_dashcam": 70.41403166172276,
+      "pred_100_other": 29.585968338277247,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
       "gt_100_other": 20.0,
-      "abs_err_basis_dashcam": 0.3251220324648214,
-      "abs_err_basis_other": 0.3251220324648214,
-      "pred_basis_dashcam_cal": 7.333333333333333,
-      "pred_basis_other_cal": 2.666666666666667
+      "abs_err_basis_dashcam": 0.9585968338277242,
+      "abs_err_basis_other": 0.9585968338277246,
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 80,
       "video_name": "bb_1_211214_vehicle_089_021",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Right Turn Entered Later, while the Other Vehicle was Going Straight From Main Road.",
-      "dv_pred_label": "Right Turn Entered Later",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From Main Road Entered Earlier",
       "ov_pred_label": "Going Straight From Main Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 7.060657881382829,
-      "pred_basis_other": 2.939342118617171,
-      "pred_100_dashcam": 70.60657881382829,
-      "pred_100_other": 29.39342118617171,
+      "pred_basis_dashcam": 7.041403166172276,
+      "pred_basis_other": 2.9585968338277246,
+      "pred_100_dashcam": 70.41403166172276,
+      "pred_100_other": 29.585968338277247,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
       "gt_100_other": 20.0,
-      "abs_err_basis_dashcam": 0.9393421186171711,
-      "abs_err_basis_other": 0.9393421186171711,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "abs_err_basis_dashcam": 0.9585968338277242,
+      "abs_err_basis_other": 0.9585968338277246,
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 81,
@@ -1517,8 +1517,8 @@
       "gt_100_other": 20.0,
       "abs_err_basis_dashcam": 0.086512973937241,
       "abs_err_basis_other": 0.08651297393724233,
-      "pred_basis_dashcam_cal": 7.333333333333333,
-      "pred_basis_other_cal": 2.666666666666667
+      "pred_basis_dashcam_cal": 7.666666666666666,
+      "pred_basis_other_cal": 2.333333333333334
     },
     {
       "idx": 82,
@@ -1537,8 +1537,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.04423901289645471,
       "abs_err_basis_other": 0.044239012896455154,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 83,
@@ -1577,8 +1577,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 85,
@@ -1602,8 +1602,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 87,
@@ -1642,8 +1642,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 3.041403166172276,
       "abs_err_basis_other": 3.0414031661722754,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 89,
@@ -1662,8 +1662,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 90,
@@ -1688,22 +1688,22 @@
     {
       "idx": 91,
       "video_name": "bb_1_120105_vehicle_130_132",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From Left Road.",
-      "dv_pred_label": "Going Straight From The Right",
-      "ov_pred_label": "Going Straight From Left Road",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From The Right Entered Earlier",
+      "ov_pred_label": "Going Straight From Main Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 5.683124002826826,
-      "pred_basis_other": 4.316875997173175,
-      "pred_100_dashcam": 56.83124002826826,
-      "pred_100_other": 43.168759971731745,
+      "pred_basis_dashcam": 8.0863348751903,
+      "pred_basis_other": 1.9136651248096999,
+      "pred_100_dashcam": 80.863348751903,
+      "pred_100_other": 19.136651248097,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
       "gt_100_other": 70.0,
-      "abs_err_basis_dashcam": 2.683124002826826,
-      "abs_err_basis_other": 2.6831240028268253,
-      "pred_basis_dashcam_cal": 5.8,
-      "pred_basis_other_cal": 4.2
+      "abs_err_basis_dashcam": 5.0863348751903,
+      "abs_err_basis_other": 5.0863348751903,
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 92,
@@ -1733,42 +1733,42 @@
     {
       "idx": 94,
       "video_name": "bb_1_211124_vehicle_30_412",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Right Turn Entered Later, while the Other Vehicle was Going Straight From Left Road.",
-      "dv_pred_label": "Right Turn Entered Later",
-      "ov_pred_label": "Going Straight From Left Road",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Right Turn, while the Other Vehicle was Left Turn From Right Road.",
+      "dv_pred_label": "Right Turn",
+      "ov_pred_label": "Left Turn From Right Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 6.009792255143538,
-      "pred_basis_other": 3.9902077448564617,
-      "pred_100_dashcam": 60.09792255143538,
-      "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam": 6.015821033408155,
+      "pred_basis_other": 3.9841789665918452,
+      "pred_100_dashcam": 60.15821033408155,
+      "pred_100_other": 39.841789665918455,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
       "gt_100_other": 60.0,
-      "abs_err_basis_dashcam": 2.0097922551435383,
-      "abs_err_basis_other": 2.0097922551435383,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "abs_err_basis_dashcam": 2.015821033408155,
+      "abs_err_basis_other": 2.0158210334081548,
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 95,
       "video_name": "bb_1_190921_vehicle_220_22287",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Left Road, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From Left Road",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Yellow Light Going Straight, while the Other Vehicle was Right Turn Right Lane.",
+      "dv_pred_label": "Yellow Light Going Straight",
+      "ov_pred_label": "Right Turn Right Lane",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 3.962044588109709,
-      "pred_basis_other": 6.037955411890291,
-      "pred_100_dashcam": 39.62044588109709,
-      "pred_100_other": 60.37955411890291,
+      "pred_basis_dashcam": 7.043956809656973,
+      "pred_basis_other": 2.956043190343027,
+      "pred_100_dashcam": 70.43956809656973,
+      "pred_100_other": 29.56043190343027,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 3.037955411890291,
-      "abs_err_basis_other": 3.037955411890291,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "abs_err_basis_dashcam": 0.04395680965697313,
+      "abs_err_basis_other": 0.04395680965697313,
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 96,
@@ -1787,8 +1787,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 97,
@@ -1847,8 +1847,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 100,
@@ -1867,8 +1867,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 101,
@@ -1887,8 +1887,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.04423901289645471,
       "abs_err_basis_other": 0.044239012896455154,
-      "pred_basis_dashcam_cal": 6.7272727272727275,
-      "pred_basis_other_cal": 3.2727272727272725
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 102,
@@ -1898,22 +1898,22 @@
     {
       "idx": 103,
       "video_name": "bb_1_210607_vehicle_314_057",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Later, while the Other Vehicle was Going Straight From Left Road.",
-      "dv_pred_label": "Going Straight From The Right Entered Later",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Right Road, while the Other Vehicle was Going Straight From Left Road.",
+      "dv_pred_label": "Going Straight From Right Road",
       "ov_pred_label": "Going Straight From Left Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 7.043479510099151,
-      "pred_basis_other": 2.9565204899008495,
-      "pred_100_dashcam": 70.43479510099151,
-      "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam": 6.92889704873913,
+      "pred_basis_other": 3.0711029512608703,
+      "pred_100_dashcam": 69.2889704873913,
+      "pred_100_other": 30.711029512608704,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
       "gt_100_other": 60.0,
-      "abs_err_basis_dashcam": 3.043479510099151,
-      "abs_err_basis_other": 3.0434795100991505,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "abs_err_basis_dashcam": 2.92889704873913,
+      "abs_err_basis_other": 2.9288970487391297,
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 104,
@@ -1932,8 +1932,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 105,
@@ -1957,8 +1957,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 107,
@@ -1977,8 +1977,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 3.041403166172276,
       "abs_err_basis_other": 3.0414031661722754,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 108,
@@ -2017,28 +2017,28 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 110,
       "video_name": "bb_1_180723_vehicle_114_143",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Later, while the Other Vehicle was Right Turn.",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Later, while the Other Vehicle was Right Turn Entered Earlier.",
       "dv_pred_label": "Going Straight From Main Road Entered Later",
-      "ov_pred_label": "Right Turn",
+      "ov_pred_label": "Right Turn Entered Earlier",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 5.34592180953386,
-      "pred_basis_other": 4.65407819046614,
-      "pred_100_dashcam": 53.4592180953386,
-      "pred_100_other": 46.5407819046614,
+      "pred_basis_dashcam": 5.984459554714857,
+      "pred_basis_other": 4.0155404452851435,
+      "pred_100_dashcam": 59.84459554714857,
+      "pred_100_other": 40.155404452851435,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
       "gt_100_other": 40.0,
-      "abs_err_basis_dashcam": 0.6540781904661399,
-      "abs_err_basis_other": 0.6540781904661399,
-      "pred_basis_dashcam_cal": 5.8,
-      "pred_basis_other_cal": 4.2
+      "abs_err_basis_dashcam": 0.015540445285142646,
+      "abs_err_basis_other": 0.015540445285143534,
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 111,
@@ -2077,8 +2077,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 113,
@@ -2097,8 +2097,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 114,
@@ -2127,8 +2127,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 117,
@@ -2147,8 +2147,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 118,
@@ -2187,8 +2187,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 1.9961081602876272,
       "abs_err_basis_other": 1.9961081602876272,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 120,
@@ -2212,8 +2212,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 122,
@@ -2232,8 +2232,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 123,
@@ -2252,8 +2252,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 124,
@@ -2272,28 +2272,28 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.03774758858455307,
       "abs_err_basis_other": 0.03774758858455396,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.25,
+      "pred_basis_other_cal": 3.75
     },
     {
       "idx": 125,
       "video_name": "bb_1_170404_vehicle_217_46857",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Left Turn From Right Road, while the Other Vehicle was Right Turn.",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Left Turn From Right Road, while the Other Vehicle was Right Turn Entered Earlier.",
       "dv_pred_label": "Left Turn From Right Road",
-      "ov_pred_label": "Right Turn",
+      "ov_pred_label": "Right Turn Entered Earlier",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 3.970159549413619,
-      "pred_basis_other": 6.029840450586382,
-      "pred_100_dashcam": 39.701595494136185,
-      "pred_100_other": 60.298404505863815,
+      "pred_basis_dashcam": 3.9711571969559376,
+      "pred_basis_other": 6.028842803044062,
+      "pred_100_dashcam": 39.71157196955937,
+      "pred_100_other": 60.28842803044063,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
       "gt_100_other": 60.0,
-      "abs_err_basis_dashcam": 0.029840450586381184,
-      "abs_err_basis_other": 0.02984045058638163,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "abs_err_basis_dashcam": 0.028842803044062393,
+      "abs_err_basis_other": 0.028842803044062393,
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 126,
@@ -2317,8 +2317,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 128,
@@ -2337,8 +2337,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 129,
@@ -2357,8 +2357,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.03774758858455307,
       "abs_err_basis_other": 0.03774758858455396,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.25,
+      "pred_basis_other_cal": 3.75
     },
     {
       "idx": 130,
@@ -2377,8 +2377,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 131,
@@ -2397,8 +2397,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 2.0362651484439542,
       "abs_err_basis_other": 2.036265148443955,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 132,
@@ -2417,8 +2417,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 133,
@@ -2437,8 +2437,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 134,
@@ -2477,8 +2477,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.041403166172275796,
       "abs_err_basis_other": 0.04140316617227535,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 136,
@@ -2517,8 +2517,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.004582148510149153,
       "abs_err_basis_other": 0.004582148510149153,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 138,
@@ -2537,8 +2537,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 139,
@@ -2563,22 +2563,22 @@
     {
       "idx": 140,
       "video_name": "bb_1_201104_vehicle_244_21504",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Right Road, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From Right Road",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From Main Road Entered Earlier",
+      "ov_pred_label": "Going Straight From Main Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 7.037747588584553,
-      "pred_basis_other": 2.962252411415446,
-      "pred_100_dashcam": 70.37747588584553,
-      "pred_100_other": 29.62252411415446,
+      "pred_basis_dashcam": 7.041403166172276,
+      "pred_basis_other": 2.9585968338277246,
+      "pred_100_dashcam": 70.41403166172276,
+      "pred_100_other": 29.585968338277247,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 0.03774758858455307,
-      "abs_err_basis_other": 0.03774758858455396,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "abs_err_basis_dashcam": 0.041403166172275796,
+      "abs_err_basis_other": 0.04140316617227535,
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 141,
@@ -2602,8 +2602,8 @@
       "gt_100_other": 40.0,
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 143,
@@ -2622,8 +2622,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.041403166172275796,
       "abs_err_basis_other": 0.04140316617227535,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 144,
@@ -2653,22 +2653,22 @@
     {
       "idx": 146,
       "video_name": "bb_1_131123_vehicle_206_25217",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From Left Road.",
-      "dv_pred_label": "Going Straight From The Right",
-      "ov_pred_label": "Going Straight From Left Road",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right Entered Earlier, while the Other Vehicle was Going Straight From The Right.",
+      "dv_pred_label": "Going Straight From The Right Entered Earlier",
+      "ov_pred_label": "Going Straight From The Right",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 5.683124002826826,
-      "pred_basis_other": 4.316875997173175,
-      "pred_100_dashcam": 56.83124002826826,
-      "pred_100_other": 43.168759971731745,
+      "pred_basis_dashcam": 5.996108160287627,
+      "pred_basis_other": 4.003891839712373,
+      "pred_100_dashcam": 59.96108160287627,
+      "pred_100_other": 40.03891839712373,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 1.3168759971731738,
-      "abs_err_basis_other": 1.3168759971731747,
-      "pred_basis_dashcam_cal": 5.8,
-      "pred_basis_other_cal": 4.2
+      "abs_err_basis_dashcam": 1.0038918397123728,
+      "abs_err_basis_other": 1.0038918397123728,
+      "pred_basis_dashcam_cal": 5.874999999999999,
+      "pred_basis_other_cal": 4.125000000000001
     },
     {
       "idx": 147,
@@ -2702,28 +2702,28 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 151,
       "video_name": "bb_1_211129_vehicle_235_21934",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From Main Road.",
-      "dv_pred_label": "Going Straight From The Right",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From Main Road Entered Earlier",
       "ov_pred_label": "Going Straight From Main Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 7.674877967535179,
-      "pred_basis_other": 2.3251220324648214,
-      "pred_100_dashcam": 76.74877967535178,
-      "pred_100_other": 23.251220324648216,
+      "pred_basis_dashcam": 7.041403166172276,
+      "pred_basis_other": 2.9585968338277246,
+      "pred_100_dashcam": 70.41403166172276,
+      "pred_100_other": 29.585968338277247,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
       "gt_100_other": 30.0,
-      "abs_err_basis_dashcam": 0.6748779675351786,
-      "abs_err_basis_other": 0.6748779675351786,
-      "pred_basis_dashcam_cal": 7.333333333333333,
-      "pred_basis_other_cal": 2.666666666666667
+      "abs_err_basis_dashcam": 0.041403166172275796,
+      "abs_err_basis_other": 0.04140316617227535,
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 152,
@@ -2742,8 +2742,8 @@
       "gt_100_other": 30.0,
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
-      "pred_basis_dashcam_cal": 6.677419354838708,
-      "pred_basis_other_cal": 3.322580645161292
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     },
     {
       "idx": 153,
@@ -2768,22 +2768,22 @@
     {
       "idx": 154,
       "video_name": "bb_1_090619_vehicle_142_138",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From The Right, while the Other Vehicle was Going Straight From The Right Entered Earlier.",
-      "dv_pred_label": "Going Straight From The Right",
-      "ov_pred_label": "Going Straight From The Right Entered Earlier",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Going Straight From Main Road Entered Earlier, while the Other Vehicle was Going Straight From Main Road.",
+      "dv_pred_label": "Going Straight From Main Road Entered Earlier",
+      "ov_pred_label": "Going Straight From Main Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 3.9637348515560458,
-      "pred_basis_other": 6.036265148443955,
-      "pred_100_dashcam": 39.63734851556046,
-      "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam": 7.041403166172276,
+      "pred_basis_other": 2.9585968338277246,
+      "pred_100_dashcam": 70.41403166172276,
+      "pred_100_other": 29.585968338277247,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
       "gt_100_other": 70.0,
-      "abs_err_basis_dashcam": 0.9637348515560458,
-      "abs_err_basis_other": 0.9637348515560449,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "abs_err_basis_dashcam": 4.041403166172276,
+      "abs_err_basis_other": 4.041403166172275,
+      "pred_basis_dashcam_cal": 6.538461538461538,
+      "pred_basis_other_cal": 3.4615384615384617
     },
     {
       "idx": 155,
@@ -2807,8 +2807,8 @@
       "gt_100_other": 60.0,
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
-      "pred_basis_dashcam_cal": 4.642857142857143,
-      "pred_basis_other_cal": 5.357142857142857
+      "pred_basis_dashcam_cal": 4.100000000000001,
+      "pred_basis_other_cal": 5.899999999999999
     },
     {
       "idx": 157,
@@ -2833,22 +2833,22 @@
     {
       "idx": 158,
       "video_name": "bb_1_150320_vehicle_40_145",
-      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Right Turn Entered Later, while the Other Vehicle was Going Straight From Left Road.",
-      "dv_pred_label": "Right Turn Entered Later",
-      "ov_pred_label": "Going Straight From Left Road",
+      "sentence_from_classifier": "At an unsignalized intersection, the Dashcam Vehicle was Right Turn Entered Earlier, while the Other Vehicle was Going Straight From Right Road.",
+      "dv_pred_label": "Right Turn Entered Earlier",
+      "ov_pred_label": "Going Straight From Right Road",
       "pl_pred_label": null,
-      "pred_basis_dashcam": 6.009792255143538,
-      "pred_basis_other": 3.9902077448564617,
-      "pred_100_dashcam": 60.09792255143538,
-      "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam": 7.044239012896455,
+      "pred_basis_other": 2.955760987103545,
+      "pred_100_dashcam": 70.44239012896455,
+      "pred_100_other": 29.55760987103545,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
       "gt_100_other": 40.0,
-      "abs_err_basis_dashcam": 0.00979225514353832,
-      "abs_err_basis_other": 0.00979225514353832,
-      "pred_basis_dashcam_cal": 5.857142857142856,
-      "pred_basis_other_cal": 4.142857142857144
+      "abs_err_basis_dashcam": 1.0442390128964547,
+      "abs_err_basis_other": 1.0442390128964552,
+      "pred_basis_dashcam_cal": 6.621621621621621,
+      "pred_basis_other_cal": 3.3783783783783794
     }
   ]
 }

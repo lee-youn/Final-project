@@ -565,7 +565,7 @@ def parse_args():
     p.add_argument("--video_root", type=str,
                    default=os.environ.get("VIDEO_ROOT", "/app/data/raw/videos/validation_reencoded"))
     p.add_argument("--classifier_ckpt", type=str,
-                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep9_r3d18.pth"))
+                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep13_r3d18.pth"))
     p.add_argument("--fault_ckpt", type=str,
                    default=os.environ.get("FAULT_CKPT", "/app/text-train/fault_ratio_bert.pt"))
     p.add_argument("--out_json", type=str,

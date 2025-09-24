@@ -428,11 +428,35 @@ class TripleHeadVideoClassifier(nn.Module):
         else:
             raise ValueError(f"Unknown backbone: {backbone}")
 
-        # 공통 3개 classification head
-        self.dv = nn.Linear(feat, n_dv)
-        # self.pl = nn.Linear(feat, n_pl)
-        self.ov = nn.Linear(feat, n_ov)
+        # # 공통 3개 classification head
+        # self.dv = nn.Linear(feat, n_dv)
+        # # self.pl = nn.Linear(feat, n_pl)
+        # self.ov = nn.Linear(feat, n_ov)
 
+        # self.dv = nn.Sequential(
+        #     nn.LayerNorm(feat),
+        #     nn.Linear(feat, feat//2),
+        #     nn.ReLU(),
+        #     nn.Dropout(0.3),
+        #     nn.Linear(feat//2, n_dv)
+        # )
+        # self.ov = nn.Sequential(
+        #     nn.LayerNorm(feat),
+        #     nn.Linear(feat, feat//2),
+        #     nn.ReLU(),
+        #     nn.Dropout(0.3),
+        #     nn.Linear(feat//2, n_ov)
+        # )
+        self.shared_proj = nn.Sequential(
+            nn.LayerNorm(feat),
+            nn.Linear(feat, feat),
+            nn.ReLU(),
+            nn.Dropout(0.3)
+        )
+
+        self.dv = nn.Linear(feat, n_dv)
+        self.ov = nn.Linear(feat, n_ov)
+        
     def forward(self, x):
         if self.backbone_name == "r3d18":
             # (B, C, T, H, W)
@@ -442,7 +466,7 @@ class TripleHeadVideoClassifier(nn.Module):
             # (B, C, T, H, W) → (B, T, C, H, W)
             x = x.permute(0, 2, 1, 3, 4)
             out = self.backbone(x)
-            z = out.last_hidden_state.mean(1)  # [CLS] or mean pooling
+            z = out.last_hidden_state.mean(1)
 
         elif self.backbone_name == "videomae":
             # (B, C, T, H, W) → (B, T, C, H, W)
@@ -450,7 +474,29 @@ class TripleHeadVideoClassifier(nn.Module):
             out = self.backbone(x)
             z = out.last_hidden_state.mean(1)
 
-        return self.dv(z), self.ov(z)
+        # --- Pass through shared projection ---
+        h = self.shared_proj(z)
+
+        return self.dv(h), self.ov(h)
+
+    # def forward(self, x):
+    #     if self.backbone_name == "r3d18":
+    #         # (B, C, T, H, W)
+    #         z = self.backbone(x)
+
+    #     elif self.backbone_name == "timesformer":
+    #         # (B, C, T, H, W) → (B, T, C, H, W)
+    #         x = x.permute(0, 2, 1, 3, 4)
+    #         out = self.backbone(x)
+    #         z = out.last_hidden_state.mean(1)  # [CLS] or mean pooling
+
+    #     elif self.backbone_name == "videomae":
+    #         # (B, C, T, H, W) → (B, T, C, H, W)
+    #         x = x.permute(0, 2, 1, 3, 4)
+    #         out = self.backbone(x)
+    #         z = out.last_hidden_state.mean(1)
+
+    #     return self.dv(z), self.ov(z)
 
 # ===== (D) 학습/평가 =====
 # def train_one_epoch(model, loader, opt, device, fp16=False, epoch=1, epochs=1, log_interval=10, global_step_offset=0):
@@ -832,7 +878,7 @@ def main():
             if val["exact_match"] > best_exact:
                 best_exact = val["exact_match"]
                 os.makedirs(args.save_dir, exist_ok=True)
-                ckpt_path = os.path.join(args.save_dir, f"best_exact_ep{ep}_{args.backbone}.pth")
+                ckpt_path = os.path.join(args.save_dir, f"best_exact_ep{ep}_{args.backbone}_joint.pth")
                 torch.save({
                     "model": model.state_dict(),
                     "epoch": ep,

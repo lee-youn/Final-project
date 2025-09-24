@@ -30,6 +30,58 @@ SEARCH_ROOTS = [
 # 허용할 확장자
 VIDEO_EXTS = [".mp4", ".mkv", ".mov", ".avi", ".webm"]
 
+# ===== Fault ratio (BERT) =====
+from transformers import AutoModel, AutoTokenizer
+
+class TextToFaultRatio(nn.Module):
+    def __init__(self, model_name="bert-base-uncased", hidden_dim=768):
+        super().__init__()
+        self.encoder = AutoModel.from_pretrained(model_name)
+        self.regressor = nn.Sequential(
+            nn.Linear(hidden_dim, 128),
+            nn.ReLU(),
+            nn.Linear(128, 2)
+        )
+    def forward(self, input_ids, attention_mask):
+        out = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
+        cls = out.last_hidden_state[:,0]
+        return self.regressor(cls)
+
+@torch.no_grad()
+def load_fault_model(path: str, model_name="bert-base-uncased", device="cuda"):
+    obj = torch.load(path, map_location="cpu")
+    model = TextToFaultRatio(model_name=model_name)
+    if isinstance(obj, dict) and "state_dict" in obj:
+        model.load_state_dict(obj["state_dict"], strict=True)
+    elif isinstance(obj, dict):
+        model.load_state_dict(obj, strict=False)
+    elif hasattr(obj, "state_dict"):
+        model = obj
+    model.to(device).eval()
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    return model, tokenizer
+
+@torch.no_grad()
+def predict_fault_ratio(model, tokenizer, text: str, device="cuda", max_length=256):
+    inputs = tokenizer(text, return_tensors="pt",
+                       padding="max_length", truncation=True, max_length=max_length)
+    input_ids = inputs["input_ids"].to(device)
+    attention_mask = inputs["attention_mask"].to(device)
+    pred = model(input_ids=input_ids, attention_mask=attention_mask).squeeze(0).float().cpu().numpy()  # [2]
+    return pred  # (dashcam, other) 임의 스케일
+
+def project_pair_to_basis(v, total=10.0):
+    v = np.maximum(np.asarray(v, dtype=float), 0.0)
+    s = float(v.sum())
+    if s <= 0:
+        return np.array([total/2.0, total/2.0], dtype=float)
+    return v * (total / s)
+
+def render_template_from_labels(dv_text: str, ov_text: str) -> str:
+    return (f"At an unsignalized intersection, the Dashcam Vehicle was {dv_text}, "
+            f"while the Other Vehicle was {ov_text}.")
+
+
 # =========================
 # (0) 라벨 정의 (네가 쓰던 dict)
 # =========================
@@ -362,6 +414,7 @@ def build_prompt(
     style: str = "brief",
     history: Optional[list] = None,
     history_max_turns: int = 6,
+    fault_hint: Optional[str] = None,
 ) -> str:
     system_header = (
         "You are an expert at analyzing dashcam accident videos. "
@@ -387,6 +440,9 @@ def build_prompt(
     if classifier_topk: 
         hint_lines.append(f"- Classifier outputs (top-k): {classifier_topk}")
         print(f"[Hint] Classifier top-k: {classifier_topk}")
+    if fault_hint:      
+        hint_lines.append(f"- Fault analysis[Dashcam Vehicle:Other Vehicle]: {fault_hint}")
+        print(f"[Hint] Fault analysis: {fault_hint}")
     hint_block = ("Always include the following hints exactly once in natural English:\n" + "\n".join(hint_lines) + "\n") if hint_lines else ""
 
     # History
@@ -401,12 +457,12 @@ def build_prompt(
         f"{hist_txt}"
         "USER:\n"
         "Describe the accident scene focusing on visible motion, entry order, and relative positions.\n"
-        "This video is from the first-person perspective of the Dashcam Vehicle.\n"  # 1인칭 대시캠 시점 명시
         f"{length_rule}\n"
         f"{hint_block}"
-        "You MUST apply the provided hints in your answer (reflect them at least once).\n"  # 힌트 반드시 반영
-        "If the hints conflict with visible evidence, briefly note the conflict.\n"
-        "Avoid: the words 'traffic light', numbers, dates, or invented objects.\n"
+        "You MUST apply the provided hints in your answer (reflect them at least once).\n"
+        "Then add: the predicted fault ratio (basis 10), identify the likely victim (lower fault share), "
+        "and one-sentence cause reasoning grounded in visible evidence and the classification hints.\n"
+        "Avoid: the words 'traffic light', numbers unrelated to fault ratio, dates, or invented objects.\n"
         "Use 'Dashcam Vehicle' and 'Other Vehicle' exactly once each.\n"
     )
     if user_message and user_message.strip():
@@ -451,6 +507,7 @@ class VideoLLaVAChatEngine:
         do_sample: bool = False,
         max_new_tokens: int = 180,
         history: Optional[list] = None,
+        fault_hint: Optional[str] = None
     ) -> str:
         if not self.model or not self.processor:
             raise RuntimeError("Model is not loaded yet.")
@@ -461,7 +518,10 @@ class VideoLLaVAChatEngine:
         if tok.convert_tokens_to_ids("<video>") in (None, tok.unk_token_id):
             placeholder = "<image>"
 
-        prompt_text = build_prompt(user_message, dashcam_info, other_info, classifier_topk, style=style, history=history)
+        prompt_text = build_prompt(
+            user_message, dashcam_info, other_info, classifier_topk,
+            style=style, history=history, fault_hint=fault_hint   # ★
+        )
         chat_prompt = f"{placeholder}\n{prompt_text}"
 
         proc = self.processor(
@@ -519,6 +579,7 @@ def ui_load_model(model_id):
     return msg
 
 _CLF_CACHE = {}
+_FAULT_CACHE = {}
 
 def _ensure_classifier(ckpt_path, backbone, pretrained, device):
     key = (ckpt_path, backbone, bool(pretrained), device)
@@ -527,29 +588,34 @@ def _ensure_classifier(ckpt_path, backbone, pretrained, device):
         _CLF_CACHE[key] = mdl
     return _CLF_CACHE[key]
 
+def _ensure_fault(ckpt_path, model_name, device):
+    key = (ckpt_path, model_name, device)
+    if key not in _FAULT_CACHE:
+        mdl, tok = load_fault_model(ckpt_path, model_name=model_name, device=device)
+        _FAULT_CACHE[key] = (mdl, tok)
+    return _FAULT_CACHE[key]
+
 def ui_generate(
         history, user_msg, video, video_name, model_id,
         clf_ckpt, clf_backbone, clf_pretrained, clf_topk,
+        fault_ckpt, fault_model, fault_basis,
         style, num_frames, frame_size, temperature, sampling
     ):
-    
     history = history or []
 
-    # ✅ 경로 해석 (업로드 없으면 video_name으로 검색)
+    # 0) 비디오 경로 해석
     video_path = _resolve_video_path(video, video_name)
-
     print(f"[Chat] video_path={video_path}, video_name={video_name}")
-
     if not video_path:
         history = history + [{"role":"assistant","content": f"❌ Video not found. name='{video_name}'\n검색 루트: {SEARCH_ROOTS}"}]
         return history
-
     if not os.path.exists(video_path) or os.path.getsize(video_path) == 0:
         history = history + [{"role":"assistant","content": f"❌ Video not readable: {video_path}"}]
         return history
-    
-    # 1) 분류기 로드 & 예측 → 힌트 강제 생성
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    # 1) DV/OV 분류 → top-k 텍스트
     try:
         clf = _ensure_classifier(clf_ckpt, clf_backbone, clf_pretrained, device)
         dv_hint, ov_hint, topk_text = predict_classifier(
@@ -560,6 +626,24 @@ def ui_generate(
         topk_text = f"[classifier error: {e}]"
     print(f"[Hint] DV={dv_hint} | OV={ov_hint} | TOPK={topk_text}")
 
+    # 2) 템플릿 문장 생성
+    sentence = render_template_from_labels(dv_hint, ov_hint)
+
+    # 3) BERT 과실비율 추론
+    try:
+        fr_m, fr_tok = _ensure_fault(fault_ckpt, fault_model, device)
+        y = predict_fault_ratio(fr_m, fr_tok, sentence, device=device)  # [2]
+        pred = project_pair_to_basis(y, total=float(fault_basis))       # (dashcam, other) 합 = basis
+        dc_f, ov_f = float(pred[0]), float(pred[1])
+        if abs(dc_f - ov_f) < 1e-6:
+            victim = "Undetermined"
+        else:
+            victim = "Dashcam Vehicle" if dc_f < ov_f else "Other Vehicle"
+        fault_hint = f"Predicted fault (basis {int(fault_basis)}): Dashcam={dc_f:.1f}, Other={ov_f:.1f}; Likely victim: {victim}; Template: {sentence}"
+    except Exception as e:
+        fault_hint = f"[fault error: {e}]; Template: {sentence}"
+
+    # 4) LLaVA 호출
     ENGINE.load_model(model_id)
     try:
         text = ENGINE.generate(
@@ -574,13 +658,16 @@ def ui_generate(
             temperature=float(temperature),
             do_sample=bool(sampling),
             history=history,
+            fault_hint=fault_hint,   # ★ 추가 전달
         )
     except Exception as e:
         text = f"Generation error: {e}"
 
+    # 5) 채팅창 출력(추가로 구조화 보조정보도 한 줄 더)
+    aux = f"⚖️ Fault(basis {int(fault_basis)}): DC {dc_f:.1f} / OV {ov_f:.1f} | Victim: {victim}\n📝 {sentence}"
     if user_msg:
         history = history + [{"role": "user", "content": user_msg}]
-    history = history + [{"role": "assistant", "content": text}]
+    history = history + [{"role": "assistant", "content": text + "\n\n" + aux}]
     return history
 
 with gr.Blocks(title="Video-LLaVA Chatbot") as demo:
@@ -603,6 +690,10 @@ with gr.Blocks(title="Video-LLaVA Chatbot") as demo:
             clf_backbone = gr.Dropdown(label="Classifier backbone", choices=["r3d18","timesformer","videomae"], value="r3d18")
             clf_pretrained = gr.Checkbox(label="Use pretrained backbone", value=False)
             clf_topk     = gr.Slider(1,5,value=3,step=1,label="Classifier Top-K")
+
+            fault_ckpt   = gr.Textbox(label="Fault-BERT CKPT path", value="/app/text-train/fault_ratio_bert.pt")
+            fault_model  = gr.Textbox(label="Fault-BERT model_name", value="bert-base-uncased")
+            fault_basis  = gr.Slider(2, 20, value=10, step=1, label="Fault ratio basis")
 
             style = gr.Dropdown(label="Output style", choices=["short", "brief", "detailed"], value="brief")
             num_frames = gr.Slider(4, 16, value=8, step=1, label="Frames")
@@ -627,7 +718,8 @@ with gr.Blocks(title="Video-LLaVA Chatbot") as demo:
         ui_generate,
         inputs=[
             state, user_msg, video, video_name, model_id,
-            clf_ckpt, clf_backbone, clf_pretrained, clf_topk,   # ★ 분류기 UI 넣기
+            clf_ckpt, clf_backbone, clf_pretrained, clf_topk,
+            fault_ckpt, fault_model, fault_basis,           # ★ 추가
             style, num_frames, frame_size, temperature, sampling
         ],
         outputs=[chatbot],
@@ -657,4 +749,3 @@ if __name__ == "__main__":
         prevent_thread_lock=False,  # 일부 환경에서 블랭크 방지
     )
     print(f"\n[Gradio] listening on http://{server_name}:{server_port}  (share={share})")
-

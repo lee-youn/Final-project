@@ -1,0 +1,41 @@
+﻿version: '3.8'
+
+services:
+  accident-multimodal:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: video-train
+
+    shm_size: 8g
+    ipc: host
+    
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=0,1,2
+      - CUDA_VISIBLE_DEVICES=0,1,2
+      - TORCH_CUDA_ARCH_LIST="6.0 6.1 7.0 7.5 8.0 8.6+PTX"
+      - PYTHONPATH=/app
+      - WANDB_PROJECT=accident-caption
+      - ACCELERATE_USE_CUDA=true
+    volumes:
+      - ../data:/app/data
+      - ../text-train:/app/text-train
+      - ./checkpoints:/app/checkpoints
+      - ./logs:/app/logs
+      - .:/app
+    ports:
+      - "2098:2098"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0','1','2']
+              capabilities: [gpu]
+    command: ["tail", "-f", "/dev/null"]
+    networks:
+      - training_network
+
+networks:
+  training_network:
+    driver: bridge

@@ -686,7 +686,7 @@ with gr.Blocks(title="Video-LLaVA Chatbot") as demo:
             # dashcam_info = gr.Textbox(label="Dashcam Vehicle hint (optional)")
             # other_info = gr.Textbox(label="Other Vehicle hint (optional)")
             # classifier_topk = gr.Textbox(label="Classifier top-k (optional)")
-            clf_ckpt     = gr.Textbox(label="Classifier CKPT path", value="/app/checkpoints/best_exact_ep9_r3d18.pth")
+            clf_ckpt     = gr.Textbox(label="Classifier CKPT path", value="/app/checkpoints/best_exact_ep13_r3d18.pth")
             clf_backbone = gr.Dropdown(label="Classifier backbone", choices=["r3d18","timesformer","videomae"], value="r3d18")
             clf_pretrained = gr.Checkbox(label="Use pretrained backbone", value=False)
             clf_topk     = gr.Slider(1,5,value=3,step=1,label="Classifier Top-K")

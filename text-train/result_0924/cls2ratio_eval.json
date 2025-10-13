@@ -12,7 +12,13 @@
     "cal/R2": 0.6198308622080392,
     "cal/MAE_dashcam": 0.5953817181758363,
     "cal/MAE_other": 0.5953817181758364,
-    "cal/count": 136
+    "cal/count": 136,
+    "int/MAE": 0.4632352941176471,
+    "int/R2": 0.4953668971390336,
+    "int/RMASE": 1.1599949289950011,
+    "int_cal/MAE": 0.4485294117647059,
+    "int_cal/R2": 0.5891238670694863,
+    "int_cal/RMSE": 1.046703508780838
   },
   "results": [
     {
@@ -26,6 +32,8 @@
       "pred_basis_other": 2.962252411415446,
       "pred_100_dashcam": 70.37747588584553,
       "pred_100_other": 29.62252411415446,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -33,7 +41,9 @@
       "abs_err_basis_dashcam": 3.037747588584553,
       "abs_err_basis_other": 3.037747588584554,
       "pred_basis_dashcam_cal": 6.25,
-      "pred_basis_other_cal": 3.75
+      "pred_basis_other_cal": 3.75,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 1,
@@ -46,6 +56,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -53,7 +65,9 @@
       "abs_err_basis_dashcam": 1.0038918397123728,
       "abs_err_basis_other": 1.0038918397123728,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 2,
@@ -66,6 +80,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -73,7 +89,9 @@
       "abs_err_basis_dashcam": 1.043479510099151,
       "abs_err_basis_other": 1.0434795100991505,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 3,
@@ -86,6 +104,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -93,7 +113,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 4,
@@ -106,6 +128,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -113,7 +137,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 5,
@@ -126,6 +152,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -133,7 +161,9 @@
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 6,
@@ -146,6 +176,8 @@
       "pred_basis_other": 1.9134870260627577,
       "pred_100_dashcam": 80.8651297393724,
       "pred_100_other": 19.134870260627576,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -153,7 +185,9 @@
       "abs_err_basis_dashcam": 0.086512973937241,
       "abs_err_basis_other": 0.08651297393724233,
       "pred_basis_dashcam_cal": 7.666666666666666,
-      "pred_basis_other_cal": 2.333333333333334
+      "pred_basis_other_cal": 2.333333333333334,
+      "pred_basis_dashcam_cal_int": 8.0,
+      "pred_basis_other_cal_int": 2.0
     },
     {
       "idx": 7,
@@ -166,6 +200,8 @@
       "pred_basis_other": 4.752833028590255,
       "pred_100_dashcam": 52.47166971409746,
       "pred_100_other": 47.528330285902555,
+      "pred_basis_dashcam_int": 5.0,
+      "pred_basis_other_int": 5.0,
       "gt_basis_dashcam": 5.0,
       "gt_basis_other": 5.0,
       "gt_100_dashcam": 50.0,
@@ -173,7 +209,9 @@
       "abs_err_basis_dashcam": 0.24716697140974553,
       "abs_err_basis_other": 0.24716697140974464,
       "pred_basis_dashcam_cal": 5.0,
-      "pred_basis_other_cal": 5.0
+      "pred_basis_other_cal": 5.0,
+      "pred_basis_dashcam_cal_int": 5.0,
+      "pred_basis_other_cal_int": 5.0
     },
     {
       "idx": 8,
@@ -186,6 +224,8 @@
       "pred_basis_other": 2.9551251120795174,
       "pred_100_dashcam": 70.44874887920483,
       "pred_100_other": 29.551251120795175,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -193,7 +233,9 @@
       "abs_err_basis_dashcam": 0.04487488792048211,
       "abs_err_basis_other": 0.044874887920482553,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 9,
@@ -206,6 +248,8 @@
       "pred_basis_other": 2.939342118617171,
       "pred_100_dashcam": 70.60657881382829,
       "pred_100_other": 29.39342118617171,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -213,7 +257,9 @@
       "abs_err_basis_dashcam": 0.060657881382828904,
       "abs_err_basis_other": 0.060657881382828904,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 10,
@@ -226,6 +272,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -233,7 +281,9 @@
       "abs_err_basis_dashcam": 0.041403166172275796,
       "abs_err_basis_other": 0.04140316617227535,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 11,
@@ -246,6 +296,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -253,7 +305,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 12,
@@ -266,6 +320,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -273,7 +329,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 13,
@@ -286,6 +344,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -293,7 +353,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 14,
@@ -306,6 +368,8 @@
       "pred_basis_other": 7.059240253712955,
       "pred_100_dashcam": 29.40759746287046,
       "pred_100_other": 70.59240253712954,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -313,7 +377,9 @@
       "abs_err_basis_dashcam": 0.05924025371295416,
       "abs_err_basis_other": 0.059240253712954605,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 15,
@@ -326,6 +392,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -333,7 +401,9 @@
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 16,
@@ -346,6 +416,8 @@
       "pred_basis_other": 1.9118964234129157,
       "pred_100_dashcam": 80.88103576587085,
       "pred_100_other": 19.118964234129155,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -353,7 +425,9 @@
       "abs_err_basis_dashcam": 0.08810357658708412,
       "abs_err_basis_other": 0.08810357658708434,
       "pred_basis_dashcam_cal": 8.000000000000002,
-      "pred_basis_other_cal": 1.9999999999999984
+      "pred_basis_other_cal": 1.9999999999999984,
+      "pred_basis_dashcam_cal_int": 8.0,
+      "pred_basis_other_cal_int": 2.0
     },
     {
       "idx": 17,
@@ -366,6 +440,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -373,7 +449,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 18,
@@ -386,6 +464,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -393,7 +473,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 19,
@@ -406,6 +488,8 @@
       "pred_basis_other": 8.063167477590845,
       "pred_100_dashcam": 19.368325224091556,
       "pred_100_other": 80.63167477590845,
+      "pred_basis_dashcam_int": 2.0,
+      "pred_basis_other_int": 8.0,
       "gt_basis_dashcam": 2.0,
       "gt_basis_other": 8.0,
       "gt_100_dashcam": 20.0,
@@ -413,7 +497,9 @@
       "abs_err_basis_dashcam": 0.06316747759084418,
       "abs_err_basis_other": 0.06316747759084507,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 20,
@@ -431,6 +517,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -438,7 +526,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 22,
@@ -451,6 +541,8 @@
       "pred_basis_other": 1.9134870260627577,
       "pred_100_dashcam": 80.8651297393724,
       "pred_100_other": 19.134870260627576,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -458,7 +550,9 @@
       "abs_err_basis_dashcam": 1.086512973937241,
       "abs_err_basis_other": 1.0865129739372423,
       "pred_basis_dashcam_cal": 7.666666666666666,
-      "pred_basis_other_cal": 2.333333333333334
+      "pred_basis_other_cal": 2.333333333333334,
+      "pred_basis_dashcam_cal_int": 8.0,
+      "pred_basis_other_cal_int": 2.0
     },
     {
       "idx": 23,
@@ -471,6 +565,8 @@
       "pred_basis_other": 7.060105250378229,
       "pred_100_dashcam": 29.398947496217712,
       "pred_100_other": 70.6010525037823,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -478,7 +574,9 @@
       "abs_err_basis_dashcam": 0.06010525037822889,
       "abs_err_basis_other": 0.060105250378229336,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 24,
@@ -491,6 +589,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -498,7 +598,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 25,
@@ -516,6 +618,8 @@
       "pred_basis_other": 2.9548840391397935,
       "pred_100_dashcam": 70.45115960860207,
       "pred_100_other": 29.548840391397935,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -523,7 +627,9 @@
       "abs_err_basis_dashcam": 0.04511596086020653,
       "abs_err_basis_other": 0.04511596086020653,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 27,
@@ -536,6 +642,8 @@
       "pred_basis_other": 6.027903213323295,
       "pred_100_dashcam": 39.72096786676704,
       "pred_100_other": 60.27903213323295,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -543,7 +651,9 @@
       "abs_err_basis_dashcam": 2.0279032133232957,
       "abs_err_basis_other": 2.0279032133232953,
       "pred_basis_dashcam_cal": 5.0,
-      "pred_basis_other_cal": 5.0
+      "pred_basis_other_cal": 5.0,
+      "pred_basis_dashcam_cal_int": 5.0,
+      "pred_basis_other_cal_int": 5.0
     },
     {
       "idx": 28,
@@ -556,6 +666,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 10.0,
       "gt_basis_other": 0.0,
       "gt_100_dashcam": 100.0,
@@ -563,7 +675,9 @@
       "abs_err_basis_dashcam": 2.958596833827724,
       "abs_err_basis_other": 2.9585968338277246,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 29,
@@ -576,6 +690,8 @@
       "pred_basis_other": 2.9548840391397935,
       "pred_100_dashcam": 70.45115960860207,
       "pred_100_other": 29.548840391397935,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -583,7 +699,9 @@
       "abs_err_basis_dashcam": 3.0451159608602065,
       "abs_err_basis_other": 3.0451159608602065,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 30,
@@ -596,6 +714,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -603,7 +723,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 31,
@@ -616,6 +738,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -623,7 +747,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 32,
@@ -636,6 +762,8 @@
       "pred_basis_other": 2.956043190343027,
       "pred_100_dashcam": 70.43956809656973,
       "pred_100_other": 29.56043190343027,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -643,7 +771,9 @@
       "abs_err_basis_dashcam": 0.04395680965697313,
       "abs_err_basis_other": 0.04395680965697313,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 33,
@@ -656,6 +786,8 @@
       "pred_basis_other": 7.069769510841435,
       "pred_100_dashcam": 29.30230489158565,
       "pred_100_other": 70.69769510841435,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -663,7 +795,9 @@
       "abs_err_basis_dashcam": 0.0697695108414349,
       "abs_err_basis_other": 0.0697695108414349,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 34,
@@ -676,6 +810,8 @@
       "pred_basis_other": 3.995417851489851,
       "pred_100_dashcam": 60.04582148510149,
       "pred_100_other": 39.95417851489851,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -683,7 +819,9 @@
       "abs_err_basis_dashcam": 0.9954178514898508,
       "abs_err_basis_other": 0.9954178514898508,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 35,
@@ -696,6 +834,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -703,7 +843,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 36,
@@ -716,6 +858,8 @@
       "pred_basis_other": 2.939342118617171,
       "pred_100_dashcam": 70.60657881382829,
       "pred_100_other": 29.39342118617171,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -723,7 +867,9 @@
       "abs_err_basis_dashcam": 4.060657881382829,
       "abs_err_basis_other": 4.060657881382829,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 37,
@@ -741,6 +887,8 @@
       "pred_basis_other": 4.0155404452851435,
       "pred_100_dashcam": 59.84459554714857,
       "pred_100_other": 40.155404452851435,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -748,7 +896,9 @@
       "abs_err_basis_dashcam": 0.015540445285142646,
       "abs_err_basis_other": 0.015540445285143534,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 39,
@@ -761,6 +911,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -768,7 +920,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 40,
@@ -781,6 +935,8 @@
       "pred_basis_other": 1.9118964234129157,
       "pred_100_dashcam": 80.88103576587085,
       "pred_100_other": 19.118964234129155,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -788,7 +944,9 @@
       "abs_err_basis_dashcam": 0.08810357658708412,
       "abs_err_basis_other": 0.08810357658708434,
       "pred_basis_dashcam_cal": 8.000000000000002,
-      "pred_basis_other_cal": 1.9999999999999984
+      "pred_basis_other_cal": 1.9999999999999984,
+      "pred_basis_dashcam_cal_int": 8.0,
+      "pred_basis_other_cal_int": 2.0
     },
     {
       "idx": 41,
@@ -801,6 +959,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -808,7 +968,9 @@
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 42,
@@ -821,6 +983,8 @@
       "pred_basis_other": 6.060251135293384,
       "pred_100_dashcam": 39.39748864706616,
       "pred_100_other": 60.60251135293384,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -828,7 +992,9 @@
       "abs_err_basis_dashcam": 0.06025113529338366,
       "abs_err_basis_other": 0.06025113529338366,
       "pred_basis_dashcam_cal": 4.000000000000001,
-      "pred_basis_other_cal": 5.999999999999998
+      "pred_basis_other_cal": 5.999999999999998,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 43,
@@ -846,6 +1012,8 @@
       "pred_basis_other": 2.9551251120795174,
       "pred_100_dashcam": 70.44874887920483,
       "pred_100_other": 29.551251120795175,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -853,7 +1021,9 @@
       "abs_err_basis_dashcam": 0.04487488792048211,
       "abs_err_basis_other": 0.044874887920482553,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 45,
@@ -866,6 +1036,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -873,7 +1045,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 46,
@@ -886,6 +1060,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -893,7 +1069,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 47,
@@ -906,6 +1084,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -913,7 +1093,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 48,
@@ -926,6 +1108,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -933,7 +1117,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 49,
@@ -946,6 +1132,8 @@
       "pred_basis_other": 4.0155404452851435,
       "pred_100_dashcam": 59.84459554714857,
       "pred_100_other": 40.155404452851435,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -953,7 +1141,9 @@
       "abs_err_basis_dashcam": 0.015540445285142646,
       "abs_err_basis_other": 0.015540445285143534,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 50,
@@ -966,6 +1156,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -973,7 +1165,9 @@
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 51,
@@ -986,6 +1180,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -993,7 +1189,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 52,
@@ -1006,6 +1204,8 @@
       "pred_basis_other": 7.058724993893434,
       "pred_100_dashcam": 29.412750061065655,
       "pred_100_other": 70.58724993893433,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -1013,7 +1213,9 @@
       "abs_err_basis_dashcam": 0.05872499389343444,
       "abs_err_basis_other": 0.058724993893434,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 53,
@@ -1026,6 +1228,8 @@
       "pred_basis_other": 4.451446124701533,
       "pred_100_dashcam": 55.48553875298467,
       "pred_100_other": 44.51446124701533,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1033,7 +1237,9 @@
       "abs_err_basis_dashcam": 0.45144612470153334,
       "abs_err_basis_other": 0.45144612470153334,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 54,
@@ -1046,6 +1252,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1053,7 +1261,9 @@
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 55,
@@ -1066,6 +1276,8 @@
       "pred_basis_other": 4.0155404452851435,
       "pred_100_dashcam": 59.84459554714857,
       "pred_100_other": 40.155404452851435,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1073,7 +1285,9 @@
       "abs_err_basis_dashcam": 0.015540445285142646,
       "abs_err_basis_other": 0.015540445285143534,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 56,
@@ -1086,6 +1300,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1093,7 +1309,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 57,
@@ -1106,6 +1324,8 @@
       "pred_basis_other": 2.9551251120795174,
       "pred_100_dashcam": 70.44874887920483,
       "pred_100_other": 29.551251120795175,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1113,7 +1333,9 @@
       "abs_err_basis_dashcam": 0.04487488792048211,
       "abs_err_basis_other": 0.044874887920482553,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 58,
@@ -1126,6 +1348,8 @@
       "pred_basis_other": 1.9136651248096999,
       "pred_100_dashcam": 80.863348751903,
       "pred_100_other": 19.136651248097,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1133,7 +1357,9 @@
       "abs_err_basis_dashcam": 2.0863348751902997,
       "abs_err_basis_other": 2.0863348751903,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 59,
@@ -1146,6 +1372,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1153,7 +1381,9 @@
       "abs_err_basis_dashcam": 1.0038918397123728,
       "abs_err_basis_other": 1.0038918397123728,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 60,
@@ -1166,6 +1396,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1173,7 +1405,9 @@
       "abs_err_basis_dashcam": 0.041403166172275796,
       "abs_err_basis_other": 0.04140316617227535,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 61,
@@ -1186,6 +1420,8 @@
       "pred_basis_other": 6.027903213323295,
       "pred_100_dashcam": 39.72096786676704,
       "pred_100_other": 60.27903213323295,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1193,7 +1429,9 @@
       "abs_err_basis_dashcam": 0.027903213323295706,
       "abs_err_basis_other": 0.02790321332329526,
       "pred_basis_dashcam_cal": 5.0,
-      "pred_basis_other_cal": 5.0
+      "pred_basis_other_cal": 5.0,
+      "pred_basis_dashcam_cal_int": 5.0,
+      "pred_basis_other_cal_int": 5.0
     },
     {
       "idx": 62,
@@ -1211,6 +1449,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1218,7 +1458,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 64,
@@ -1231,6 +1473,8 @@
       "pred_basis_other": 2.9551251120795174,
       "pred_100_dashcam": 70.44874887920483,
       "pred_100_other": 29.551251120795175,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1238,7 +1482,9 @@
       "abs_err_basis_dashcam": 0.04487488792048211,
       "abs_err_basis_other": 0.044874887920482553,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 65,
@@ -1251,6 +1497,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1258,7 +1506,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 66,
@@ -1271,6 +1521,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -1278,7 +1530,9 @@
       "abs_err_basis_dashcam": 3.0097922551435383,
       "abs_err_basis_other": 3.0097922551435383,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 67,
@@ -1291,6 +1545,8 @@
       "pred_basis_other": 8.063167477590845,
       "pred_100_dashcam": 19.368325224091556,
       "pred_100_other": 80.63167477590845,
+      "pred_basis_dashcam_int": 2.0,
+      "pred_basis_other_int": 8.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1298,7 +1554,9 @@
       "abs_err_basis_dashcam": 4.063167477590844,
       "abs_err_basis_other": 4.063167477590845,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 68,
@@ -1311,6 +1569,8 @@
       "pred_basis_other": 2.956043190343027,
       "pred_100_dashcam": 70.43956809656973,
       "pred_100_other": 29.56043190343027,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1318,7 +1578,9 @@
       "abs_err_basis_dashcam": 0.04395680965697313,
       "abs_err_basis_other": 0.04395680965697313,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 69,
@@ -1331,6 +1593,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1338,7 +1602,9 @@
       "abs_err_basis_dashcam": 1.0414031661722758,
       "abs_err_basis_other": 1.0414031661722754,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 70,
@@ -1351,6 +1617,8 @@
       "pred_basis_other": 2.956043190343027,
       "pred_100_dashcam": 70.43956809656973,
       "pred_100_other": 29.56043190343027,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1358,7 +1626,9 @@
       "abs_err_basis_dashcam": 0.04395680965697313,
       "abs_err_basis_other": 0.04395680965697313,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 71,
@@ -1371,6 +1641,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1378,7 +1650,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 72,
@@ -1391,6 +1665,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1398,7 +1674,9 @@
       "abs_err_basis_dashcam": 1.0038918397123728,
       "abs_err_basis_other": 1.0038918397123728,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 73,
@@ -1426,6 +1704,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1433,7 +1713,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 77,
@@ -1446,6 +1728,8 @@
       "pred_basis_other": 2.9653136327493415,
       "pred_100_dashcam": 70.34686367250659,
       "pred_100_other": 29.653136327493414,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1453,7 +1737,9 @@
       "abs_err_basis_dashcam": 0.03468636725065899,
       "abs_err_basis_other": 0.034686367250658545,
       "pred_basis_dashcam_cal": 6.25,
-      "pred_basis_other_cal": 3.75
+      "pred_basis_other_cal": 3.75,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 78,
@@ -1471,6 +1757,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -1478,7 +1766,9 @@
       "abs_err_basis_dashcam": 0.9585968338277242,
       "abs_err_basis_other": 0.9585968338277246,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 80,
@@ -1491,6 +1781,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -1498,7 +1790,9 @@
       "abs_err_basis_dashcam": 0.9585968338277242,
       "abs_err_basis_other": 0.9585968338277246,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 81,
@@ -1511,6 +1805,8 @@
       "pred_basis_other": 1.9134870260627577,
       "pred_100_dashcam": 80.8651297393724,
       "pred_100_other": 19.134870260627576,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -1518,7 +1814,9 @@
       "abs_err_basis_dashcam": 0.086512973937241,
       "abs_err_basis_other": 0.08651297393724233,
       "pred_basis_dashcam_cal": 7.666666666666666,
-      "pred_basis_other_cal": 2.333333333333334
+      "pred_basis_other_cal": 2.333333333333334,
+      "pred_basis_dashcam_cal_int": 8.0,
+      "pred_basis_other_cal_int": 2.0
     },
     {
       "idx": 82,
@@ -1531,6 +1829,8 @@
       "pred_basis_other": 2.955760987103545,
       "pred_100_dashcam": 70.44239012896455,
       "pred_100_other": 29.55760987103545,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1538,7 +1838,9 @@
       "abs_err_basis_dashcam": 0.04423901289645471,
       "abs_err_basis_other": 0.044239012896455154,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 83,
@@ -1551,6 +1853,8 @@
       "pred_basis_other": 7.060105250378229,
       "pred_100_dashcam": 29.398947496217712,
       "pred_100_other": 70.6010525037823,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -1558,7 +1862,9 @@
       "abs_err_basis_dashcam": 0.06010525037822889,
       "abs_err_basis_other": 0.060105250378229336,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 84,
@@ -1571,6 +1877,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1578,7 +1886,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 85,
@@ -1596,6 +1906,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1603,7 +1915,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 87,
@@ -1616,6 +1930,8 @@
       "pred_basis_other": 7.058724993893434,
       "pred_100_dashcam": 29.412750061065655,
       "pred_100_other": 70.58724993893433,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -1623,7 +1939,9 @@
       "abs_err_basis_dashcam": 0.05872499389343444,
       "abs_err_basis_other": 0.058724993893434,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 88,
@@ -1636,6 +1954,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1643,7 +1963,9 @@
       "abs_err_basis_dashcam": 3.041403166172276,
       "abs_err_basis_other": 3.0414031661722754,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 89,
@@ -1656,6 +1978,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1663,7 +1987,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 90,
@@ -1676,6 +2002,8 @@
       "pred_basis_other": 8.063167477590845,
       "pred_100_dashcam": 19.368325224091556,
       "pred_100_other": 80.63167477590845,
+      "pred_basis_dashcam_int": 2.0,
+      "pred_basis_other_int": 8.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1683,7 +2011,9 @@
       "abs_err_basis_dashcam": 4.063167477590844,
       "abs_err_basis_other": 4.063167477590845,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 91,
@@ -1696,6 +2026,8 @@
       "pred_basis_other": 1.9136651248096999,
       "pred_100_dashcam": 80.863348751903,
       "pred_100_other": 19.136651248097,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -1703,7 +2035,9 @@
       "abs_err_basis_dashcam": 5.0863348751903,
       "abs_err_basis_other": 5.0863348751903,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 92,
@@ -1721,6 +2055,8 @@
       "pred_basis_other": 7.058724993893434,
       "pred_100_dashcam": 29.412750061065655,
       "pred_100_other": 70.58724993893433,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -1728,7 +2064,9 @@
       "abs_err_basis_dashcam": 0.05872499389343444,
       "abs_err_basis_other": 0.058724993893434,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 94,
@@ -1741,6 +2079,8 @@
       "pred_basis_other": 3.9841789665918452,
       "pred_100_dashcam": 60.15821033408155,
       "pred_100_other": 39.841789665918455,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1748,7 +2088,9 @@
       "abs_err_basis_dashcam": 2.015821033408155,
       "abs_err_basis_other": 2.0158210334081548,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 95,
@@ -1761,6 +2103,8 @@
       "pred_basis_other": 2.956043190343027,
       "pred_100_dashcam": 70.43956809656973,
       "pred_100_other": 29.56043190343027,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1768,7 +2112,9 @@
       "abs_err_basis_dashcam": 0.04395680965697313,
       "abs_err_basis_other": 0.04395680965697313,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 96,
@@ -1781,6 +2127,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1788,7 +2136,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 97,
@@ -1801,6 +2151,8 @@
       "pred_basis_other": 7.060105250378229,
       "pred_100_dashcam": 29.398947496217712,
       "pred_100_other": 70.6010525037823,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -1808,7 +2160,9 @@
       "abs_err_basis_dashcam": 0.06010525037822889,
       "abs_err_basis_other": 0.060105250378229336,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 98,
@@ -1821,6 +2175,8 @@
       "pred_basis_other": 7.059240253712955,
       "pred_100_dashcam": 29.40759746287046,
       "pred_100_other": 70.59240253712954,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -1828,7 +2184,9 @@
       "abs_err_basis_dashcam": 0.05924025371295416,
       "abs_err_basis_other": 0.059240253712954605,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 99,
@@ -1841,6 +2199,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1848,7 +2208,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 100,
@@ -1861,6 +2223,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1868,7 +2232,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 101,
@@ -1881,6 +2247,8 @@
       "pred_basis_other": 2.955760987103545,
       "pred_100_dashcam": 70.44239012896455,
       "pred_100_other": 29.55760987103545,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -1888,7 +2256,9 @@
       "abs_err_basis_dashcam": 0.04423901289645471,
       "abs_err_basis_other": 0.044239012896455154,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 102,
@@ -1906,6 +2276,8 @@
       "pred_basis_other": 3.0711029512608703,
       "pred_100_dashcam": 69.2889704873913,
       "pred_100_other": 30.711029512608704,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1913,7 +2285,9 @@
       "abs_err_basis_dashcam": 2.92889704873913,
       "abs_err_basis_other": 2.9288970487391297,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 104,
@@ -1926,6 +2300,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -1933,7 +2309,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 105,
@@ -1951,6 +2329,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1958,7 +2338,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 107,
@@ -1971,6 +2353,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1978,7 +2362,9 @@
       "abs_err_basis_dashcam": 3.041403166172276,
       "abs_err_basis_other": 3.0414031661722754,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 108,
@@ -1991,6 +2377,8 @@
       "pred_basis_other": 6.064804773351974,
       "pred_100_dashcam": 39.351952266480254,
       "pred_100_other": 60.64804773351974,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -1998,7 +2386,9 @@
       "abs_err_basis_dashcam": 0.06480477335197454,
       "abs_err_basis_other": 0.0648047733519741,
       "pred_basis_dashcam_cal": 4.000000000000001,
-      "pred_basis_other_cal": 5.999999999999998
+      "pred_basis_other_cal": 5.999999999999998,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 109,
@@ -2011,6 +2401,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -2018,7 +2410,9 @@
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 110,
@@ -2031,6 +2425,8 @@
       "pred_basis_other": 4.0155404452851435,
       "pred_100_dashcam": 59.84459554714857,
       "pred_100_other": 40.155404452851435,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -2038,7 +2434,9 @@
       "abs_err_basis_dashcam": 0.015540445285142646,
       "abs_err_basis_other": 0.015540445285143534,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 111,
@@ -2051,6 +2449,8 @@
       "pred_basis_other": 6.064804773351974,
       "pred_100_dashcam": 39.351952266480254,
       "pred_100_other": 60.64804773351974,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -2058,7 +2458,9 @@
       "abs_err_basis_dashcam": 0.06480477335197454,
       "abs_err_basis_other": 0.0648047733519741,
       "pred_basis_dashcam_cal": 4.000000000000001,
-      "pred_basis_other_cal": 5.999999999999998
+      "pred_basis_other_cal": 5.999999999999998,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 112,
@@ -2071,6 +2473,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -2078,7 +2482,9 @@
       "abs_err_basis_dashcam": 0.0038918397123728354,
       "abs_err_basis_other": 0.0038918397123728354,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 113,
@@ -2091,6 +2497,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -2098,7 +2506,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 114,
@@ -2121,6 +2531,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -2128,7 +2540,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 117,
@@ -2141,6 +2555,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -2148,7 +2564,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 118,
@@ -2161,6 +2579,8 @@
       "pred_basis_other": 4.830456365627984,
       "pred_100_dashcam": 51.69543634372016,
       "pred_100_other": 48.30456365627984,
+      "pred_basis_dashcam_int": 5.0,
+      "pred_basis_other_int": 5.0,
       "gt_basis_dashcam": 5.0,
       "gt_basis_other": 5.0,
       "gt_100_dashcam": 50.0,
@@ -2168,7 +2588,9 @@
       "abs_err_basis_dashcam": 0.16954363437201625,
       "abs_err_basis_other": 0.16954363437201625,
       "pred_basis_dashcam_cal": 5.0,
-      "pred_basis_other_cal": 5.0
+      "pred_basis_other_cal": 5.0,
+      "pred_basis_dashcam_cal_int": 5.0,
+      "pred_basis_other_cal_int": 5.0
     },
     {
       "idx": 119,
@@ -2181,6 +2603,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -2188,7 +2612,9 @@
       "abs_err_basis_dashcam": 1.9961081602876272,
       "abs_err_basis_other": 1.9961081602876272,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 120,
@@ -2206,6 +2632,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2213,7 +2641,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 122,
@@ -2226,6 +2656,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2233,7 +2665,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 123,
@@ -2246,6 +2680,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2253,7 +2689,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 124,
@@ -2266,6 +2704,8 @@
       "pred_basis_other": 2.962252411415446,
       "pred_100_dashcam": 70.37747588584553,
       "pred_100_other": 29.62252411415446,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2273,7 +2713,9 @@
       "abs_err_basis_dashcam": 0.03774758858455307,
       "abs_err_basis_other": 0.03774758858455396,
       "pred_basis_dashcam_cal": 6.25,
-      "pred_basis_other_cal": 3.75
+      "pred_basis_other_cal": 3.75,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 125,
@@ -2286,6 +2728,8 @@
       "pred_basis_other": 6.028842803044062,
       "pred_100_dashcam": 39.71157196955937,
       "pred_100_other": 60.28842803044063,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -2293,7 +2737,9 @@
       "abs_err_basis_dashcam": 0.028842803044062393,
       "abs_err_basis_other": 0.028842803044062393,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 126,
@@ -2311,6 +2757,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -2318,7 +2766,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 128,
@@ -2331,6 +2781,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -2338,7 +2790,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 129,
@@ -2351,6 +2805,8 @@
       "pred_basis_other": 2.962252411415446,
       "pred_100_dashcam": 70.37747588584553,
       "pred_100_other": 29.62252411415446,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2358,7 +2814,9 @@
       "abs_err_basis_dashcam": 0.03774758858455307,
       "abs_err_basis_other": 0.03774758858455396,
       "pred_basis_dashcam_cal": 6.25,
-      "pred_basis_other_cal": 3.75
+      "pred_basis_other_cal": 3.75,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 130,
@@ -2371,6 +2829,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2378,7 +2838,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 131,
@@ -2391,6 +2853,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -2398,7 +2862,9 @@
       "abs_err_basis_dashcam": 2.0362651484439542,
       "abs_err_basis_other": 2.036265148443955,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 132,
@@ -2411,6 +2877,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -2418,7 +2886,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 133,
@@ -2431,6 +2901,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2438,7 +2910,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 134,
@@ -2451,6 +2925,8 @@
       "pred_basis_other": 7.069769510841435,
       "pred_100_dashcam": 29.30230489158565,
       "pred_100_other": 70.69769510841435,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -2458,7 +2934,9 @@
       "abs_err_basis_dashcam": 0.0697695108414349,
       "abs_err_basis_other": 0.0697695108414349,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 135,
@@ -2471,6 +2949,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2478,7 +2958,9 @@
       "abs_err_basis_dashcam": 0.041403166172275796,
       "abs_err_basis_other": 0.04140316617227535,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 136,
@@ -2491,6 +2973,8 @@
       "pred_basis_other": 1.9075228372774822,
       "pred_100_dashcam": 80.92477162722518,
       "pred_100_other": 19.075228372774824,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -2498,7 +2982,9 @@
       "abs_err_basis_dashcam": 0.09247716272251871,
       "abs_err_basis_other": 0.09247716272251782,
       "pred_basis_dashcam_cal": 8.000000000000002,
-      "pred_basis_other_cal": 1.9999999999999984
+      "pred_basis_other_cal": 1.9999999999999984,
+      "pred_basis_dashcam_cal_int": 8.0,
+      "pred_basis_other_cal_int": 2.0
     },
     {
       "idx": 137,
@@ -2511,6 +2997,8 @@
       "pred_basis_other": 3.995417851489851,
       "pred_100_dashcam": 60.04582148510149,
       "pred_100_other": 39.95417851489851,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -2518,7 +3006,9 @@
       "abs_err_basis_dashcam": 0.004582148510149153,
       "abs_err_basis_other": 0.004582148510149153,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 138,
@@ -2531,6 +3021,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -2538,7 +3030,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 139,
@@ -2551,6 +3045,8 @@
       "pred_basis_other": 1.9118964234129157,
       "pred_100_dashcam": 80.88103576587085,
       "pred_100_other": 19.118964234129155,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -2558,7 +3054,9 @@
       "abs_err_basis_dashcam": 0.08810357658708412,
       "abs_err_basis_other": 0.08810357658708434,
       "pred_basis_dashcam_cal": 8.000000000000002,
-      "pred_basis_other_cal": 1.9999999999999984
+      "pred_basis_other_cal": 1.9999999999999984,
+      "pred_basis_dashcam_cal_int": 8.0,
+      "pred_basis_other_cal_int": 2.0
     },
     {
       "idx": 140,
@@ -2571,6 +3069,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2578,7 +3078,9 @@
       "abs_err_basis_dashcam": 0.041403166172275796,
       "abs_err_basis_other": 0.04140316617227535,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 141,
@@ -2596,6 +3098,8 @@
       "pred_basis_other": 3.9902077448564617,
       "pred_100_dashcam": 60.09792255143538,
       "pred_100_other": 39.90207744856462,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -2603,7 +3107,9 @@
       "abs_err_basis_dashcam": 0.00979225514353832,
       "abs_err_basis_other": 0.00979225514353832,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 143,
@@ -2616,6 +3122,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2623,7 +3131,9 @@
       "abs_err_basis_dashcam": 0.041403166172275796,
       "abs_err_basis_other": 0.04140316617227535,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 144,
@@ -2636,6 +3146,8 @@
       "pred_basis_other": 1.9101144580640887,
       "pred_100_dashcam": 80.89885541935911,
       "pred_100_other": 19.101144580640888,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -2643,7 +3155,9 @@
       "abs_err_basis_dashcam": 0.08988554193591014,
       "abs_err_basis_other": 0.08988554193591125,
       "pred_basis_dashcam_cal": 8.000000000000002,
-      "pred_basis_other_cal": 1.9999999999999984
+      "pred_basis_other_cal": 1.9999999999999984,
+      "pred_basis_dashcam_cal_int": 8.0,
+      "pred_basis_other_cal_int": 2.0
     },
     {
       "idx": 145,
@@ -2661,6 +3175,8 @@
       "pred_basis_other": 4.003891839712373,
       "pred_100_dashcam": 59.96108160287627,
       "pred_100_other": 40.03891839712373,
+      "pred_basis_dashcam_int": 6.0,
+      "pred_basis_other_int": 4.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2668,7 +3184,9 @@
       "abs_err_basis_dashcam": 1.0038918397123728,
       "abs_err_basis_other": 1.0038918397123728,
       "pred_basis_dashcam_cal": 5.874999999999999,
-      "pred_basis_other_cal": 4.125000000000001
+      "pred_basis_other_cal": 4.125000000000001,
+      "pred_basis_dashcam_cal_int": 6.0,
+      "pred_basis_other_cal_int": 4.0
     },
     {
       "idx": 147,
@@ -2696,6 +3214,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2703,7 +3223,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 151,
@@ -2716,6 +3238,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2723,7 +3247,9 @@
       "abs_err_basis_dashcam": 0.041403166172275796,
       "abs_err_basis_other": 0.04140316617227535,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 152,
@@ -2736,6 +3262,8 @@
       "pred_basis_other": 2.9565204899008495,
       "pred_100_dashcam": 70.43479510099151,
       "pred_100_other": 29.565204899008496,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 7.0,
       "gt_basis_other": 3.0,
       "gt_100_dashcam": 70.0,
@@ -2743,7 +3271,9 @@
       "abs_err_basis_dashcam": 0.043479510099150964,
       "abs_err_basis_other": 0.04347951009915052,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 153,
@@ -2756,6 +3286,8 @@
       "pred_basis_other": 7.069769510841435,
       "pred_100_dashcam": 29.30230489158565,
       "pred_100_other": 70.69769510841435,
+      "pred_basis_dashcam_int": 3.0,
+      "pred_basis_other_int": 7.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -2763,7 +3295,9 @@
       "abs_err_basis_dashcam": 0.0697695108414349,
       "abs_err_basis_other": 0.0697695108414349,
       "pred_basis_dashcam_cal": 3.3571428571428568,
-      "pred_basis_other_cal": 6.642857142857144
+      "pred_basis_other_cal": 6.642857142857144,
+      "pred_basis_dashcam_cal_int": 3.0,
+      "pred_basis_other_cal_int": 7.0
     },
     {
       "idx": 154,
@@ -2776,6 +3310,8 @@
       "pred_basis_other": 2.9585968338277246,
       "pred_100_dashcam": 70.41403166172276,
       "pred_100_other": 29.585968338277247,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 3.0,
       "gt_basis_other": 7.0,
       "gt_100_dashcam": 30.0,
@@ -2783,7 +3319,9 @@
       "abs_err_basis_dashcam": 4.041403166172276,
       "abs_err_basis_other": 4.041403166172275,
       "pred_basis_dashcam_cal": 6.538461538461538,
-      "pred_basis_other_cal": 3.4615384615384617
+      "pred_basis_other_cal": 3.4615384615384617,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     },
     {
       "idx": 155,
@@ -2801,6 +3339,8 @@
       "pred_basis_other": 6.036265148443955,
       "pred_100_dashcam": 39.63734851556046,
       "pred_100_other": 60.36265148443955,
+      "pred_basis_dashcam_int": 4.0,
+      "pred_basis_other_int": 6.0,
       "gt_basis_dashcam": 4.0,
       "gt_basis_other": 6.0,
       "gt_100_dashcam": 40.0,
@@ -2808,7 +3348,9 @@
       "abs_err_basis_dashcam": 0.03626514844395423,
       "abs_err_basis_other": 0.03626514844395512,
       "pred_basis_dashcam_cal": 4.100000000000001,
-      "pred_basis_other_cal": 5.899999999999999
+      "pred_basis_other_cal": 5.899999999999999,
+      "pred_basis_dashcam_cal_int": 4.0,
+      "pred_basis_other_cal_int": 6.0
     },
     {
       "idx": 157,
@@ -2821,6 +3363,8 @@
       "pred_basis_other": 1.9075228372774822,
       "pred_100_dashcam": 80.92477162722518,
       "pred_100_other": 19.075228372774824,
+      "pred_basis_dashcam_int": 8.0,
+      "pred_basis_other_int": 2.0,
       "gt_basis_dashcam": 8.0,
       "gt_basis_other": 2.0,
       "gt_100_dashcam": 80.0,
@@ -2828,7 +3372,9 @@
       "abs_err_basis_dashcam": 0.09247716272251871,
       "abs_err_basis_other": 0.09247716272251782,
       "pred_basis_dashcam_cal": 8.000000000000002,
-      "pred_basis_other_cal": 1.9999999999999984
+      "pred_basis_other_cal": 1.9999999999999984,
+      "pred_basis_dashcam_cal_int": 8.0,
+      "pred_basis_other_cal_int": 2.0
     },
     {
       "idx": 158,
@@ -2841,6 +3387,8 @@
       "pred_basis_other": 2.955760987103545,
       "pred_100_dashcam": 70.44239012896455,
       "pred_100_other": 29.55760987103545,
+      "pred_basis_dashcam_int": 7.0,
+      "pred_basis_other_int": 3.0,
       "gt_basis_dashcam": 6.0,
       "gt_basis_other": 4.0,
       "gt_100_dashcam": 60.0,
@@ -2848,7 +3396,9 @@
       "abs_err_basis_dashcam": 1.0442390128964547,
       "abs_err_basis_other": 1.0442390128964552,
       "pred_basis_dashcam_cal": 6.621621621621621,
-      "pred_basis_other_cal": 3.3783783783783794
+      "pred_basis_other_cal": 3.3783783783783794,
+      "pred_basis_dashcam_cal_int": 7.0,
+      "pred_basis_other_cal_int": 3.0
     }
   ]
 }

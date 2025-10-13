@@ -95,6 +95,115 @@ other_vehicle_info = {
   28 : "Right Turn Right Lane"
 }
 
+# ==== Camera-shake peak detection (strict) ====
+SHAKE_MAX_CORNERS   = 800
+SHAKE_QUALITY       = 0.01
+SHAKE_MIN_DISTANCE  = 8
+SHAKE_BLOCK_SIZE    = 7
+SHAKE_MAD_K         = 3.2
+SHAKE_MIN_MAG_PX    = 1.8
+SHAKE_STRICT_RATIO  = 1.5  # 충분히 큰 로컬 피크만 허용
+def auto_window_sec(num_frames, fps, min_margin=0.15, max_cap=0.5, safety=1.2):
+    base = (num_frames - 1) / (2.0 * max(1.0, fps))
+    return float(min(max(base * safety, min_margin), max_cap))
+
+def _indices_around_center(center_t: float, fps: float, total: int,
+                           num_frames: int=16, window_sec: float=0.5):
+    center_f = int(round(center_t * fps))
+    half = int(round(window_sec * fps))
+    s = max(0, center_f - half)
+    e = min(total - 1, center_f + half)
+    if e <= s:
+        s = max(0, center_f - num_frames//2)
+        e = min(total - 1, s + num_frames - 1)
+    idxs = np.linspace(s, e, num_frames).round().astype(int)
+    idxs = np.clip(idxs, 0, total - 1)
+    if np.unique(idxs).size < num_frames:
+        span = e - s + 1
+        if span < num_frames:
+            idxs = np.linspace(0, total - 1, num_frames).round().astype(int)
+    return idxs
+
+def _estimate_motion_strict(prev_gray, gray):
+    pts = cv2.goodFeaturesToTrack(
+        prev_gray,
+        maxCorners=SHAKE_MAX_CORNERS,
+        qualityLevel=SHAKE_QUALITY,
+        minDistance=SHAKE_MIN_DISTANCE,
+        blockSize=SHAKE_BLOCK_SIZE,
+        useHarrisDetector=False
+    )
+    if pts is None or len(pts) < 8:
+        return 0.0, 0.0
+    nxt, st, _ = cv2.calcOpticalFlowPyrLK(prev_gray, gray, pts, None)
+    if nxt is None or st is None:
+        return 0.0, 0.0
+    good_prev = pts[st[:,0]==1]; good_next = nxt[st[:,0]==1]
+    if len(good_prev) < 6:
+        return 0.0, 0.0
+    M, _ = cv2.estimateAffinePartial2D(good_prev, good_next, method=cv2.RANSAC, ransacReprojThreshold=3.0)
+    if M is None:
+        flow = good_next - good_prev
+        dx = float(np.median(flow[:,0,0])); dy = float(np.median(flow[:,0,1]))
+        return dx, dy
+    return float(M[0,2]), float(M[1,2])
+
+def detect_camera_shake_center(video_path: str) -> Optional[float]:
+    cap = cv2.VideoCapture(video_path)
+    ok, prev = cap.read()
+    if not ok:
+        cap.release()
+        return None
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    prev_gray = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY)
+    mags, times = [], []
+    idx = 1
+    while True:
+        ok, frame = cap.read()
+        if not ok:
+            break
+        g = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        dx, dy = _estimate_motion_strict(prev_gray, g)
+        mag = float(np.hypot(dx, dy))
+        mags.append(mag)
+        times.append(float(idx / fps))
+        prev_gray = g
+        idx += 1
+    cap.release()
+    if not mags:
+        return None
+
+    mags = np.asarray(mags, dtype=np.float32)
+    med = float(np.median(mags))
+    mad = float(np.median(np.abs(mags - med)) + 1e-6)
+    thr = max(med + SHAKE_MAD_K * mad, SHAKE_MIN_MAG_PX)
+
+    peaks = []
+    for i in range(1, len(mags)-1):
+        if (mags[i] > thr and mags[i] >= mags[i-1] and mags[i] >= mags[i+1]):
+            peaks.append(i)
+
+    if peaks:
+        imax = peaks[int(np.argmax(mags[peaks]))]
+    else:
+        imax = int(np.argmax(mags))
+    return float(times[imax])
+
+def symmetric_indices_around(center_t: float, fps: float, total: int, num_frames: int = 16):
+    cf = int(round(center_t * fps))
+    before = num_frames // 2
+    after  = num_frames - before
+    s = cf - before
+    e = cf + after - 1
+    if s < 0:
+        e = min(total - 1, e - s); s = 0
+    if e > total - 1:
+        s = max(0, s - (e - (total - 1))); e = total - 1
+    idxs = np.linspace(s, e, num_frames).round().astype(int)
+    idxs = np.clip(idxs, 0, total - 1)
+    if idxs.size != num_frames:
+        idxs = np.pad(idxs, (0, num_frames - idxs.size), mode="edge")
+    return idxs
 
 
 def _dict_to_list_by_id(d: dict): return [d[k] for k in sorted(d.keys())]
@@ -107,24 +216,6 @@ LABELS = {
 # ================
 # (1) 유틸들
 # ================
-
-def snap_pair_to_integer_basis(v, total=10):
-    """
-    v: array-like [a, b] (합이 total 근처라고 가정)
-    반환: 합=total, 각 성분이 정수인 쌍 (대시캠 a를 반올림, 나머지는 보전)
-    """
-    v = np.asarray(v, dtype=float)
-    v = np.maximum(v, 0.0)
-    s = float(v.sum())
-    if s <= 0:
-        a = int(total // 2)
-        return np.array([float(a), float(total - a)], dtype=float)
-    v = v * (total / s)  # 합 total로 재정규화
-    a_int = int(np.floor(v[0] + 0.5))
-    a_int = max(0, min(total, a_int))
-    b_int = total - a_int
-    return np.array([float(a_int), float(b_int)], dtype=float)
-
 def normalize_pair_100(p):
     a, b = float(p[0]), float(p[1])
     if 0.0 <= a <= 1.0 and 0.0 <= b <= 1.0:
@@ -212,26 +303,45 @@ def save_plots(y: np.ndarray, yhat: np.ndarray, target_basis: float, out_prefix:
 # =========================
 # (2) 비디오 로딩 (분류기 입력)
 # =========================
-@torch.no_grad()
-def load_video_tensor(path, num_frames=16, size=224):
+def load_video_tensor(path, num_frames=16, size=224, use_shake=False):
     cap = cv2.VideoCapture(path)
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     if total <= 0:
         cap.release()
         raise RuntimeError(f"no frames: {path}")
-    idxs = np.linspace(0, total-1, num_frames).astype(int)
+
+    if use_shake:
+        t_center = detect_camera_shake_center(path)  # 아래 3번 참고
+        if t_center is not None:
+            win = auto_window_sec(num_frames, fps, min_margin=0.15, max_cap=0.5, safety=1.2)
+            idxs = _indices_around_center(t_center, fps, total, num_frames=num_frames, window_sec=win).astype(int)
+        else:
+            idxs = np.linspace(0, total-1, num_frames).astype(int)
+    else:
+        idxs = np.linspace(0, total-1, num_frames).astype(int)
+
     frames = []
     for idx in idxs:
         cap.set(cv2.CAP_PROP_POS_FRAMES, int(idx))
         ok, frame = cap.read()
-        if not ok: continue
+        if not ok: 
+            # 실패 시 마지막 프레임 복제
+            if len(frames):
+                frames.append(frames[-1].clone())
+            continue
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = cv2.resize(frame, (size,size))
         ten = torch.from_numpy(frame).permute(2,0,1).float()/255.0
         frames.append(ten)
     cap.release()
+
     if not frames:
         raise RuntimeError(f"no decoded frames: {path}")
+    # 길이 보정
+    while len(frames) < num_frames:
+        frames.append(frames[-1].clone())
+
     vid = torch.stack(frames, 0)  # (T,C,H,W)
     mean = torch.tensor([0.485,0.456,0.406]).view(1,3,1,1)
     std  = torch.tensor([0.229,0.224,0.225]).view(1,3,1,1)
@@ -364,8 +474,9 @@ def classify_video_and_make_sentence(vpath: str,
                                      device: str = "cuda",
                                      num_frames: int = 16,
                                      size: int = 224,
-                                     use_place: bool = False) -> Dict:
-    x = load_video_tensor(vpath, num_frames=num_frames, size=size).unsqueeze(0).to(device)  # (1,C,T,H,W)
+                                     use_place: bool = False,
+                                     use_shake: bool = False) -> Dict:
+    x = load_video_tensor(vpath, num_frames=num_frames, size=size, use_shake=use_shake).unsqueeze(0).to(device)
     ld, lp, lv = clf_model(x)
     pd_dv = ld.softmax(-1)[0].cpu().numpy()
     pd_pl = lp.softmax(-1)[0].cpu().numpy()
@@ -453,19 +564,16 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
 
         try:
             # 1) 분류 → 문장
+            use_shake = True
             cls_out = classify_video_and_make_sentence(
                 vpath, clf, device=device_classify, num_frames=num_frames, size=size,
-                use_place=use_place_in_sentence
+                use_place=use_place_in_sentence, use_shake=use_shake
             )
             sentence = cls_out["sentence"]
 
             # 2) 문장 → 회귀
             y = predict_fault_ratio(fr_model, fr_tok, sentence, device=device_fault)
             pred_basis = project_pair_to_basis(y, total=target_basis)
-
-            snap_total = int(round(target_basis))
-            pred_basis_snapped = snap_pair_to_integer_basis(pred_basis, total=snap_total)
-
         except Exception as e:
             results.append({"idx": i, "video_name": video_name, "error": f"pipeline_failed: {e}"})
             if verbose: print(f"[{i+1}/{len(data)}] {video_name} | ERROR: {e}", flush=True)
@@ -483,10 +591,7 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
             "pred_basis_other": float(pred_basis[1]),
             "pred_100_dashcam": float(pred_basis[0]*(100.0/target_basis)),
             "pred_100_other": float(pred_basis[1]*(100.0/target_basis)),
-            "pred_basis_dashcam_int": float(pred_basis_snapped[0]),
-            "pred_basis_other_int":   float(pred_basis_snapped[1]),
         }
-
         if gt_basis is not None:
             out_item["gt_basis_dashcam"] = float(gt_basis[0])
             out_item["gt_basis_other"]   = float(gt_basis[1])
@@ -500,7 +605,6 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
 
         if verbose and (i==0 or (i+1)%print_every==0 or i+1==len(data)):
             msg = f"[{i+1}/{len(data)}] {video_name} | pred_basis=[{out_item['pred_basis_dashcam']:.2f}, {out_item['pred_basis_other']:.2f}]"
-            msg = f"[{i+1}/{len(data)}] {video_name} | pred_basis=[{out_item['pred_basis_dashcam_int']:.2f}, {out_item['pred_basis_other_int']:.2f}]"
             if gt_basis is not None:
                 msg += f" | gt_basis=[{gt_basis[0]:.2f}, {gt_basis[1]:.2f}]"
             msg += "\n" + f"📝 {sentence}"
@@ -509,27 +613,25 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
         if (i+1) % 20 == 0:
             wandb.log({"eval_progress_samples": i+1})
 
-    # =========================
     # 메트릭/저장
-    # =========================
     metrics = {}
     pred_rows = [r for r in results if "pred_basis_dashcam" in r]
     if len(pred_rows) and len(labels_basis):
         yhat = np.array([[r["pred_basis_dashcam"], r["pred_basis_other"]] for r in pred_rows], dtype=float)
         y    = np.array(labels_basis, dtype=float)
 
-        # 1) 보정 전 메트릭
-        metrics_pre = compute_metrics(y, yhat)
-        metrics_pre["target_basis"] = target_basis
+        # 보정 전
+        metrics_pre = compute_metrics(y, yhat); metrics_pre["target_basis"] = target_basis
 
-        # 2) 등단조 보정
+        # 비율 등화(등단조)
         from sklearn.isotonic import IsotonicRegression
-        p_hat  = ratio_from_pairs(yhat)
-        p_true = ratio_from_pairs(y)
+        p_hat = ratio_from_pairs(yhat)
+        p_true= ratio_from_pairs(y)
         try:
             iso = IsotonicRegression(y_min=0.0, y_max=1.0, increasing=True).fit(p_hat, p_true)
             p_cal = iso.transform(p_hat)
         except Exception:
+            # bin-wise fallback
             bins = np.linspace(0,1,11)
             idx  = np.clip(np.digitize(p_hat, bins)-1, 0, 9)
             bin_mean = np.array([p_true[idx==b].mean() if np.any(idx==b) else (bins[b]+bins[b+1])/2 for b in range(10)])
@@ -538,39 +640,14 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
         yhat_cal = pairs_from_ratio(p_cal, total=target_basis)
         yhat_cal = np.vstack([project_pair_to_basis(v, total=target_basis) for v in yhat_cal])
 
-        # 3) 정수 스냅(반올/반내림) – 합이 snap_total(기본 target_basis 반올림)이 되도록
-        snap_total = int(round(target_basis))
-        yhat_int     = np.vstack([snap_pair_to_integer_basis(v, total=snap_total) for v in yhat])
-        yhat_cal_int = np.vstack([snap_pair_to_integer_basis(v, total=snap_total) for v in yhat_cal])
-
-        # 4) 정수 스냅 메트릭
-        m_int     = compute_metrics(y, yhat_int)
-        m_int_cal = compute_metrics(y, yhat_cal_int)
-
-        # 5) 보정 후 메트릭 + 결과 합치기
-        for k, r in enumerate(pred_rows):
-            r["pred_basis_dashcam_cal"] = float(yhat_cal[k, 0])
-            r["pred_basis_other_cal"]   = float(yhat_cal[k, 1])
-            # (원하면 정수 스냅 결과도 저장)
-            r["pred_basis_dashcam_int"] = float(yhat_int[k, 0])
-            r["pred_basis_other_int"]   = float(yhat_int[k, 1])
-            r["pred_basis_dashcam_cal_int"] = float(yhat_cal_int[k, 0])
-            r["pred_basis_other_cal_int"]   = float(yhat_cal_int[k, 1])
+        for k,r in enumerate(pred_rows):
+            r["pred_basis_dashcam_cal"] = float(yhat_cal[k,0])
+            r["pred_basis_other_cal"]   = float(yhat_cal[k,1])
 
         metrics_cal = compute_metrics(y, yhat_cal)
-        metrics = {
-            **metrics_pre,
-            **{f"cal/{k}": v for k, v in metrics_cal.items()},
-            # 정수 스냅 요약(필요한 것만 넣음)
-            "int/MAE": m_int["MAE"],
-            "int/R2":  m_int["R2"],
-            "int/RMASE": m_int["RMSE"],
-            "int_cal/MAE": m_int_cal["MAE"],
-            "int_cal/R2":  m_int_cal["R2"],
-            "int_cal/RMSE": m_int_cal["RMSE"],
-        }
+        metrics = {**metrics_pre, **{f"cal/{k}": v for k,v in metrics_cal.items()}}
 
-        # 6) 플롯 + 저장
+        # 플롯 + 저장
         out_prefix = os.path.splitext(out_json_path)[0]
         plots_pre = save_plots(y, yhat, target_basis, out_prefix+"_precal")
         plots_cal = save_plots(y, yhat_cal, target_basis, out_prefix+"_cal")
@@ -581,30 +658,15 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
         with open(out_json_path, "w", encoding="utf-8") as f:
             json.dump({"metrics": metrics, "results": results}, f, ensure_ascii=False, indent=2)
 
-        # 7) W&B 로그 (조건부로 안전하게)
-        log_payload = {
-            "eval/MAE": metrics.get("MAE"),
-            "eval/RMSE": metrics.get("RMSE"),
-            "eval/R2": metrics.get("R2"),
-            "eval/MAE_dashcam": metrics.get("MAE_dashcam"),
-            "eval/MAE_other": metrics.get("MAE_other"),
-            "eval_cal/MAE": metrics.get("cal/MAE"),
-            "eval_cal/RMSE": metrics.get("cal/RMSE"),
-            "eval_cal/R2": metrics.get("cal/R2"),
-            "eval_cal/MAE_dashcam": metrics.get("cal/MAE_dashcam"),
-            "eval_cal/MAE_other": metrics.get("cal/MAE_other"),
-            "eval_int/MAE": metrics.get("int/MAE"),
-            "eval_int/R2": metrics.get("int/R2"),
-            "eval_int_cal/MAE": metrics.get("int_cal/MAE"),
-            "eval_int_cal/R2": metrics.get("int_cal/R2"),
-        }
-        log_payload = {k: v for k, v in log_payload.items() if v is not None}
-        if log_payload:
-            wandb.log(log_payload)
-
-        for k, pth in plots.items():
-            if os.path.exists(pth):
-                wandb.log({f"plots/{k}": wandb.Image(pth)})
+        # W&B
+        wandb.log({
+            "eval/MAE": metrics["MAE"], "eval/RMSE": metrics["RMSE"], "eval/R2": metrics["R2"],
+            "eval/MAE_dashcam": metrics["MAE_dashcam"], "eval/MAE_other": metrics["MAE_other"],
+            "eval_cal/MAE": metrics["cal/MAE"], "eval_cal/RMSE": metrics["cal/RMSE"], "eval_cal/R2": metrics["cal/R2"],
+            "eval_cal/MAE_dashcam": metrics["cal/MAE_dashcam"], "eval_cal/MAE_other": metrics["cal/MAE_other"],
+        })
+        for k,pth in plots.items():
+            if os.path.exists(pth): wandb.log({f"plots/{k}": wandb.Image(pth)})
 
         try:
             table = wandb.Table(dataframe=pd.DataFrame(results))
@@ -618,7 +680,6 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
         pd.DataFrame(results).to_csv(out_csv_path, index=False, encoding="utf-8")
         with open(out_json_path, "w", encoding="utf-8") as f:
             json.dump({"metrics": {}, "results": results}, f, ensure_ascii=False, indent=2)
-
 
     print("=== CLS→TEXT→RATIO Evaluation Summary ===")
     print(json.dumps(metrics, indent=2, ensure_ascii=False))
@@ -636,13 +697,11 @@ def parse_args():
     p.add_argument("--video_root", type=str,
                    default=os.environ.get("VIDEO_ROOT", "/app/data/raw/videos/validation_reencoded"))
     p.add_argument("--classifier_ckpt", type=str,
-                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep13_r3d18.pth"))
-    # p.add_argument("--classifier_ckpt", type=str,
-    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep11_r3d18_mlp.pth"))
+                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep9_r3d18_shake16_change_setting.pth"))
     p.add_argument("--fault_ckpt", type=str,
                    default=os.environ.get("FAULT_CKPT", "/app/text-train/fault_ratio_bert.pt"))
     p.add_argument("--out_json", type=str,
-                   default=os.environ.get("OUT_JSON", "/app/text-train/result_0924/cls2ratio_eval.json"))
+                   default=os.environ.get("OUT_JSON", "/app/text-train/result_1010_shake/cls2ratio_eval.json"))
     p.add_argument("--backbone", type=str, default=os.environ.get("BACKBONE", "r3d18"),
                    choices=["r3d18","timesformer","videomae"])
     p.add_argument("--classifier_pretrained", action="store_true",

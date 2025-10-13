@@ -564,7 +564,7 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
             # 정수 스냅 요약(필요한 것만 넣음)
             "int/MAE": m_int["MAE"],
             "int/R2":  m_int["R2"],
-            "int/RMASE": m_int["RMSE"],
+            "int/RMSE": m_int["RMSE"],
             "int_cal/MAE": m_int_cal["MAE"],
             "int_cal/R2":  m_int_cal["R2"],
             "int_cal/RMSE": m_int_cal["RMSE"],
@@ -636,13 +636,15 @@ def parse_args():
     p.add_argument("--video_root", type=str,
                    default=os.environ.get("VIDEO_ROOT", "/app/data/raw/videos/validation_reencoded"))
     p.add_argument("--classifier_ckpt", type=str,
-                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep13_r3d18.pth"))
+                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep20_r3d18_lstm.pth"))
+    # p.add_argument("--classifier_ckpt", type=str,
+    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep13_r3d18.pth"))
     # p.add_argument("--classifier_ckpt", type=str,
     #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep11_r3d18_mlp.pth"))
     p.add_argument("--fault_ckpt", type=str,
                    default=os.environ.get("FAULT_CKPT", "/app/text-train/fault_ratio_bert.pt"))
     p.add_argument("--out_json", type=str,
-                   default=os.environ.get("OUT_JSON", "/app/text-train/result_0924/cls2ratio_eval.json"))
+                   default=os.environ.get("OUT_JSON", "/app/text-train/result_lstm/cls2ratio_eval.json"))
     p.add_argument("--backbone", type=str, default=os.environ.get("BACKBONE", "r3d18"),
                    choices=["r3d18","timesformer","videomae"])
     p.add_argument("--classifier_pretrained", action="store_true",

@@ -1044,3 +1044,1068 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# 모션 기반 ROI 박스
+# def _compute_motion_roi_boxes(frames_rgb, thr=25, min_area=0.005, expand=0.15):
+#     """
+#     frames_rgb: List[np.ndarray(H,W,3)] 0..255
+#     return: List[(x1,y1,x2,y2) or None] per frame
+#     """
+#     import cv2, numpy as np
+#     boxes = []
+#     H, W = frames_rgb[0].shape[:2]
+#     min_px = int(min_area * H * W)
+#     prev = cv2.cvtColor(frames_rgb[0], cv2.COLOR_RGB2GRAY)
+
+#     for t in range(1, len(frames_rgb)):
+#         g = cv2.cvtColor(frames_rgb[t], cv2.COLOR_RGB2GRAY)
+#         diff = cv2.absdiff(g, prev)
+#         _, m = cv2.threshold(diff, thr, 255, cv2.THRESH_BINARY)
+#         m = cv2.medianBlur(m, 5)
+#         cnts, _ = cv2.findContours(m, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+#         if cnts:
+#             c = max(cnts, key=cv2.contourArea)
+#             if cv2.contourArea(c) >= min_px:
+#                 x,y,w,h = cv2.boundingRect(c)
+#                 cx, cy = x+w/2, y+h/2
+#                 w = int(w*(1+expand)); h = int(h*(1+expand))
+#                 x1 = max(0, int(cx - w/2)); y1 = max(0, int(cy - h/2))
+#                 x2 = min(W-1, x1 + w); y2 = min(H-1, y1 + h)
+#                 boxes.append((x1,y1,x2,y2))
+#                 prev = g
+#                 continue
+#         boxes.append(None)
+#         prev = g
+
+#     boxes = [boxes[0] if boxes and boxes[0] is not None else None] + boxes
+#     return boxes
+
+# def _crop_roi_video(frames_rgb, boxes, out_size=224):
+#     """
+#     frames_rgb: List[np.ndarray(H,W,3)]
+#     boxes: List[xyxy] or None
+#     return torch.Tensor (T,C,H,W) normalized
+#     """
+#     import cv2, numpy as np, torch
+#     H, W = frames_rgb[0].shape[:2]
+
+#     def center_box():
+#         s = min(H, W)
+#         x1 = (W - s)//2; y1 = (H - s)//2
+#         return (x1,y1,x1+s,y1+s)
+
+#     outs = []
+#     for i, fr in enumerate(frames_rgb):
+#         b = boxes[i] or center_box()
+#         x1,y1,x2,y2 = b
+#         crop = fr[y1:y2, x1:x2]
+#         crop = cv2.resize(crop, (out_size, out_size))
+#         ten = torch.from_numpy(crop).permute(2,0,1).float()/255.0
+#         outs.append(ten)
+#     vid = torch.stack(outs, 0)  # (T,C,H,W)
+#     vid = VF.normalize(vid, mean=[0.485,0.456,0.406], std=[0.229,0.224,0.225])
+#     return vid
+
+# def _r3d18_seq_features(backbone, x, stage=4):
+#     """
+#     backbone: torchvision.models.video.r3d_18 인스턴스
+#     x: (B, C, T, H, W)
+#     stage: 2|3|4 중 선택. 높을수록 더 추상적이고 T′가 더 작아질 수 있음.
+#     반환: (B, T′, C_out)  # 공간 평균 후 시간 시퀀스
+#     """
+#     # stem
+#     x = backbone.stem(x)          # (B, 64, T, H/2, W/2)  (conv stride=(1,2,2))
+#     x = backbone.layer1(x)        # (B, 64, T, ...)
+#     x = backbone.layer2(x)        # (B, 128, T'?, ...)
+#     if stage == 2:
+#         pass
+#     else:
+#         x = backbone.layer3(x)    # (B, 256, T'', ...)
+#         if stage == 3:
+#             pass
+#         else:
+#             x = backbone.layer4(x)  # (B, 512, T''', ...)
+
+#     # 공간 평균으로 (B, C, T′)
+#     x = x.mean(dim=[3,4])         # GAP over H,W  → (B, C, T′)
+#     x = x.permute(0, 2, 1)        # (B, T′, C)
+#     return x
+
+
+# def _topk_acc(y_true, logits, k=3):
+#     # y_true: List[int], logits: torch.Tensor [N, C]
+#     # top_k_accuracy_score는 numpy array 필요
+#     import numpy as np
+#     probs = logits.softmax(dim=-1).detach().cpu().numpy()
+#     y = np.array(y_true)
+#     try:
+#         return float(top_k_accuracy_score(y, probs, k=k, labels=list(range(probs.shape[1]))))
+#     except Exception:
+#         return 0.0
+
+
+# def plot_confmat(y_true, y_pred, labels, title, out_path, wandb_log_key=None):
+#     from sklearn.metrics import ConfusionMatrixDisplay
+#     import numpy as np
+#     import matplotlib.pyplot as plt
+#     import os
+
+#     # 절대경로 + 디렉토리 보장
+#     out_path = os.path.abspath(out_path)
+#     out_dir = os.path.dirname(out_path) or "."
+#     os.makedirs(out_dir, exist_ok=True)
+
+#     cm = confusion_matrix(y_true, y_pred, labels=list(range(len(labels))))
+#     fig, ax = plt.subplots(figsize=(8,8))
+#     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[str(i) for i in range(len(labels))])
+#     disp.plot(include_values=False, cmap="Blues", ax=ax, colorbar=True)
+#     ax.set_title(title)
+#     plt.tight_layout()
+#     plt.savefig(out_path, dpi=180)
+#     plt.close(fig)
+#     print(f"Saved confusion matrix: {out_path}")
+
+#     # 저장 파일이 있을 때만 wandb.log
+#     if wandb_log_key is not None and os.path.exists(out_path):
+#         try:
+#             import wandb
+#             wandb.log({wandb_log_key: wandb.Image(out_path)})
+#         except Exception as e:
+#             print(f"[WARN] wandb image log failed: {e}")
+
+#     return out_path
+
+
+# # ===== (A) 라벨 사전: 네가 준 dict 그대로 붙여넣기 =====
+# # 2nd / 3rd / 4th (생략 없이 그대로 사용)
+
+# def _dict_to_list_by_id(d: dict): return [d[k] for k in sorted(d.keys())]
+# # LABELS = {
+# #     "dashcam_vehicle_info": _dict_to_list_by_id(dashcam_vehicle_info),  # DV
+# #     "accident_place_feature": _dict_to_list_by_id(real_categories_ids_2nd),# Place
+# #     "other_vehicle_info": _dict_to_list_by_id(other_vehicle_info),    # OV
+# # }
+# # L2I = {
+# #     "dashcam_vehicle_info": {s:i for i,s in enumerate(LABELS["dashcam_vehicle_info"])},
+# #     "accident_place_feature": {s:i for i,s in enumerate(LABELS["accident_place_feature"])},
+# #     "other_vehicle_info": {s:i for i,s in enumerate(LABELS["other_vehicle_info"])},
+# # }
+# # NCLS = {
+# #     "dashcam_vehicle_info": len(LABELS["dashcam_vehicle_info"]),
+# #     "accident_place_feature": len(LABELS["accident_place_feature"]),
+# #     "other_vehicle_info": len(LABELS["other_vehicle_info"]),
+# # }
+# LABELS = {
+#     "dashcam_vehicle_info": _dict_to_list_by_id(dashcam_vehicle_info),  # DV
+#     "other_vehicle_info": _dict_to_list_by_id(other_vehicle_info),    # OV
+# }
+# L2I = {
+#     "dashcam_vehicle_info": {s:i for i,s in enumerate(LABELS["dashcam_vehicle_info"])},
+#     "other_vehicle_info": {s:i for i,s in enumerate(LABELS["other_vehicle_info"])},
+# }
+# NCLS = {
+#     "dashcam_vehicle_info": len(LABELS["dashcam_vehicle_info"]),
+#     "other_vehicle_info": len(LABELS["other_vehicle_info"]),
+# }
+
+# # ===== (B) 데이터셋: video.mp4 + video.json (같은 파일명) =====
+# def _read_table_any(path: str) -> list[dict]:
+#     """
+#     1) CSV (자동 구분자 sniff, engine='python')
+#     2) JSON (list/dict 또는 {"data": [...]})
+#     3) JSONL
+#     순서로 시도해서 rows(list[dict])를 반환
+#     """
+#     p = Path(path)
+#     if not p.exists():
+#         raise FileNotFoundError(path)
+
+#     # 1) CSV 우선 (구분자 자동 추정)
+#     try:
+#         df = pd.read_csv(p, engine="python", sep=None)
+#         return df.to_dict("records")
+#     except Exception:
+#         pass
+
+#     # 2) JSON 전체 로드
+#     try:
+#         txt = p.read_text(encoding="utf-8")
+#         data = json.loads(txt)
+#         if isinstance(data, dict) and "data" in data:
+#             data = data["data"]
+#         if isinstance(data, dict):
+#             data = [data]
+#         if isinstance(data, list):
+#             return data
+#     except Exception:
+#         pass
+
+#     # 3) JSONL 라인별 파싱
+#     rows = []
+#     with p.open("r", encoding="utf-8") as f:
+#         for line in f:
+#             line = line.strip()
+#             if line:
+#                 rows.append(json.loads(line))
+#     return rows
+
+
+# def _resolve_by_stem(stem: str, root: str, exts=(".mp4",".mov",".avi")) -> str:
+#     """video_name(확장자 없는 스템) → 실제 파일 경로 탐색"""
+#     # 1) root 바로 아래
+#     for ext in exts:
+#         cand = os.path.join(root, stem + ext)
+#         if os.path.exists(cand):
+#             return cand
+#     # 2) 재귀 탐색
+#     for ext in exts:
+#         hits = glob(os.path.join(root, "**", stem + ext), recursive=True)
+#         if hits:
+#             return hits[0]
+#     raise FileNotFoundError(f"Video not found for stem={stem} under {root}")
+
+
+# def _maybe_to_idx(val, mapping: Dict[str,int], ncls: int):
+#     if isinstance(val, (int, np.integer)): 
+#         assert 0 <= int(val) < ncls, f"label id out of range: {val}"
+#         return int(val)
+#     val = str(val).strip()
+#     if val in mapping: return mapping[val]
+#     raise KeyError(f"Unknown label text: {val}")
+
+# def load_video_tensor(path, num_frames=16, size=224, return_frames=False):
+#     import torchvision.transforms.functional as VF
+#     import torch, cv2, numpy as np
+
+#     cap = cv2.VideoCapture(path)
+#     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+#     idxs = np.linspace(0, total-1, num_frames).astype(int)
+
+#     frames = []
+#     frames_rgb = []
+#     for idx in idxs:
+#         cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
+#         ok, frame = cap.read()
+#         if not ok: continue
+#         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#         frames_rgb.append(frame.copy())
+#         frame = cv2.resize(frame, (size, size))
+#         ten = torch.from_numpy(frame).permute(2,0,1).float()/255.0  # (C,H,W)
+#         frames.append(ten)
+#     cap.release()
+
+#     if not frames:
+#         raise RuntimeError(f"no frames in {path}")
+
+#     vid = torch.stack(frames, 0)  # (T,C,H,W)
+#     vid = VF.normalize(vid, mean=[0.485,0.456,0.406], std=[0.229,0.224,0.225])
+
+#     if return_frames:
+#         return vid, frames_rgb
+#     return vid
+
+# # class VideoJsonDataset(Dataset):
+# #     """
+# #     루트 아래의 모든 *.mp4/*.mov/*.avi 를 수집.
+# #     각 비디오와 같은 stem의 JSON 파일에서 라벨을 읽음.
+# #     JSON 예:
+# #     {
+# #       "dashcam_vehicle_info": 18,  # 또는 문자열 라벨
+# #       "accident_place_feature": 10,
+# #       "other_vehicle_info": 0
+# #     }
+# #     """
+# #     def __init__(self, root: str, exts=(".mp4",".mov",".avi"), num_frames=16, size=224):
+# #         self.videos = []
+# #         for ext in exts:
+# #             self.videos += sorted(glob(os.path.join(root, f"**/*{ext}"), recursive=True))
+# #         self.num_frames = num_frames; self.size = size
+
+# #     def __len__(self): return len(self.videos)
+
+# #     def __getitem__(self, i):
+# #         vpath = self.videos[i]
+# #         stem = os.path.splitext(vpath)[0]
+# #         jpath = stem + ".json"
+# #         if not os.path.exists(jpath):
+# #             raise FileNotFoundError(f"Label JSON not found for: {vpath}")
+# #         meta = json.load(open(jpath, "r", encoding="utf-8"))
+
+# #         x = load_video_tensor(vpath, self.num_frames, self.size)   # [C,T,H,W]
+# #         dv = _maybe_to_idx(meta["dashcam_vehicle_info"], L2I["dashcam_vehicle_info"], NCLS["dashcam_vehicle_info"])
+# #         pl = _maybe_to_idx(meta["accident_place_feature"], L2I["accident_place_feature"], NCLS["accident_place_feature"])
+# #         ov = _maybe_to_idx(meta["other_vehicle_info"], L2I["other_vehicle_info"], NCLS["other_vehicle_info"])
+# #         return x, (dv, pl, ov)
+# class SingleCsvDataset(Dataset):
+#     """
+#     하나의 표 파일(확장자 무관: CSV/JSON/JSONL)에서 비디오 경로와 라벨을 읽어오는 데이터셋.
+#     지원 컬럼:
+#       - (권장) video_name: 확장자 없는 스템 → root에서 파일 탐색
+#       - (대안) video_path: 상대/절대 경로 → root와 join 또는 그대로 사용
+#     라벨 컬럼:
+#       dashcam_vehicle_info, accident_place_feature, other_vehicle_info (문자/정수 모두 OK)
+#     """
+#     def __init__(self, table_path: str, video_root: str, num_frames=16, size=224):
+#         self.rows = _read_table_any(table_path)
+#         if not self.rows:
+#             raise RuntimeError(f"No rows loaded from {table_path}")
+
+#         self.video_root = video_root
+#         self.num_frames = num_frames
+#         self.size = size
+        
+#         self.first_col = list(self.rows[0].keys())[0]
+
+#         # 라벨 컬럼 확인
+#         # need = {"dashcam_vehicle_info","accident_place_feature","other_vehicle_info"}
+#         need = {"dashcam_vehicle_info","other_vehicle_info"}
+#         missing = need - set(self.rows[0].keys())
+#         if missing:
+#             raise KeyError(f"Missing {missing} in {table_path}")
+
+#     def __len__(self):
+#         return len(self.rows)
+# # ---- Video file detection helpers ----
+#     def _resolve_video(self, row: dict) -> str:
+#         # 무조건 첫 번째 컬럼 값 사용
+#         VIDEO_EXTS = (".mp4", ".mov", ".avi", ".mkv", ".webm")
+#         val = str(row[self.first_col]).strip()
+#         # 확장자 있으면 그대로, 없으면 스템으로 탐색
+#         if any(val.lower().endswith(ext) for ext in VIDEO_EXTS):
+#             return val if os.path.isabs(val) else os.path.join(self.video_root, val)
+#         stem = os.path.splitext(val)[0]
+#         return _resolve_by_stem(stem, self.video_root)
+
+#     # def __getitem__(self, i):
+#     #     r = self.rows[i]
+#     #     try:
+#     #         vpath = self._resolve_video(r)
+#     #         vid = load_video_tensor(vpath, self.num_frames, self.size)  # (T,C,H,W)
+#     #         vid = vid.permute(1,0,2,3)  # (C,T,H,W)
+#     #     except FileNotFoundError:
+#     #         # 못 찾으면 None 반환
+#     #         return None
+
+#     #     dv = _maybe_to_idx(r["dashcam_vehicle_info"],   L2I["dashcam_vehicle_info"],   NCLS["dashcam_vehicle_info"])
+#     #     pl = _maybe_to_idx(r["accident_place_feature"], L2I["accident_place_feature"], NCLS["accident_place_feature"])
+#     #     ov = _maybe_to_idx(r["other_vehicle_info"],     L2I["other_vehicle_info"],     NCLS["other_vehicle_info"])
+#     #     return vid, (dv, pl, ov)
+#     def __getitem__(self, i):
+#         r = self.rows[i]
+#         try:
+#             vpath = self._resolve_video(r)
+#             # Global + 원본프레임
+#             vid_g, frames_rgb = load_video_tensor(vpath, self.num_frames, self.size, return_frames=True)  # (T,C,H,W), list
+#             # ROI 생성
+#             boxes = _compute_motion_roi_boxes(frames_rgb, thr=25, min_area=0.005, expand=0.15)
+#             vid_roi = _crop_roi_video(frames_rgb, boxes, out_size=self.size)  # (T,C,H,W)
+
+#             # (C,T,H,W)로 변환 (r3d18 입력 형식)
+#             vid_g  = vid_g.permute(1,0,2,3)
+#             vid_roi= vid_roi.permute(1,0,2,3)
+#         except FileNotFoundError:
+#             return None
+
+#         dv = _maybe_to_idx(r["dashcam_vehicle_info"],   L2I["dashcam_vehicle_info"],   NCLS["dashcam_vehicle_info"])
+#         ov = _maybe_to_idx(r["other_vehicle_info"],     L2I["other_vehicle_info"],     NCLS["other_vehicle_info"])
+#         # ( (global, roi), (yd, yv) )
+#         return (vid_g, vid_roi), (dv, ov)
+
+# def collate_skip_none(batch):
+#     batch = [b for b in batch if b is not None]
+#     if not batch:
+#         return None
+#     return torch.utils.data.dataloader.default_collate(batch)   
+# # ===== (C) 모델 =====
+# class TripleHeadVideoClassifier(nn.Module):
+#     def __init__(self, n_dv, n_ov, backbone="r3d18",
+#                  temporal_head="none",
+#                  lstm_hidden=512, lstm_layers=1, lstm_bidirectional=False,
+#                  size=224, r3d_stage=4):
+#         super().__init__()
+#         self.backbone_name = backbone
+#         self.temporal_head = temporal_head
+#         self.size = size
+#         self.r3d_stage = r3d_stage
+
+#         if backbone == "r3d18":
+#             self.backbone = r3d_18(weights=R3D_18_Weights.KINETICS400_V1)
+#             feat = self.backbone.fc.in_features  # 512
+#             self.backbone.fc = nn.Identity()     # fc는 안씀
+#             self.patch_size = None
+
+#         elif backbone == "timesformer":
+#             self.backbone = TimesformerModel.from_pretrained(
+#                 "facebook/timesformer-base-finetuned-k400", use_safetensors=True
+#             )
+#             feat = self.backbone.config.hidden_size
+#             self.patch_size = getattr(self.backbone.config, "patch_size", 16)
+
+#         elif backbone == "videomae":
+#             self.backbone = VideoMAEModel.from_pretrained(
+#                 "MCG-NJU/videomae-base-finetuned-kinetics", use_safetensors=True
+#             )
+#             feat = self.backbone.config.hidden_size
+#             self.patch_size = getattr(self.backbone.config, "patch_size", 16)
+#         else:
+#             raise ValueError(f"Unknown backbone: {backbone}")
+
+#         # 어떤 백본이든 lstm 사용 여부 결정
+#         self.use_lstm = (temporal_head == "lstm")
+
+#         # LSTM in/out 차원
+#         # - r3d18 시퀀스의 피처 차원 = feat (stage4는 512, stage3=256, stage2=128)
+#         #   stage에 따라 동적으로 정해주자.
+#         if backbone == "r3d18":
+#             stage_dim = {2: 128, 3: 256, 4: 512}[r3d_stage]
+#             lstm_input_dim = stage_dim
+#         else:
+#             lstm_input_dim = feat
+
+#         if self.use_lstm:
+#             self.lstm = nn.LSTM(
+#                 input_size=lstm_input_dim,
+#                 hidden_size=lstm_hidden,
+#                 num_layers=lstm_layers,
+#                 batch_first=True,
+#                 bidirectional=lstm_bidirectional,
+#                 dropout=0.1 if lstm_layers > 1 else 0.0,
+#             )
+#             out_dim = lstm_hidden * (2 if lstm_bidirectional else 1)
+#         else:
+#             # no LSTM → 최종 단일 벡터 차원
+#             out_dim = feat if backbone != "r3d18" else feat  # r3d18 fc.in_features(512)
+
+#         self.shared_proj = nn.Sequential(
+#             nn.LayerNorm(out_dim),
+#             nn.Linear(out_dim, out_dim),
+#             nn.ReLU(),
+#             nn.Dropout(0.3),
+#         )
+#         self.dv = nn.Linear(out_dim, n_dv)
+#         self.ov = nn.Linear(out_dim, n_ov)
+
+#     @staticmethod
+#     def _tokens_to_frame_means(last_hidden_state: torch.Tensor, T: int, size: int, patch_size: int):
+#         """
+#         last_hidden_state: (B, 1 + T*P, D)  # CLS + (프레임*패치수)
+#         반환: (B, T, D)  # 프레임별 평균 토큰 임베딩
+#         """
+#         B, N, D = last_hidden_state.shape
+#         cls = last_hidden_state[:, :1, :]                        # (B,1,D) (안씀)
+#         tokens = last_hidden_state[:, 1:, :]                     # (B, T*P, D)
+#         patches_per_frame = (size // patch_size) * (size // patch_size)  # P
+#         assert tokens.size(1) == T * patches_per_frame, \
+#             f"token 수 불일치: got {tokens.size(1)}, expected {T*patches_per_frame}"
+#         seq = tokens.view(B, T, patches_per_frame, D).mean(dim=2)  # (B,T,D)
+#         return seq
+
+
+#     def forward(self, x):
+#         """
+#         x: (B, C, T, H, W)
+#         """
+#         if self.backbone_name == "r3d18":
+#             if self.use_lstm:
+#                 # (B, T′, C_stage) 시퀀스 추출
+#                 seq = _r3d18_seq_features(self.backbone, x, stage=self.r3d_stage)  # (B, T′, D_in)
+#                 lstm_out, _ = self.lstm(seq)       # (B, T′, out_dim)
+#                 # z = lstm_out[:, -1, :]             # 마지막 타임스텝 (또는 mean 가능)
+#                 z = lstm_out.mean(dim=1)
+#             else:
+#                 # 기존처럼 백본 forward로 (B, D) 얻기
+#                 z = self.backbone(x)               # (B, 512)
+
+#         elif self.backbone_name == "timesformer":
+#             x = x.permute(0, 2, 1, 3, 4)           # (B,T,C,H,W)
+#             out = self.backbone(x)
+#             T = x.size(1)
+#             frame_seq = self._tokens_to_frame_means(
+#                 out.last_hidden_state, T=T, size=self.size, patch_size=self.patch_size
+#             )  # (B,T,D)
+
+#             if self.use_lstm:
+#                 lstm_out, _ = self.lstm(frame_seq) # (B,T,out_dim)
+#                 # z = lstm_out[:, -1, :]
+#                 z = lstm_out.mean(dim=1)
+#             else:
+#                 z = frame_seq.mean(dim=1)
+
+#         else:  # videomae
+#             x = x.permute(0, 2, 1, 3, 4)
+#             out = self.backbone(x)
+#             T = x.size(1)
+#             frame_seq = self._tokens_to_frame_means(
+#                 out.last_hidden_state, T=T, size=self.size, patch_size=self.patch_size
+#             )
+#             if self.use_lstm:
+#                 lstm_out, _ = self.lstm(frame_seq)
+#                 # z = lstm_out[:, -1, :]
+#                 z = lstm_out.mean(dim=1)
+#             else:
+#                 z = frame_seq.mean(dim=1)
+
+#         h = self.shared_proj(z)
+#         return self.dv(h), self.ov(h)
+
+#     # def forward(self, x):
+#     #     if self.backbone_name == "r3d18":
+#     #         # (B, C, T, H, W)
+#     #         z = self.backbone(x)
+
+#     #     elif self.backbone_name == "timesformer":
+#     #         # (B, C, T, H, W) → (B, T, C, H, W)
+#     #         x = x.permute(0, 2, 1, 3, 4)
+#     #         out = self.backbone(x)
+#     #         z = out.last_hidden_state.mean(1)  # [CLS] or mean pooling
+
+#     #     elif self.backbone_name == "videomae":
+#     #         # (B, C, T, H, W) → (B, T, C, H, W)
+#     #         x = x.permute(0, 2, 1, 3, 4)
+#     #         out = self.backbone(x)
+#     #         z = out.last_hidden_state.mean(1)
+
+#     #     return self.dv(z), self.ov(z)
+
+# # ===== (D) 학습/평가 =====
+# # def train_one_epoch(model, loader, opt, device, fp16=False, epoch=1, epochs=1, log_interval=10, global_step_offset=0):
+# #     model.train()
+
+
+# #     ce = nn.CrossEntropyLoss()
+# #     scaler = torch.cuda.amp.GradScaler(enabled=fp16)
+# #     running, n = 0.0, 0
+# #     global_step = global_step_offset
+
+# #     pbar = tqdm(loader, desc=f"Train [{epoch}/{epochs}]", dynamic_ncols=True)
+# #     for step, (x, (yd, yp, yv)) in enumerate(pbar, start=1):
+# #         x = x.to(device, non_blocking=True)
+# #         yd = yd.to(device); yp = yp.to(device); yv = yv.to(device)
+
+# #         opt.zero_grad(set_to_none=True)
+# #         with torch.cuda.amp.autocast(enabled=fp16):
+# #             ld, lp, lv = model(x)
+# #             loss = ce(ld, yd) + ce(lp, yp) + ce(lv, yv)
+
+# #         scaler.scale(loss).backward()
+# #         scaler.step(opt); scaler.update()
+
+# #         bs = x.size(0)
+# #         running += loss.item() * bs; n += bs
+# #         avg_loss = running / max(1, n)
+
+# #         # 진행바 업데이트 (주기적으로만 상세 postfix 갱신)
+# #         if (step % log_interval) == 0 or step == 1:
+# #             pbar.set_postfix({"loss": f"{avg_loss:.4f}"})
+
+# #         global_step += 1
+
+# #     epoch_loss = running / max(1, n)
+
+# #     return epoch_loss, global_step
+# class TwoBranchVideoClassifier(nn.Module):
+#     """
+#     Global branch: DV 헤드에 사용
+#     ROI branch:    Global과 concat → OV 헤드에 사용
+#     """
+#     def __init__(self, n_dv, n_ov, freeze_roi=True):
+#         super().__init__()
+#         self.g = r3d_18(weights=R3D_18_Weights.KINETICS400_V1)
+#         dim_g = self.g.fc.in_features
+#         self.g.fc = nn.Identity()
+
+#         self.r = r3d_18(weights=R3D_18_Weights.KINETICS400_V1)
+#         dim_r = self.r.fc.in_features
+#         self.r.fc = nn.Identity()
+
+#         if freeze_roi:
+#             for p in self.r.parameters():
+#                 p.requires_grad = False
+
+#         self.proj_g = nn.Sequential(nn.LayerNorm(dim_g), nn.Linear(dim_g, dim_g), nn.ReLU(), nn.Dropout(0.3))
+#         self.proj_r = nn.Sequential(nn.LayerNorm(dim_r), nn.Linear(dim_r, dim_r), nn.ReLU(), nn.Dropout(0.3))
+
+#         self.dv = nn.Linear(dim_g, n_dv)
+#         self.fuse = nn.Sequential(
+#             nn.LayerNorm(dim_g + dim_r),
+#             nn.Linear(dim_g + dim_r, dim_g),
+#             nn.ReLU(),
+#             nn.Dropout(0.3),
+#         )
+#         self.ov = nn.Linear(dim_g, n_ov)
+
+#     def forward(self, x_pair):
+#         xg, xr = x_pair  # (B,C,T,H,W), (B,C,T,H,W)
+#         zg = self.g(xg)            # (B,512)
+#         zr = self.r(xr)            # (B,512)
+#         hg = self.proj_g(zg)
+#         hr = self.proj_r(zr)
+#         ldv = self.dv(hg)
+#         hf = self.fuse(torch.cat([hg, hr], dim=-1))
+#         lov = self.ov(hf)
+#         return ldv, lov
+    
+# def train_one_epoch(model, loader, opt, device, fp16=False, epoch=1, epochs=1,
+#                     log_interval=10, global_step_offset=0, lambda_dv=1.0, lambda_ov=1.0):
+#     model.train()
+#     ce = nn.CrossEntropyLoss()
+#     scaler = torch.cuda.amp.GradScaler(enabled=fp16)
+#     running, n = 0.0, 0
+#     pbar = tqdm(loader, desc=f"Train [{epoch}/{epochs}]", dynamic_ncols=True)
+
+#     for step, batch in enumerate(pbar, start=1):
+#         if batch is None: continue
+
+#         # --- 두-브랜치 / 단일 분기 ---
+#         if isinstance(batch[0], (list, tuple)) and isinstance(batch[0][0], torch.Tensor):
+#             (xg, xr), (yd, yv) = batch
+#             xg = xg.to(device, non_blocking=True); xr = xr.to(device, non_blocking=True)
+#             yd = yd.to(device); yv = yv.to(device)
+#             fwd_input = (xg, xr)
+#             bs = xg.size(0)
+#         else:
+#             x, (yd, yv) = batch
+#             x = x.to(device, non_blocking=True)
+#             yd = yd.to(device); yv = yv.to(device)
+#             fwd_input = x
+#             bs = x.size(0)
+
+#         opt.zero_grad(set_to_none=True)
+#         with torch.cuda.amp.autocast(enabled=fp16):
+#             ld, lv = model(fwd_input)
+#             loss = lambda_dv * ce(ld, yd) + lambda_ov * ce(lv, yv)
+
+#         scaler.scale(loss).backward()
+#         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+#         scaler.step(opt); scaler.update()
+
+#         running += loss.item() * bs; n += bs
+#         if (step % log_interval) == 0 or step == 1:
+#             pbar.set_postfix({"loss": f"{(running/max(1,n)):.4f}"})
+#     return (running / max(1, n)), step
+
+# # @torch.no_grad()
+# # def evaluate(model, loader, device, epoch=None, epochs=None, save_confmat=True, backbone="r3d18"):
+# #     model.eval()
+# #     # y_dv, y_pl, y_ov = [], [], []
+# #     # p_dv, p_pl, p_ov = [], [], []
+# #     # logits_dv, logits_pl, logits_ov = [], [], []
+# #     y_dv, y_ov = [], [], []
+# #     p_dv, p_ov = [], [], []
+# #     logits_dv, logits_ov = [], [], []
+
+# #     it = loader
+# #     if epoch is not None and epochs is not None:
+# #         it = tqdm(loader, desc=f"Val   [{epoch}/{epochs}]", dynamic_ncols=True)
+
+# #     for x,(yd,yp,yv) in it:
+# #         x = x.to(device, non_blocking=True)
+# #         ld, lp, lv = model(x)
+# #         # 저장
+# #         logits_dv.append(ld.cpu()); logits_pl.append(lp.cpu()); logits_ov.append(lv.cpu())
+# #         p_dv += ld.argmax(-1).cpu().tolist()
+# #         p_pl += lp.argmax(-1).cpu().tolist()
+# #         p_ov += lv.argmax(-1).cpu().tolist()
+# #         y_dv += yd.tolist(); y_pl += yp.tolist(); y_ov += yv.tolist()
+
+# #     # concat logits
+# #     logits_dv = torch.cat(logits_dv, dim=0) if logits_dv else torch.empty(0)
+# #     logits_pl = torch.cat(logits_pl, dim=0) if logits_pl else torch.empty(0)
+# #     logits_ov = torch.cat(logits_ov, dim=0) if logits_ov else torch.empty(0)
+
+# #     def _all_metrics(y, p, logits, label_key):
+# #         # 기본 지표
+# #         acc = accuracy_score(y, p)
+# #         f1_ma = f1_score(y, p, average="macro", zero_division=0)
+# #         f1_mi = f1_score(y, p, average="micro", zero_division=0)
+# #         bal_acc = balanced_accuracy_score(y, p)
+# #         kappa = cohen_kappa_score(y, p)
+# #         mcc = matthews_corrcoef(y, p)
+# #         prec_ma, rec_ma, _, _ = precision_recall_fscore_support(y, p, average="macro", zero_division=0)
+# #         prec_mi, rec_mi, _, _ = precision_recall_fscore_support(y, p, average="micro", zero_division=0)
+# #         prec_wt, rec_wt, _, _ = precision_recall_fscore_support(y, p, average="weighted", zero_division=0)
+
+# #         # top-k (k=3)
+# #         top3 = _topk_acc(y, logits, k=3) if logits.numel() else 0.0
+
+# #         rep = classification_report(y, p, digits=3, zero_division=0)
+
+# #         out = {
+# #             "acc": acc,
+# #             "balanced_acc": bal_acc,
+# #             "f1_macro": f1_ma,
+# #             "f1_micro": f1_mi,
+# #             "precision_macro": prec_ma,
+# #             "recall_macro": rec_ma,
+# #             "precision_micro": prec_mi,
+# #             "recall_micro": rec_mi,
+# #             "precision_weighted": prec_wt,
+# #             "recall_weighted": rec_wt,
+# #             "cohen_kappa": kappa,
+# #             "mcc": mcc,
+# #             "top3_acc": top3,
+# #             "report": rep
+# #         }
+# #         return out
+
+# #     # m_dv = _all_metrics(y_dv, p_dv, logits_dv, "dashcam_vehicle_info")
+# #     # m_pl = _all_metrics(y_pl, p_pl, logits_pl, "accident_place_feature")
+# #     # m_ov = _all_metrics(y_ov, p_ov, logits_ov, "other_vehicle_info")
+# #     m_dv = _all_metrics(y_dv, p_dv, logits_dv, "dashcam_vehicle_info")
+# #     m_ov = _all_metrics(y_ov, p_ov, logits_ov, "other_vehicle_info")
+
+# #     # exact = np.mean((np.array(y_dv)==np.array(p_dv)) &
+# #     #                 (np.array(y_pl)==np.array(p_pl)) &
+# #     #                 (np.array(y_ov)==np.array(p_ov)))
+# #     exact = np.mean((np.array(y_dv)==np.array(p_dv)) &
+# #                     (np.array(y_ov)==np.array(p_ov)))
+# #     # out = {"dv":m_dv, "place":m_pl, "ov":m_ov, "exact_match": float(exact)}
+# #     out = {"dv":m_dv, "ov":m_ov, "exact_match": float(exact)}
+
+# #     # 혼동행렬 저장 (옵션)
+# #     # if save_confmat:
+# #     #     plot_confmat(y_dv, p_dv, LABELS["dashcam_vehicle_info"], "DV Confusion Matrix", f"cm_dv_{backbone}.png","val/dv/confmat")
+# #     #     plot_confmat(y_pl, p_pl, LABELS["accident_place_feature"], "Place Confusion Matrix", f"cm_place_{backbone}.png","val/dv/confmat")
+# #     #     plot_confmat(y_ov, p_ov, LABELS["other_vehicle_info"], "OV Confusion Matrix", f"cm_ov_{backbone}.png","val/dv/confmat")
+# #     if save_confmat:
+# #             plot_confmat(y_dv, p_dv, LABELS["dashcam_vehicle_info"], "DV Confusion Matrix", f"cm_dv_{backbone}.png","val/dv/confmat")
+# #             plot_confmat(y_ov, p_ov, LABELS["other_vehicle_info"], "OV Confusion Matrix", f"cm_ov_{backbone}.png","val/dv/confmat")
+
+# #     return out
+# @torch.no_grad()
+# def evaluate(model, loader, device, epoch=None, epochs=None, save_confmat=True, backbone="r3d18"):
+#     model.eval()
+#     ce = nn.CrossEntropyLoss()
+
+#     y_dv, y_ov = [], []
+#     p_dv, p_ov = [], []
+#     logits_dv, logits_ov = [], []
+
+#     running_loss, n = 0.0, 0
+
+#     it = loader if (epoch is None or epochs is None) else tqdm(loader, desc=f"Val   [{epoch}/{epochs}]", dynamic_ncols=True)
+#     for batch in it:
+#         if batch is None: continue
+
+#         if isinstance(batch[0], (list, tuple)) and isinstance(batch[0][0], torch.Tensor):
+#             (xg, xr), (yd, yv) = batch
+#             xg = xg.to(device, non_blocking=True); xr = xr.to(device, non_blocking=True)
+#             yd = yd.to(device); yv = yv.to(device)
+#             fwd_input = (xg, xr)
+#             bs = xg.size(0)
+#         else:
+#             x, (yd, yv) = batch
+#             x = x.to(device, non_blocking=True)
+#             yd = yd.to(device); yv = yv.to(device)
+#             fwd_input = x
+#             bs = x.size(0)
+
+#         ld, lv = model(fwd_input)
+#         loss = ce(ld, yd) + ce(lv, yv)
+#         running_loss += loss.item() * bs
+#         n += bs
+
+#         # ----- 예측/지표용 누적 -----
+#         logits_dv.append(ld.cpu()); logits_ov.append(lv.cpu())
+#         p_dv += ld.argmax(-1).cpu().tolist()
+#         p_ov += lv.argmax(-1).cpu().tolist()
+#         y_dv += yd.cpu().tolist(); y_ov += yv.cpu().tolist()
+
+#     # concat logits
+#     logits_dv = torch.cat(logits_dv, dim=0) if logits_dv else torch.empty(0)
+#     logits_ov = torch.cat(logits_ov, dim=0) if logits_ov else torch.empty(0)
+
+#     def _all_metrics(y, p, logits):
+#         acc = accuracy_score(y, p)
+#         f1_ma = f1_score(y, p, average="macro", zero_division=0)
+#         f1_mi = f1_score(y, p, average="micro", zero_division=0)
+#         bal_acc = balanced_accuracy_score(y, p)
+#         kappa = cohen_kappa_score(y, p)
+#         mcc = matthews_corrcoef(y, p)
+#         prec_ma, rec_ma, _, _ = precision_recall_fscore_support(y, p, average="macro", zero_division=0)
+#         prec_mi, rec_mi, _, _ = precision_recall_fscore_support(y, p, average="micro", zero_division=0)
+#         top3 = _topk_acc(y, logits, k=3) if logits.numel() else 0.0
+#         rep = classification_report(y, p, digits=3, zero_division=0)
+#         return {
+#             "acc": acc, "balanced_acc": bal_acc,
+#             "f1_macro": f1_ma, "f1_micro": f1_mi,
+#             "precision_macro": prec_ma, "recall_macro": rec_ma,
+#             "precision_micro": prec_mi, "recall_micro": rec_mi,
+#             "cohen_kappa": kappa, "mcc": mcc, "top3_acc": top3,
+#             "report": rep
+#         }
+
+#     m_dv = _all_metrics(y_dv, p_dv, logits_dv)
+#     m_ov = _all_metrics(y_ov, p_ov, logits_ov)
+
+#     exact = float(np.mean((np.array(y_dv)==np.array(p_dv)) &
+#                           (np.array(y_ov)==np.array(p_ov))))
+#     val_loss = running_loss / max(1, n)
+
+#     if save_confmat:
+#         plot_confmat(y_dv, p_dv, LABELS["dashcam_vehicle_info"], "DV Confusion Matrix", f"cm_dv_{backbone}_lstm_two.png","val/dv/confmat")
+#         plot_confmat(y_ov, p_ov, LABELS["other_vehicle_info"], "OV Confusion Matrix", f"cm_ov_{backbone}_lstm_two.png","val/ov/confmat")
+
+#     return {"loss": val_loss, "dv": m_dv, "ov": m_ov, "exact_match": exact}
+
+# # def plot_summary(metrics: Dict, out_path="results_metrics.png"):
+# #     names = [
+# #         "DV f1_macro","Place f1_macro","OV f1_macro",
+# #         "DV bal_acc","Place bal_acc","OV bal_acc",
+# #         "Exact-Match"
+# #     ]
+# #     vals = [
+# #         metrics["dv"]["f1_macro"], metrics["place"]["f1_macro"], metrics["ov"]["f1_macro"],
+# #         metrics["dv"]["balanced_acc"], metrics["place"]["balanced_acc"], metrics["ov"]["balanced_acc"],
+# #         metrics["exact_match"]
+# #     ]
+# #     plt.figure(figsize=(10,5))
+# #     plt.bar(range(len(names)), vals)
+# #     plt.xticks(range(len(names)), names, rotation=20)
+# #     plt.ylim(0,1.0)
+# #     plt.ylabel("Score")
+# #     plt.title("Validation Summary")
+# #     plt.tight_layout()
+# #     plt.savefig(out_path, dpi=180)
+# #     print(f"Saved plot: {out_path}")
+# def plot_summary(metrics: Dict, out_path="results_metrics_lstm_two.png"):
+#     names = ["DV P_macro","DV R_macro","DV F1_macro",
+#              "OV P_macro","OV R_macro","OV F1_macro",
+#              "Exact-Match"]
+#     vals = [
+#         metrics["dv"]["precision_macro"], metrics["dv"]["recall_macro"], metrics["dv"]["f1_macro"],
+#         metrics["ov"]["precision_macro"], metrics["ov"]["recall_macro"], metrics["ov"]["f1_macro"],
+#         metrics["exact_match"]
+#     ]
+#     plt.figure(figsize=(10,5))
+#     plt.bar(range(len(names)), vals)
+#     plt.xticks(range(len(names)), names, rotation=20)
+#     plt.ylim(0,1.0)
+#     plt.ylabel("Score")
+#     plt.title("Validation Summary (Precision/Recall/F1)")
+#     plt.tight_layout()
+#     plt.savefig(out_path, dpi=180)
+#     print(f"Saved plot: {out_path}")
+
+
+# def split_dataset(ds: SingleCsvDataset, val_ratio=0.2, seed=42):
+#     idxs = list(range(len(ds)))
+#     random.Random(seed).shuffle(idxs)
+#     n_val = int(len(idxs)*val_ratio)
+#     val_idx, tr_idx = idxs[:n_val], idxs[n_val:]
+#     return torch.utils.data.Subset(ds, tr_idx), torch.utils.data.Subset(ds, val_idx)
+
+# def main():
+#     best_exact = 0.0 
+#     best_f1 = 0.0 
+#     ap = argparse.ArgumentParser(conflict_handler="resolve")
+#     ap.add_argument("--backbone", type=str, default="r3d18",
+#                 choices=["r3d18", "timesformer", "videomae"],
+#                 help="영상 백본 선택")
+#     ap.add_argument("--mode", choices=["train","validate","predict"], default="train")
+#     ap.add_argument(
+#         "--train_csv",
+#         type=str,
+#         help="CSV with columns: video_path,dashcam_vehicle_info,accident_place_feature,other_vehicle_info",
+#         default="/app/data/raw/json/video-train/video_accident_caption_results_unsignalized_0811.csv",
+#     )
+#     ap.add_argument(
+#         "--val_csv",
+#         type=str,
+#         help="CSV/JSON path for validation",
+#         default="/app/data/raw/json/video-evaluate/video_accident_caption_results_unsignalized_validation_0901.csv",
+#     )
+#     ap.add_argument("--log_interval", type=int, default=1, help="스텝 로그/진행바 postfix 업데이트 주기")
+#     ap.add_argument("--train_video_root", type=str,
+#                default=os.environ.get("TRAIN_VIDEO_ROOT", "/app/data/raw/videos/training_reencoded"),
+#                help="Root dir for training videos (env TRAIN_VIDEO_ROOT overrides)")
+#     ap.add_argument("--val_video_root", type=str,
+#                 default=os.environ.get("VAL_VIDEO_ROOT", "/app/data/raw/videos/validation_reencoded"),
+#                 help="Root dir for validation videos (env VAL_VIDEO_ROOT overrides)")
+
+#     ap.add_argument("--epochs", type=int, default=10)
+#     ap.add_argument("--batch_size", type=int, default=8)
+#     ap.add_argument("--num_frames", type=int, default=16)
+#     ap.add_argument("--size", type=int, default=224)
+#     ap.add_argument("--num_workers", type=int, default=2)
+#     ap.add_argument("--lr", type=float, default=2e-4)
+#     ap.add_argument("--val_ratio", type=float, default=0.2)
+#     ap.add_argument("--fp16", action="store_true")
+#     ap.add_argument("--device", type=str, default="cuda")
+#     ap.add_argument("--val_batch_size", type=int, default=8) 
+#     ap.add_argument("--dataparallel", action="store_true")         # NEW
+#     ap.add_argument("--save_dir", type=str, default="./checkpoints")  # NEW
+#     ap.add_argument("--out_ckpt", type=str, default=f"./checkpoints/desc.pth")  # (원하면 유지)
+#     ap.add_argument("--temporal_head", type=str, default="none",
+#                 choices=["none","lstm"], help="시퀀스용 temporal head")
+#     ap.add_argument("--lstm_hidden", type=int, default=512)
+#     ap.add_argument("--lstm_layers", type=int, default=1)
+#     ap.add_argument("--lstm_bidirectional", action="store_true")
+
+#     # 3D CNN에서 어느 stage 출력 위에서 시퀀스를 뽑을지 선택
+#     ap.add_argument("--r3d_stage", type=int, default=4, choices=[2,3,4],
+#                     help="r3d18에서 LSTM 시퀀스를 뽑을 stage (2/3/4)")
+
+#     ap.add_argument("--video", type=str, help="video path for prediction")
+#     ap.add_argument("--ckpt", type=str, help="checkpoint for prediction")
+#     ap.add_argument("--two_branch", action="store_true", help="Global+ROI 두 인코더 사용")
+#     ap.add_argument("--freeze_roi", action="store_true", help="ROI 백본 동결")
+#     ap.add_argument("--lambda_dv", type=float, default=1.0, help="DV loss weight")
+#     ap.add_argument("--lambda_ov", type=float, default=1.0, help="OV loss weight (OV가 중요하면 크게)")
+#     args = ap.parse_args()
+
+#     device = args.device if torch.cuda.is_available() else "cpu"
+#     wandb.init(project="video-desc-lstm-two", config=vars(args))
+    
+
+#     if args.mode == "train":
+#         train_ds = SingleCsvDataset(args.train_csv, video_root=args.train_video_root,
+#                                     num_frames=args.num_frames, size=args.size)
+#         val_ds   = SingleCsvDataset(args.val_csv,   video_root=args.val_video_root,
+#                                     num_frames=args.num_frames, size=args.size)
+
+#         train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True,
+#                                   num_workers=args.num_workers, pin_memory=True, drop_last=True, collate_fn=collate_skip_none)
+#         val_loader = DataLoader(val_ds, batch_size=args.val_batch_size, shuffle=False,
+#                                 num_workers=args.num_workers, pin_memory=True, collate_fn=collate_skip_none)
+
+#         # model = TripleHeadVideoClassifier(NCLS["dashcam_vehicle_info"],
+#         #                                   NCLS["accident_place_feature"],
+#         #                                   NCLS["other_vehicle_info"],backbone=args.backbone).to(device)
+#         if args.two_branch:
+#             model = TwoBranchVideoClassifier(
+#                 NCLS["dashcam_vehicle_info"],
+#                 NCLS["other_vehicle_info"],
+#                 freeze_roi=args.freeze_roi
+#             ).to(device)
+#         else:
+#             model = TripleHeadVideoClassifier(
+#                 NCLS["dashcam_vehicle_info"],
+#                 NCLS["other_vehicle_info"],
+#                 backbone=args.backbone,
+#                 temporal_head=args.temporal_head,
+#                 lstm_hidden=args.lstm_hidden,
+#                 lstm_layers=args.lstm_layers,
+#                 lstm_bidirectional=args.lstm_bidirectional,
+#                 size=args.size,
+#                 r3d_stage=args.r3d_stage,
+#             ).to(device)
+
+#         opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=0.01)
+
+#         start_time = time.time()
+
+#         for ep in range(1, args.epochs+1):
+#             # === 1) Train ===
+#             tr_loss, _ = train_one_epoch(
+#                 model, train_loader, opt, device,
+#                 fp16=args.fp16, epoch=ep, epochs=args.epochs,
+#                 log_interval=args.log_interval,
+#                 lambda_dv=args.lambda_dv, lambda_ov=args.lambda_ov
+#             )
+
+#             # === 2) Validate ===
+#             val = evaluate(model, val_loader, device, epoch=ep, epochs=args.epochs, backbone=args.backbone)
+#             log_dict = {
+#                 "epoch": ep,
+#                 "train/loss": tr_loss,
+#                 "val/exact_match": val["exact_match"],
+#                 "val/loss":  val["loss"],          # ★ 추가
+#                 "val/exact_match": val["exact_match"],
+
+#                 # DV
+#                 "val/dv/acc": val["dv"]["acc"],
+#                 "val/dv/f1_macro": val["dv"]["f1_macro"],
+#                 "val/dv/precision_macro": val["dv"]["precision_macro"],
+#                 "val/dv/recall_macro": val["dv"]["recall_macro"],
+#                 "val/dv/balanced_acc": val["dv"]["balanced_acc"],
+#                 "val/dv/top3_acc": val["dv"]["top3_acc"],
+
+#                 # OV
+#                 "val/ov/acc": val["ov"]["acc"],
+#                 "val/ov/f1_macro": val["ov"]["f1_macro"],
+#                 "val/ov/precision_macro": val["ov"]["precision_macro"],
+#                 "val/ov/recall_macro": val["ov"]["recall_macro"],
+#                 "val/ov/balanced_acc": val["ov"]["balanced_acc"],
+#             }
+#             wandb.log(log_dict)
+
+#             # === 3) 터미널 로그 ===
+#             print(f"[Epoch {ep}/{args.epochs}] train_loss={tr_loss:.4f} "
+#               f"exact={val['exact_match']:.3f}")
+
+#             # === 4) 체크포인트 저장 (best) ===
+#             # if val["exact_match"] > best_exact:
+#             #     best_exact = val["exact_match"]
+#             #     os.makedirs(args.save_dir, exist_ok=True)
+#             #     ckpt_path = os.path.join(args.save_dir, f"best_exact_ep{ep}_{args.backbone}_lstm.pth")
+#             #     torch.save({
+#             #         "model": model.state_dict(),
+#             #         "epoch": ep,
+#             #         "best_exact": best_exact
+#             #     }, ckpt_path)
+#             #     wandb.run.summary["best_exact_match"] = best_exact
+#             #     print(f"[CKPT] Saved best model to {ckpt_path}")
+#             f1_mean = 0.5 * (val["dv"]["f1_macro"] + val["ov"]["f1_macro"])
+#             if f1_mean > best_f1:
+#                 best_f1 = f1_mean
+#                 os.makedirs(args.save_dir, exist_ok=True)
+#                 ckpt_path = os.path.join(args.save_dir, f"best_f1_ep{ep}_{args.backbone}_lstm_two.pth")
+#                 torch.save({
+#                     "model": model.state_dict(),
+#                     "epoch": ep,
+#                     "best_f1": best_f1
+#                 }, ckpt_path)
+#                 wandb.run.summary["best_f1_match"] = best_f1
+#                 print(f"[CKPT] Saved best model to {ckpt_path}")
+
+#         # 마지막 리포트 & 플롯
+#         print("\n=== Classification Report (DV) ===\n"+val["dv"]["report"])
+#         # print("\n=== Classification Report (PLACE) ===\n"+val["place"]["report"])
+#         print("\n=== Classification Report (OV) ===\n"+val["ov"]["report"])
+#         plot_summary(val, out_path=f"results_metrics_{args.backbone}_lstm_two.png")
+#         end_time = time.time()
+#         total_time = end_time - start_time
+#         hours, rem = divmod(total_time, 3600)
+#         minutes, seconds = divmod(rem, 60)
+#         print(f"✅ Training {args.backbone} completed in {int(hours)}h {int(minutes)}m {int(seconds)}s")
+
+#     elif args.mode == "validate":
+#         assert args.ckpt, "--ckpt is required for --mode validate"
+
+#         val_ds =SingleCsvDataset(args.val_csv, video_root=args.val_video_root,
+#                                  num_frames=args.num_frames, size=args.size)
+#         val_loader = DataLoader(val_ds, batch_size=args.val_batch_size, shuffle=False,
+#                                 num_workers=args.num_workers, pin_memory=True)
+
+#         # model = TripleHeadVideoClassifier(NCLS["dashcam_vehicle_info"],
+#         #                                   NCLS["accident_place_feature"],
+#         #                                   NCLS["other_vehicle_info"], backbone=args.backbone).to(device).eval()
+#         model = TripleHeadVideoClassifier(
+#             NCLS["dashcam_vehicle_info"],
+#             NCLS["other_vehicle_info"],
+#             backbone=args.backbone,
+#             temporal_head=args.temporal_head,
+#             lstm_hidden=args.lstm_hidden,
+#             lstm_layers=args.lstm_layers,
+#             lstm_bidirectional=args.lstm_bidirectional,
+#             size=args.size,
+#             r3d_stage=args.r3d_stage,
+#         ).to(device)
+#         sd = torch.load(args.ckpt, map_location=device)
+#         if isinstance(sd, dict) and "model" in sd: sd = sd["model"]
+#         model.load_state_dict(sd, strict=False)
+
+#         val = evaluate(model, val_loader, device)
+#         print("\n=== VALIDATION ===")
+#         print(f"DV    acc={val['dv']['acc']:.3f}  f1_macro={val['dv']['f1_macro']:.3f}")
+#         # print(f"PLACE acc={val['place']['acc']:.3f}  f1_macro={val['place']['f1_macro']:.3f}")
+#         print(f"OV    acc={val['ov']['acc']:.3f}  f1_macro={val['ov']['f1_macro']:.3f}")
+#         print(f"Exact-Match={val['exact_match']:.3f}")
+#         plot_summary(val, out_path=f"results_metrics_validation_{args.backbone}_lstm_two.png")
+
+
+# if __name__ == "__main__":
+#     main()

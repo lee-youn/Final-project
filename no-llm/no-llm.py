@@ -863,6 +863,25 @@ import matplotlib.pyplot as plt
 from sklearn.isotonic import IsotonicRegression
 from joblib import dump, load
 
+
+def snap_pair_to_integer_basis(v, total=10):
+    """
+    v: array-like [a, b] (합이 total 근처라고 가정)
+    반환: 합=total, 각 성분이 정수인 쌍 (대시캠 a를 반올림, 나머지는 보전)
+    """
+    v = np.asarray(v, dtype=float)
+    v = np.maximum(v, 0.0)
+    s = float(v.sum())
+    if s <= 0:
+        a = int(total // 2)
+        return np.array([float(a), float(total - a)], dtype=float)
+    v = v * (total / s)  # 합 total로 재정규화
+    a_int = int(np.floor(v[0] + 0.5))
+    a_int = max(0, min(total, a_int))
+    b_int = total - a_int
+    return np.array([float(a_int), float(b_int)], dtype=float)
+
+
 # ------------------------------
 # 공용 유틸 (비율/쌍 변환, 보정, 메트릭/플롯)
 # ------------------------------
@@ -1210,8 +1229,9 @@ class R3DFaultRegressor(nn.Module):
         feat = self.backbone(x)      # [B, 512]
         out  = self.head(feat)       # [B, 2]
 
-        v = F.softplus(out)
-        s = v.sum(dim=1, keepdim=True)
+        v = F.softplus(out)                          # >= 0
+        s = v.sum(dim=1, keepdim=True) + 1e-8        # 분모 안정화
+        v = v * (self.basis_total / s) 
 
         zero_mask = (s <= 0)
         if zero_mask.any():
@@ -1516,10 +1536,21 @@ def evaluate_3d(
         if snap_to_int:
             yhat_cal_all = np.vstack([snap_pair_to_integer_basis_np(v, total=int(round(target_basis)))
                                       for v in yhat_cal_all])
+        snap_total = int(round(target_basis))
+        yhat_int = np.vstack([snap_pair_to_integer_basis_np(v, total=snap_total) for v in yhat_all])
+        yhat_cal_int = np.vstack([snap_pair_to_integer_basis_np(v, total=snap_total) for v in yhat_cal_all])
+
+        m_int = compute_metrics(y_gt, yhat_int)
+        m_cal_int = compute_metrics(y_gt, yhat_cal_int)
 
         metrics_cal = compute_metrics(y_gt, yhat_cal_all)
         metrics_cal.update(compute_losses(y_gt, yhat_cal_all))
-        metrics = {**metrics_pre, **{f"cal/{k}": v for k, v in metrics_cal.items()}}
+        metrics = {
+            **metrics_pre,
+            **{f"cal/{k}": v for k, v in metrics_cal.items()},
+            "int/MAE": m_int["MAE"], "int/RMSE": m_int["RMSE"], "int/R2": m_int["R2"],
+            "cal_int/MAE": m_cal_int["MAE"], "cal_int/RMSE": m_cal_int["RMSE"], "cal_int/R2": m_cal_int["R2"],
+        }
 
         # 개별 결과에 보정치 추가
         k = 0
@@ -1527,6 +1558,11 @@ def evaluate_3d(
             if "pred_basis_dashcam" in r and "gt_basis_dashcam" in r:
                 r["pred_basis_dashcam_cal"] = float(yhat_cal_all[k,0])
                 r["pred_basis_other_cal"]   = float(yhat_cal_all[k,1])
+
+                r["pred_basis_dashcam_int"]     = float(yhat_int[k,0])
+                r["pred_basis_other_int"]       = float(yhat_int[k,1])
+                r["pred_basis_dashcam_cal_int"] = float(yhat_cal_int[k,0])
+                r["pred_basis_other_cal_int"]   = float(yhat_cal_int[k,1])
                 k += 1
 
         # 저장/플롯
@@ -1559,6 +1595,16 @@ def evaluate_3d(
             "eval3d_cal/loss_mae": metrics.get("cal/loss_mae"),
             "eval3d_cal/loss_mse_dashcam": metrics.get("cal/loss_mse_dashcam"),
             "eval3d_cal/loss_mse_other": metrics.get("cal/loss_mse_other"),
+            "eval3d_int/MAE":  metrics.get("int/MAE"),
+            "eval3d_int/RMSE": metrics.get("int/RMSE"),
+            "eval3d_int/R2":   metrics.get("int/R2"),
+            "eval3d_int/MAE_dashcam": metrics.get("int/MAE_dashcam"),
+            "eval3d_int/MAE_other":   metrics.get("int/MAE_other"),
+            "eval3d_cal_int/MAE":  metrics.get("cal_int/MAE"),
+            "eval3d_cal_int/RMSE": metrics.get("cal_int/RMSE"),
+            "eval3d_cal_int/R2":   metrics.get("cal_int/R2"),
+            "eval3d_cal_int/MAE_dashcam": metrics.get("cal_int/MAE_dashcam"),
+            "eval3d_cal_int/MAE_other":   metrics.get("cal_int/MAE_other"),
         }
         wandb.log({k: v for k, v in to_log.items() if v is not None})
         for k, pth in plot_paths.items():

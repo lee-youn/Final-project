@@ -5,6 +5,8 @@ import torch, torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import wandb
+import torch.nn.functional as F
+
 
 # -----------------------
 # Dataset
@@ -40,12 +42,10 @@ class InfoOnlyDataset(Dataset):
         self.scale_to_01 = scale_to_01
         self.scale_div = np.ones(2, dtype=np.float32)
         if self.scale_to_01:
-            for j in range(2):
-                col = y[:,j]
-                mx = np.nanmax(col)
-                self.scale_div[j] = 100.0 if mx > 1.5 else 1.0
-            y = y / self.scale_div
-
+            # 0~1 스케일 후
+            s = y.sum(axis=1, keepdims=True)
+            y = np.where(s > 0, y / s, y)      # 합=1
+            y = y * 10.0                    # 합=10
         self.targets = y.astype(np.float32)
 
     def __len__(self):
@@ -62,28 +62,56 @@ class InfoOnlyDataset(Dataset):
 # Model: embeddings -> MLP -> 2 outputs
 # -----------------------
 class CatEmbedRegressor(nn.Module):
-    def __init__(self, dv_vocab_size, ov_vocab_size, emb_dim=64, hidden_dim=128, dropout=0.2):
+    """
+    dv/ov 범주 인덱스를 임베딩 → MLP → [2] 로짓 → 
+      - use_softmax=True : softmax로 합=1 확률 → target_basis 곱
+      - use_softmax=False: softplus로 비음수 → 합=target_basis로 정규화
+    최종 출력은 [B,2], 합이 target_basis.
+    """
+    def __init__(
+        self,
+        dv_vocab_size: int,
+        ov_vocab_size: int,
+        emb_dim: int = 64,
+        hidden_dim: int = 128,
+        dropout: float = 0.2,
+        target_basis: float = 10.0,
+        use_softmax: bool = True,
+        padding_idx: int | None = None,   # 임의: 필요시 패딩 인덱스 지정
+    ):
         super().__init__()
-        self.dv_emb = nn.Embedding(dv_vocab_size, emb_dim)
-        self.ov_emb = nn.Embedding(ov_vocab_size, emb_dim)
+        self.target_basis = float(target_basis)
+        self.use_softmax = bool(use_softmax)
+
+        self.dv_emb = nn.Embedding(dv_vocab_size, emb_dim, padding_idx=padding_idx)
+        self.ov_emb = nn.Embedding(ov_vocab_size, emb_dim, padding_idx=padding_idx)
+
         self.mlp = nn.Sequential(
-            nn.LayerNorm(emb_dim*2),
-            nn.Linear(emb_dim*2, hidden_dim),
+            nn.LayerNorm(emb_dim * 2),
+            nn.Linear(emb_dim * 2, hidden_dim),  # e.g., 128
             nn.ReLU(),
             nn.Dropout(dropout),
-            nn.Linear(hidden_dim, hidden_dim//2),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(hidden_dim//2, 2),  # 2 targets
+            nn.Linear(hidden_dim, 2),            # logits
         )
 
-    def forward(self, x_idx):  # x_idx: [B,2] -> (dv_idx, ov_idx)
-        dv = self.dv_emb(x_idx[:,0])
-        ov = self.ov_emb(x_idx[:,1])
-        h = torch.cat([dv, ov], dim=-1)
-        y = self.mlp(h)  # [B,2], each in [unbounded]
-        # Sigmoid로 0~1 범위 보장 (비율 문제이므로)
-        return torch.sigmoid(y)
+    def forward(self, x_idx: torch.LongTensor) -> torch.Tensor:
+        """
+        x_idx: [B,2]  ([:,0] = dv_idx,  [:,1] = ov_idx)
+        return: [B,2], 각 배치 샘플의 합 == target_basis
+        """
+        dv = self.dv_emb(x_idx[:, 0])          # [B, emb]
+        ov = self.ov_emb(x_idx[:, 1])          # [B, emb]
+        h  = torch.cat([dv, ov], dim=-1)       # [B, 2*emb]
+        logits = self.mlp(h)                   # [B, 2]
+
+        if self.use_softmax:
+            probs = torch.softmax(logits, dim=-1)          # 합=1
+            pair  = probs * self.target_basis              # 합=target_basis
+        else:
+            v = F.softplus(logits)                         # 비음수
+            pair = v * (self.target_basis / (v.sum(dim=1, keepdim=True) + 1e-8))
+
+        return pair
 
 # -----------------------
 # Train/Eval
@@ -248,7 +276,7 @@ def main():
         if mts["macro/R2"] > best_macro_r2:
             best_macro_r2 = mts["macro/R2"]
             os.makedirs("checkpoints", exist_ok=True)
-            path = "checkpoints/best_multi_emb.pt"
+            path = "checkpoints/best_multi_emb_onelayer_softmax.pt"
             torch.save({
                 "model": model.state_dict(),
                 "cat_vocab": cat_vocab,

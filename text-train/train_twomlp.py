@@ -354,7 +354,9 @@ class TextToFaultRatio(nn.Module):
         self.regressor = nn.Sequential(
             nn.Linear(hidden_dim, 128),
             nn.ReLU(),
-            nn.Linear(128, 2),
+            nn.Linear(128, 64),   # 두 번째 hidden
+            nn.ReLU(),
+            nn.Linear(64, 2),
         )
 
     def forward(self, input_ids, attention_mask):
@@ -550,7 +552,7 @@ def train_model(
         mae, rmse, r2, preds, ytrue = evaluate_model(model, eval_loader, device, target_basis)
         wandb.log({"eval_mae": mae, "eval_rmse": rmse, "eval_r2": r2, "epoch": epoch})
 
-    torch.save(model.state_dict(), "fault_ratio_bert_modify_softmax.pt")
+    torch.save(model.state_dict(), "fault_ratio_bert_modify_softmax_twolayer.pt")
     print("📦 모델 저장 완료: fault_ratio_bert.pt")
 
     visualize_predictions(preds, ytrue, target_basis=target_basis, out_path="prediction_scatter.png")

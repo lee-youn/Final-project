@@ -14,6 +14,7 @@ from tqdm.auto import tqdm
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import torch.nn.functional as F
 
 from transformers import TimesformerModel, VideoMAEModel
 from torchvision.models.video import r3d_18, R3D_18_Weights
@@ -46,6 +47,19 @@ def load_video_tensor(path, num_frames=16, size=224):
     std  = torch.tensor([0.229,0.224,0.225]).view(1,3,1,1)
     vid = (vid - mean)/std
     return vid.permute(1,0,2,3)  # (C,T,H,W)
+
+def snap_pair_to_integer_basis_np(v, total=10):
+    v = np.asarray(v, dtype=float)
+    v = np.maximum(v, 0.0)
+    s = v.sum()
+    if s <= 0:
+        a = total // 2
+        return np.array([float(a), float(total - a)])
+    v = v * (total / s)  # 합 total로 정규화
+    a_int = int(np.floor(v[0] + 0.5))
+    a_int = max(0, min(total, a_int))
+    b_int = total - a_int
+    return np.array([float(a_int), float(b_int)])
 
 def find_video_file(video_root: str, name_or_rel: str) -> Optional[str]:
     if not name_or_rel: return None
@@ -107,34 +121,85 @@ def load_classifier(ckpt_path: str, backbone="r3d18", device="cuda", pretrained=
 class ProbToRatioRegressor(nn.Module):
     def __init__(self, in_dim, hidden=256, dropout=0.2):
         super().__init__()
+        # self.mlp = nn.Sequential(
+        #     nn.LayerNorm(in_dim),
+        #     nn.Linear(in_dim, hidden), nn.ReLU(), nn.Dropout(dropout),
+        #     nn.Linear(hidden, hidden//2), nn.ReLU(), nn.Dropout(dropout),
+        #     nn.Linear(hidden//2, 2),
+        # )
         self.mlp = nn.Sequential(
-            nn.LayerNorm(in_dim),
-            nn.Linear(in_dim, hidden), nn.ReLU(), nn.Dropout(dropout),
-            nn.Linear(hidden, hidden//2), nn.ReLU(), nn.Dropout(dropout),
-            nn.Linear(hidden//2, 2),
-        )
+                nn.LayerNorm(in_dim),
+                nn.Linear(in_dim, hidden), nn.ReLU(), nn.Dropout(dropout),
+                nn.Linear(hidden, 2),
+            )
     def forward(self, x):             # x: [B, 58]
-        return torch.softmax(self.mlp(x), dim=-1)  # [B,2], sum=1
+        # softmax 대신 softplus + 합으로 정규화
+        y = self.mlp(x)                            # [B,2]
+        v = F.softplus(y)                          # >= 0
+        s = v.sum(dim=1, keepdim=True) + 1e-8
+        probs = v / s                               # 합 = 1
+        return probs
+
 
 # ===== 회귀기 2) (임베딩 기반) 확률 → 가중임베딩 → 비율 =====
+# class EmbedToRatioRegressor(nn.Module):
+#     def __init__(self, dv_vocab=N_DV, ov_vocab=N_OV, emb_dim=64, hidden=128, dropout=0.2):
+#         super().__init__()
+#         self.dv_emb = nn.Embedding(dv_vocab, emb_dim)
+#         self.ov_emb = nn.Embedding(ov_vocab, emb_dim)
+#         self.mlp = nn.Sequential(
+#             nn.LayerNorm(emb_dim*2),
+#             nn.Linear(emb_dim*2, hidden), nn.ReLU(), nn.Dropout(dropout),
+#             nn.Linear(hidden, hidden//2), nn.ReLU(), nn.Dropout(dropout),
+#             nn.Linear(hidden//2, 2),
+#         )
+#     def forward(self, p_dv, p_ov):    # p_*: [B, vocab]
+#         dv = p_dv @ self.dv_emb.weight   # [B, emb_dim]
+#         ov = p_ov @ self.ov_emb.weight   # [B, emb_dim]
+#         h = torch.cat([dv, ov], dim=-1)  # [B, 2*emb_dim]
+#         y = self.mlp(h)                  # [B,2]
+#         v = F.softplus(y)                # >= 0
+#         s = v.sum(dim=1, keepdim=True) + 1e-8
+#         probs = v / s                    # 합 = 1
+#         return probs
 class EmbedToRatioRegressor(nn.Module):
-    def __init__(self, dv_vocab=N_DV, ov_vocab=N_OV, emb_dim=64, hidden=128, dropout=0.2):
+    def __init__(self, dv_vocab=N_DV, ov_vocab=N_OV, emb_dim=64,
+                 hidden=128, dropout=0.2, depth="shallow"):  # "shallow" | "deep"
         super().__init__()
         self.dv_emb = nn.Embedding(dv_vocab, emb_dim)
         self.ov_emb = nn.Embedding(ov_vocab, emb_dim)
-        self.mlp = nn.Sequential(
-            nn.LayerNorm(emb_dim*2),
-            nn.Linear(emb_dim*2, hidden), nn.ReLU(), nn.Dropout(dropout),
-            nn.Linear(hidden, hidden//2), nn.ReLU(), nn.Dropout(dropout),
-            nn.Linear(hidden//2, 2),
-        )
-    def forward(self, p_dv, p_ov):    # p_*: [B, vocab] (soft probs)
-        # 가중 임베딩 평균 (one-hot이 아니라 확률로 기대값)
-        dv = p_dv @ self.dv_emb.weight   # [B, emb_dim]
-        ov = p_ov @ self.ov_emb.weight   # [B, emb_dim]
-        h = torch.cat([dv, ov], dim=-1)
-        return torch.softmax(self.mlp(h), dim=-1)  # [B,2]
 
+        if depth == "shallow":
+            # LayerNorm -> Linear(hidden) -> ReLU -> Dropout -> Linear(2)
+            self.mlp = nn.Sequential(
+                nn.LayerNorm(emb_dim*2),
+                nn.Linear(emb_dim*2, hidden), nn.ReLU(), nn.Dropout(dropout),
+                nn.Linear(hidden, 2),
+            )
+        else:  # deep (기존 2개 hidden)
+            self.mlp = nn.Sequential(
+                nn.LayerNorm(emb_dim*2),
+                nn.Linear(emb_dim*2, hidden), nn.ReLU(), nn.Dropout(dropout),
+                nn.Linear(hidden, hidden//2), nn.ReLU(), nn.Dropout(dropout),
+                nn.Linear(hidden//2, 2),
+            )
+
+    # def forward(self, p_dv, p_ov):          # <<< 여기! (p_dv, p_ov)로 변경
+    #     dv = p_dv @ self.dv_emb.weight      # [B, emb_dim]
+    #     ov = p_ov @ self.ov_emb.weight      # [B, emb_dim]
+    #     h  = torch.cat([dv, ov], dim=-1)    # [B, 2*emb_dim]
+    #     y  = self.mlp(h)                    # [B, 2]
+    #     v  = F.softplus(y)                  # >= 0
+    #     probs = v / (v.sum(dim=1, keepdim=True) + 1e-8)  # 합=1
+    #     return probs
+    def forward(self, p_dv, p_ov):
+        dv = p_dv @ self.dv_emb.weight      # [B, emb_dim]
+        ov = p_ov @ self.ov_emb.weight      # [B, emb_dim]
+        h  = torch.cat([dv, ov], dim=-1)    # [B, 2*emb_dim]
+        y  = self.mlp(h)                    # [B, 2]
+        probs = F.softmax(y, dim=-1)        # 합=1
+        return probs
+    
 def load_regressor_auto(ckpt_path: str, device="cuda"):
     sd_raw = torch.load(ckpt_path, map_location="cpu")
     sd = sd_raw["model"] if (isinstance(sd_raw, dict) and "model" in sd_raw) else sd_raw
@@ -241,6 +306,7 @@ def evaluate(eval_json: str, video_root: str,
     assert isinstance(data, list), "eval_json must be a list of dicts"
 
     preds_basis, labels_basis, rows_out = [], [], []
+    preds_basis_int, labels_basis_int = [], []
     os.makedirs(os.path.dirname(out_json) or ".", exist_ok=True)
     out_prefix = os.path.splitext(out_json)[0]
 
@@ -286,18 +352,32 @@ def evaluate(eval_json: str, video_root: str,
 
             pred_basis = (yp * float(target_basis)).astype(float)
 
+            # ★ 정수 스냅 (합 = round(target_basis))
+            snap_total = int(round(target_basis))
+            pred_basis_int = snap_pair_to_integer_basis_np(pred_basis, total=snap_total)
+
             out = {
                 "idx": i, "video_name": vname,
                 "pred_basis_dashcam": float(pred_basis[0]),
                 "pred_basis_other":   float(pred_basis[1]),
                 "pred_100_dashcam":   float(pred_basis[0]*(100.0/target_basis)),
                 "pred_100_other":     float(pred_basis[1]*(100.0/target_basis)),
+
+                # ★ 정수 스냅 값도 저장
+                "pred_basis_dashcam_int": float(pred_basis_int[0]),
+                "pred_basis_other_int":   float(pred_basis_int[1]),
+                "pred_100_dashcam_int":   float(pred_basis_int[0]*(100.0/target_basis)),
+                "pred_100_other_int":     float(pred_basis_int[1]*(100.0/target_basis)),
             }
+
+
             if gt_basis is not None:
                 out["gt_basis_dashcam"] = float(gt_basis[0])
                 out["gt_basis_other"]   = float(gt_basis[1])
                 preds_basis.append(pred_basis)
                 labels_basis.append(gt_basis)
+                preds_basis_int.append(pred_basis_int)
+                labels_basis_int.append(gt_basis)
 
             rows_out.append(out)
 
@@ -324,19 +404,47 @@ def evaluate(eval_json: str, video_root: str,
         y    = np.vstack(labels_basis)
         metrics = compute_metrics(y, yhat)
 
-        # 플롯
+        if len(preds_basis_int) == len(labels_basis_int):
+            yhat_int = np.vstack(preds_basis_int)
+            y_int_m  = compute_metrics(y, yhat_int)
+            # 키 충돌 피하려고 접두사 부여
+            metrics.update({
+                "int/MAE":        y_int_m["MAE"],
+                "int/RMSE":       y_int_m["RMSE"],
+                "int/R2":         y_int_m["R2"],
+                "int/R2_dashcam": y_int_m["R2_dashcam"],
+                "int/R2_other":   y_int_m["R2_other"],
+                "int/MAE_dashcam":y_int_m["MAE_dashcam"],
+                "int/MAE_other":  y_int_m["MAE_other"],
+            })
+
+        # 플롯(연속값 기준)
         plots = save_plots(y, yhat, float(target_basis), out_prefix)
         for k, pth in plots.items():
             if os.path.exists(pth):
                 wandb.log({f"plots/{k}": wandb.Image(pth)})
 
         # W&B 로그
-        wandb.log({
-            "eval/MAE": metrics["MAE"], "eval/RMSE": metrics["RMSE"], "eval/R2": metrics["R2"],
-            "eval/R2_dashcam": metrics["R2_dashcam"], "eval/R2_other": metrics["R2_other"],
-            "eval/MAE_dashcam": metrics["MAE_dashcam"], "eval/MAE_other": metrics["MAE_other"],
-            "count": len(y)
-        })
+        log_payload = {
+            "eval/MAE": metrics.get("MAE"),
+            "eval/RMSE": metrics.get("RMSE"),
+            "eval/R2": metrics.get("R2"),
+            "eval/R2_dashcam": metrics.get("R2_dashcam"),
+            "eval/R2_other": metrics.get("R2_other"),
+            "eval/MAE_dashcam": metrics.get("MAE_dashcam"),
+            "eval/MAE_other": metrics.get("MAE_other"),
+            "count": len(y),
+
+            # ★ 정수 스냅 로그
+            "eval_int/MAE": metrics.get("int/MAE"),
+            "eval_int/RMSE": metrics.get("int/RMSE"),
+            "eval_int/R2": metrics.get("int/R2"),
+            "eval_int/R2_dashcam": metrics.get("int/R2_dashcam"),
+            "eval_int/R2_other": metrics.get("int/R2_other"),
+            "eval_int/MAE_dashcam": metrics.get("int/MAE_dashcam"),
+            "eval_int/MAE_other": metrics.get("int/MAE_other"),
+        }
+        wandb.log({k: v for k, v in log_payload.items() if v is not None})
 
     # CSV/JSON 저장
     pd.DataFrame(rows_out).to_csv(f"{out_prefix}.csv", index=False, encoding="utf-8")
@@ -359,7 +467,7 @@ def parse_args():
     p.add_argument("--classifier_ckpt", type=str,
                    default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep13_r3d18.pth"))
     # 확률-기반/임베딩-기반 ckpt 아무 거나 넣어도 자동감지됨
-    p.add_argument("--regressor_ckpt", type=str, default="/app/text-train/checkpoints/best_multi_emb.pt")
+    p.add_argument("--regressor_ckpt", type=str, default="/app/text-train/checkpoints/best_multi_emb_onelayer_softmax.pt")
     p.add_argument("--backbone", type=str, default="r3d18", choices=["r3d18","timesformer","videomae"])
     p.add_argument("--classifier_pretrained", action="store_true")
     p.add_argument("--target_basis", type=float, default=10.0)

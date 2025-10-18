@@ -14,6 +14,7 @@ from PIL import Image
 import wandb
 from tqdm.auto import tqdm
 import cv2
+import torch.nn.functional as F
 
 from transformers import AutoModel, AutoTokenizer, TimesformerModel, VideoMAEModel
 from torchvision.models.video import r3d_18, R3D_18_Weights
@@ -314,33 +315,119 @@ def load_classifier(ckpt_path: str, backbone="r3d18", device="cuda", pretrained=
     model.load_state_dict(new_sd, strict=False)
     model.to(device).eval()
     return model
-
 # =========================
 # (4) Text→Fault 회귀
 # =========================
-class TextToFaultRatio(nn.Module):
-    def __init__(self, model_name="bert-base-uncased", hidden_dim=768):
+class TextToFaultRatio_LN(nn.Module):
+    """학습체크포인트가 LayerNorm으로 시작하는 버전 (LN → 512 → 512 → 128 → 2)"""
+    def __init__(self, model_name="bert-base-uncased", target_basis: float = 10.0):
         super().__init__()
+        self.target_basis = float(target_basis)
+        self.encoder = AutoModel.from_pretrained(model_name)
+        H = self.encoder.config.hidden_size
+        self.regressor = nn.Sequential(
+            nn.LayerNorm(H),
+            nn.Linear(H, 512), nn.GELU(), nn.Dropout(0.1),
+            nn.Linear(512, 512), nn.GELU(), nn.Dropout(0.1),
+            nn.Linear(512, 128), nn.GELU(),
+            nn.Linear(128, 2),
+        )
+
+    def forward(self, input_ids, attention_mask):
+        out = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
+        cls = out.last_hidden_state[:, 0]
+        z = self.regressor(cls)               # [B,2] (raw)
+        # 음수 방지 + 합을 basis로 맞추는 간단한 안정화
+        v = torch.nn.functional.softplus(z)
+        s = v.sum(dim=1, keepdim=True).clamp_min(1e-6)
+        return v * (self.target_basis / s)    # [B,2], sum=target_basis
+
+
+class TextToFaultRatio_MLP(nn.Module):
+    """심플 MLP 버전 (Linear 768→128→2). 기존 eval 스크립트에 있던 구조."""
+    # def __init__(self, model_name="bert-base-uncased", target_basis: float = 10.0):
+    #     super().__init__()
+    #     self.target_basis = float(target_basis)
+    #     self.encoder = AutoModel.from_pretrained(model_name)
+    #     H = self.encoder.config.hidden_size
+    #     self.regressor = nn.Sequential(
+    #         nn.Linear(H, 128),
+    #         nn.ReLU(),
+    #         nn.Linear(128, 2),
+    #     )
+
+    # def forward(self, input_ids, attention_mask):
+    #     out = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
+    #     cls = out.last_hidden_state[:, 0]
+    #     z = self.regressor(cls)
+    #     v = torch.nn.functional.softplus(z)
+    #     s = v.sum(dim=1, keepdim=True).clamp_min(1e-6)
+    #     return v * (self.target_basis / s)
+    def __init__(self, model_name="bert-base-uncased", hidden_dim=768, target_basis=10.0, use_softmax=True):
+        super().__init__()
+        self.target_basis = target_basis
+        self.use_softmax = use_softmax
         self.encoder = AutoModel.from_pretrained(model_name)
         self.regressor = nn.Sequential(
             nn.Linear(hidden_dim, 128),
             nn.ReLU(),
-            nn.Linear(128, 2)
+            nn.Linear(128, 2),
         )
-    def forward(self, input_ids, attention_mask):
-        out = self.encoder(input_ids=input_ids, attention_mask=attention_mask)
-        cls = out.last_hidden_state[:,0]
-        return self.regressor(cls)
 
-def load_fault_model(path: str, model_name="bert-base-uncased", device="cuda"):
-    obj = torch.load(path, map_location="cpu")
-    model = TextToFaultRatio(model_name=model_name)
-    if isinstance(obj, dict) and "state_dict" in obj:
-        model.load_state_dict(obj["state_dict"], strict=True)
-    elif isinstance(obj, dict):
-        model.load_state_dict(obj, strict=False)
-    elif hasattr(obj, "state_dict"):
-        model = obj
+    def forward(self, input_ids, attention_mask):
+        cls = self.encoder(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state[:, 0]
+        logits = self.regressor(cls)               # [B,2]
+        if self.use_softmax:
+            probs = torch.softmax(logits, dim=-1)  # 합=1
+            pair  = probs * self.target_basis      # 합=basis
+        else:
+            v = F.softplus(logits)                 # 비음수
+            pair = v * (self.target_basis / (v.sum(dim=1, keepdim=True) + 1e-8))
+        return pair
+
+def load_fault_model(path: str, model_name="bert-base-uncased", device="cuda", target_basis: float = 10.0):
+    sd_raw = torch.load(path, map_location="cpu")
+
+    # state_dict 꺼내기 (+ DataParallel 키 정리)
+    if isinstance(sd_raw, dict) and "state_dict" in sd_raw:
+        sd = sd_raw["state_dict"]
+    elif isinstance(sd_raw, dict):
+        sd = sd_raw
+    else:
+        # 모델 객체 그대로 저장된 케이스
+        m = sd_raw.to(device).eval()
+        tok = AutoTokenizer.from_pretrained(model_name)
+        return m, tok
+
+    new_sd = {}
+    for k, v in sd.items():
+        new_sd[k[7:]] = v if k.startswith("module.") else v  # module. 제거
+        if k.startswith("module."):
+            new_sd[k[7:]] = v
+        else:
+            new_sd[k] = v
+
+    # 체크포인트의 첫 레이어가 LN인지 Linear인지 확인
+    first_w = None
+    for key in ["regressor.0.weight", "regressor.0.bias"]:
+        if key in new_sd:
+            first_w = new_sd[key]
+            break
+
+    # 1D weight면 LayerNorm(768), 2D면 Linear(?,?)
+    if first_w is not None and first_w.ndim == 1:
+        model = TextToFaultRatio_LN(model_name=model_name, target_basis=target_basis)
+    else:
+        model = TextToFaultRatio_MLP(model_name=model_name, target_basis=target_basis)
+
+    # shape 안 맞는 키는 버리고 로드
+    msd = model.state_dict()
+    filtered = {k: v for k, v in new_sd.items() if (k in msd and msd[k].shape == v.shape)}
+    dropped = [k for k in new_sd.keys() if k not in filtered]
+    if dropped:
+        print(f"[fault load] dropped keys due to shape mismatch: {len(dropped)}")
+
+    model.load_state_dict(filtered, strict=False)
     model.to(device).eval()
     tok = AutoTokenizer.from_pretrained(model_name)
     return model, tok
@@ -666,13 +753,13 @@ def parse_args():
     # p.add_argument("--classifier_ckpt", type=str,
     #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep6_videomae_final.pth"))
     # p.add_argument("--classifier_ckpt", type=str,
-    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep13_r3d18_final.pth"))
+    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep18_r3d18_final.pth"))
     p.add_argument("--classifier_ckpt", type=str,
-                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep13_r3d18.pth"))
+                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep13_r3d18_final.pth"))
     # p.add_argument("--classifier_ckpt", type=str,
     #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep11_r3d18_mlp.pth"))
     p.add_argument("--fault_ckpt", type=str,
-                   default=os.environ.get("FAULT_CKPT", "/app/text-train/fault_ratio_bert_backup.pt"))
+                   default=os.environ.get("FAULT_CKPT", "/app/text-train/fault_ratio_bert_modify_softmax.pt"))
     p.add_argument("--out_json", type=str,
                    default=os.environ.get("OUT_JSON", "/app/text-train/result_lstm/cls2ratio_eval.json"))
     p.add_argument("--backbone", type=str, default=os.environ.get("BACKBONE", "r3d18"),

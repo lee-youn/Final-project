@@ -8,7 +8,11 @@ import pandas as pd
 import torch, torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
-from torchvision.models.video import r3d_18
+from torchvision.models.video import (
+    r3d_18, R3D_18_Weights,
+    r2plus1d_18, R2Plus1D_18_Weights,
+    mc3_18, MC3_18_Weights
+)
 from torchvision.transforms import functional as VF
 from dataclasses import dataclass
 import pandas as pd
@@ -410,6 +414,16 @@ class TripleHeadVideoClassifier(nn.Module):
             self.backbone = r3d_18(weights=R3D_18_Weights.KINETICS400_V1)
             feat = self.backbone.fc.in_features
             self.backbone.fc = nn.Identity()
+            
+        elif backbone == "r2plus1d18":
+            self.backbone = r2plus1d_18(weights=R2Plus1D_18_Weights.KINETICS400_V1)
+            feat = self.backbone.fc.in_features
+            self.backbone.fc = nn.Identity()
+
+        elif backbone == "mc3_18":
+            self.backbone = mc3_18(weights=MC3_18_Weights.KINETICS400_V1)
+            feat = self.backbone.fc.in_features
+            self.backbone.fc = nn.Identity()
 
         elif backbone == "timesformer":
             self.backbone = TimesformerModel.from_pretrained(
@@ -481,6 +495,14 @@ class TripleHeadVideoClassifier(nn.Module):
 
     def forward(self, x):
         if self.backbone_name == "r3d18":
+            # (B, C, T, H, W)
+            z = self.backbone(x)
+        
+        if self.backbone_name == "r2plus1d18":
+            # (B, C, T, H, W)
+            z = self.backbone(x)
+        
+        if self.backbone_name == "mc3_18":
             # (B, C, T, H, W)
             z = self.backbone(x)
 
@@ -770,7 +792,7 @@ def main():
     best_f1 = 0.0 
     ap = argparse.ArgumentParser(conflict_handler="resolve")
     ap.add_argument("--backbone", type=str, default="r3d18",
-                choices=["r3d18", "timesformer", "videomae"],
+                choices=["r3d18", "r2plus1d18", "mc3_18", "timesformer", "videomae"],
                 help="영상 백본 선택")
     ap.add_argument("--mode", choices=["train","validate","predict"], default="train")
     ap.add_argument(
@@ -812,7 +834,7 @@ def main():
     args = ap.parse_args()
 
     device = args.device if torch.cuda.is_available() else "cpu"
-    wandb.init(project="final-video-desc", config=vars(args))
+    wandb.init(project="final-video-desc-update", config=vars(args))
 
     if args.mode == "train":
         train_ds = SingleCsvDataset(args.train_csv, video_root=args.train_video_root,

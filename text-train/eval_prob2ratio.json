@@ -1,0 +1,1488 @@
+{
+  "metrics": {
+    "MAE": 1.43382919053821,
+    "RMSE": 1.8133910395270294,
+    "R2": -0.2332368276553478,
+    "R2_dashcam": -0.23323680873075747,
+    "R2_other": -0.2332368465799377,
+    "MAE_dashcam": 1.4338291629272348,
+    "MAE_other": 1.4338292181491852
+  },
+  "results": [
+    {
+      "idx": 0,
+      "video_name": "bb_1_170527_vehicle_120_249",
+      "pred_basis_dashcam": 6.876053333282471,
+      "pred_basis_other": 3.1239466667175293,
+      "pred_100_dashcam": 68.7605333328247,
+      "pred_100_other": 31.239466667175293,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 1,
+      "video_name": "bb_1_160413_vehicle_230_22321",
+      "pred_basis_dashcam": 6.8282294273376465,
+      "pred_basis_other": 3.1717703342437744,
+      "pred_100_dashcam": 68.28229427337646,
+      "pred_100_other": 31.717703342437744,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 2,
+      "video_name": "bb_1_191029_vehicle_126_210",
+      "pred_basis_dashcam": 7.633628845214844,
+      "pred_basis_other": 2.366370916366577,
+      "pred_100_dashcam": 76.33628845214844,
+      "pred_100_other": 23.66370916366577,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 3,
+      "video_name": "bb_1_190123_vehicle_232_21515",
+      "pred_basis_dashcam": 5.908015251159668,
+      "pred_basis_other": 4.091984748840332,
+      "pred_100_dashcam": 59.08015251159668,
+      "pred_100_other": 40.91984748840332,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 4,
+      "video_name": "bb_1_190809_vehicle_210_21031",
+      "pred_basis_dashcam": 7.394357204437256,
+      "pred_basis_other": 2.605642318725586,
+      "pred_100_dashcam": 73.94357204437256,
+      "pred_100_other": 26.05642318725586,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 5,
+      "video_name": "bb_1_211231_vehicle_118_119",
+      "pred_basis_dashcam": 6.799314498901367,
+      "pred_basis_other": 3.200685739517212,
+      "pred_100_dashcam": 67.99314498901367,
+      "pred_100_other": 32.00685739517212,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 6,
+      "video_name": "bb_1_140615_vehicle_38_167",
+      "pred_basis_dashcam": 9.3864164352417,
+      "pred_basis_other": 0.613584578037262,
+      "pred_100_dashcam": 93.86416435241699,
+      "pred_100_other": 6.13584578037262,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 7,
+      "video_name": "bb_1_170501_vehicle_215_24128",
+      "pred_basis_dashcam": 4.978762626647949,
+      "pred_basis_other": 5.021237850189209,
+      "pred_100_dashcam": 49.78762626647949,
+      "pred_100_other": 50.21237850189209,
+      "gt_basis_dashcam": 5.0,
+      "gt_basis_other": 5.0
+    },
+    {
+      "idx": 8,
+      "video_name": "bb_1_190617_vehicle_209_23322",
+      "pred_basis_dashcam": 8.378320693969727,
+      "pred_basis_other": 1.621679663658142,
+      "pred_100_dashcam": 83.78320693969727,
+      "pred_100_other": 16.21679663658142,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 9,
+      "video_name": "bb_1_150520_vehicle_118_103",
+      "pred_basis_dashcam": 8.636112213134766,
+      "pred_basis_other": 1.363887906074524,
+      "pred_100_dashcam": 86.36112213134766,
+      "pred_100_other": 13.63887906074524,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 10,
+      "video_name": "bb_1_170927_vehicle_235_21848",
+      "pred_basis_dashcam": 7.68345308303833,
+      "pred_basis_other": 2.31654691696167,
+      "pred_100_dashcam": 76.8345308303833,
+      "pred_100_other": 23.1654691696167,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 11,
+      "video_name": "bb_1_210126_vehicle_200_21653",
+      "pred_basis_dashcam": 8.462923049926758,
+      "pred_basis_other": 1.5370768308639526,
+      "pred_100_dashcam": 84.62923049926758,
+      "pred_100_other": 15.370768308639526,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 12,
+      "video_name": "bb_1_190328_vehicle_127_038",
+      "pred_basis_dashcam": 8.472261428833008,
+      "pred_basis_other": 1.5277385711669922,
+      "pred_100_dashcam": 84.72261428833008,
+      "pred_100_other": 15.277385711669922,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 13,
+      "video_name": "bb_1_180223_vehicle_39_155",
+      "pred_basis_dashcam": 8.397536277770996,
+      "pred_basis_other": 1.6024636030197144,
+      "pred_100_dashcam": 83.97536277770996,
+      "pred_100_other": 16.024636030197144,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 14,
+      "video_name": "bb_1_200819_vehicle_143_070",
+      "pred_basis_dashcam": 1.580303430557251,
+      "pred_basis_other": 8.419696807861328,
+      "pred_100_dashcam": 15.80303430557251,
+      "pred_100_other": 84.19696807861328,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 15,
+      "video_name": "bb_1_151003_vehicle_146_067",
+      "pred_basis_dashcam": 6.800863742828369,
+      "pred_basis_other": 3.1991360187530518,
+      "pred_100_dashcam": 68.00863742828369,
+      "pred_100_other": 31.991360187530518,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 16,
+      "video_name": "bb_1_220407_vehicle_47_037",
+      "pred_basis_dashcam": 9.424097061157227,
+      "pred_basis_other": 0.5759019255638123,
+      "pred_100_dashcam": 94.24097061157227,
+      "pred_100_other": 5.759019255638123,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 17,
+      "video_name": "bb_1_170324_vehicle_241_21687",
+      "pred_basis_dashcam": 3.285521984100342,
+      "pred_basis_other": 6.714478015899658,
+      "pred_100_dashcam": 32.85521984100342,
+      "pred_100_other": 67.14478015899658,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 18,
+      "video_name": "bb_1_210202_vehicle_224_23649",
+      "pred_basis_dashcam": 6.911802768707275,
+      "pred_basis_other": 3.0881967544555664,
+      "pred_100_dashcam": 69.11802768707275,
+      "pred_100_other": 30.881967544555664,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 19,
+      "video_name": "bb_1_160801_vehicle_112_087",
+      "pred_basis_dashcam": 0.6524220108985901,
+      "pred_basis_other": 9.347578048706055,
+      "pred_100_dashcam": 6.524220108985901,
+      "pred_100_other": 93.47578048706055,
+      "gt_basis_dashcam": 2.0,
+      "gt_basis_other": 8.0
+    },
+    {
+      "idx": 20,
+      "video_name": "bb_3_210628_vehicle_311_025",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 21,
+      "video_name": "bb_1_180609_vehicle_156_006",
+      "pred_basis_dashcam": 8.472257614135742,
+      "pred_basis_other": 1.5277420282363892,
+      "pred_100_dashcam": 84.72257614135742,
+      "pred_100_other": 15.277420282363892,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 22,
+      "video_name": "bb_1_160224_vehicle_225_21572",
+      "pred_basis_dashcam": 9.390231132507324,
+      "pred_basis_other": 0.6097685694694519,
+      "pred_100_dashcam": 93.90231132507324,
+      "pred_100_other": 6.097685694694519,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 23,
+      "video_name": "bb_1_160718_vehicle_46_108",
+      "pred_basis_dashcam": 3.200032949447632,
+      "pred_basis_other": 6.799967288970947,
+      "pred_100_dashcam": 32.00032949447632,
+      "pred_100_other": 67.99967288970947,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 24,
+      "video_name": "bb_1_140827_vehicle_208_22444",
+      "pred_basis_dashcam": 7.189587593078613,
+      "pred_basis_other": 2.8104119300842285,
+      "pred_100_dashcam": 71.89587593078613,
+      "pred_100_other": 28.104119300842285,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 25,
+      "video_name": "bb_3_201012_vehicle_228_21645",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 26,
+      "video_name": "bb_1_180524_vehicle_185_065",
+      "pred_basis_dashcam": 7.240522384643555,
+      "pred_basis_other": 2.7594778537750244,
+      "pred_100_dashcam": 72.40522384643555,
+      "pred_100_other": 27.594778537750244,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 27,
+      "video_name": "bb_1_171228_vehicle_142_127",
+      "pred_basis_dashcam": 3.163525104522705,
+      "pred_basis_other": 6.836474418640137,
+      "pred_100_dashcam": 31.63525104522705,
+      "pred_100_other": 68.36474418640137,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 28,
+      "video_name": "bb_1_190330_vehicle_260_24750",
+      "pred_basis_dashcam": 8.45527458190918,
+      "pred_basis_other": 1.5447254180908203,
+      "pred_100_dashcam": 84.5527458190918,
+      "pred_100_other": 15.447254180908203,
+      "gt_basis_dashcam": 10.0,
+      "gt_basis_other": 0.0
+    },
+    {
+      "idx": 29,
+      "video_name": "bb_1_190515_vehicle_47_047",
+      "pred_basis_dashcam": 7.297490119934082,
+      "pred_basis_other": 2.7025094032287598,
+      "pred_100_dashcam": 72.97490119934082,
+      "pred_100_other": 27.025094032287598,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 30,
+      "video_name": "bb_1_170227_vehicle_202_21800",
+      "pred_basis_dashcam": 3.1251323223114014,
+      "pred_basis_other": 6.8748674392700195,
+      "pred_100_dashcam": 31.251323223114014,
+      "pred_100_other": 68.7486743927002,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 31,
+      "video_name": "bb_1_210820_vehicle_113_137",
+      "pred_basis_dashcam": 3.0735745429992676,
+      "pred_basis_other": 6.926425933837891,
+      "pred_100_dashcam": 30.735745429992676,
+      "pred_100_other": 69.2642593383789,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 32,
+      "video_name": "bb_1_191108_vehicle_214_20524",
+      "pred_basis_dashcam": 8.314801216125488,
+      "pred_basis_other": 1.685198426246643,
+      "pred_100_dashcam": 83.14801216125488,
+      "pred_100_other": 16.85198426246643,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 33,
+      "video_name": "bb_1_170820_vehicle_210_20874",
+      "pred_basis_dashcam": 1.6591800451278687,
+      "pred_basis_other": 8.3408203125,
+      "pred_100_dashcam": 16.591800451278687,
+      "pred_100_other": 83.408203125,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 34,
+      "video_name": "bb_1_200813_vehicle_249_21072",
+      "pred_basis_dashcam": 7.372645854949951,
+      "pred_basis_other": 2.627354145050049,
+      "pred_100_dashcam": 73.72645854949951,
+      "pred_100_other": 26.27354145050049,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 35,
+      "video_name": "bb_1_170304_vehicle_114_055",
+      "pred_basis_dashcam": 3.8037362098693848,
+      "pred_basis_other": 6.196263313293457,
+      "pred_100_dashcam": 38.03736209869385,
+      "pred_100_other": 61.96263313293457,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 36,
+      "video_name": "bb_1_160417_vehicle_146_110",
+      "pred_basis_dashcam": 8.560979843139648,
+      "pred_basis_other": 1.4390206336975098,
+      "pred_100_dashcam": 85.60979843139648,
+      "pred_100_other": 14.390206336975098,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 37,
+      "video_name": "bb_3_180222_vehicle_117_176",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 38,
+      "video_name": "bb_1_180102_vehicle_125_132",
+      "pred_basis_dashcam": 6.884251594543457,
+      "pred_basis_other": 3.115748882293701,
+      "pred_100_dashcam": 68.84251594543457,
+      "pred_100_other": 31.15748882293701,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 39,
+      "video_name": "bb_1_210910_vehicle_45_284",
+      "pred_basis_dashcam": 8.396123886108398,
+      "pred_basis_other": 1.6038753986358643,
+      "pred_100_dashcam": 83.96123886108398,
+      "pred_100_other": 16.038753986358643,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 40,
+      "video_name": "bb_1_160126_vehicle_48_293",
+      "pred_basis_dashcam": 9.356184959411621,
+      "pred_basis_other": 0.6438149213790894,
+      "pred_100_dashcam": 93.56184959411621,
+      "pred_100_other": 6.4381492137908936,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 41,
+      "video_name": "bb_1_120318_vehicle_120_240",
+      "pred_basis_dashcam": 7.044763088226318,
+      "pred_basis_other": 2.9552369117736816,
+      "pred_100_dashcam": 70.44763088226318,
+      "pred_100_other": 29.552369117736816,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 42,
+      "video_name": "bb_1_180425_vehicle_114_064",
+      "pred_basis_dashcam": 3.0216457843780518,
+      "pred_basis_other": 6.978353977203369,
+      "pred_100_dashcam": 30.216457843780518,
+      "pred_100_other": 69.78353977203369,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 43,
+      "video_name": "bb_3_110922_vehicle_246_22384",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 44,
+      "video_name": "bb_1_150404_vehicle_19_058",
+      "pred_basis_dashcam": 8.4124174118042,
+      "pred_basis_other": 1.5875825881958008,
+      "pred_100_dashcam": 84.12417411804199,
+      "pred_100_other": 15.875825881958008,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 45,
+      "video_name": "bb_1_150525_vehicle_203_22496",
+      "pred_basis_dashcam": 8.292285919189453,
+      "pred_basis_other": 1.707713007926941,
+      "pred_100_dashcam": 82.92285919189453,
+      "pred_100_other": 17.07713007926941,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 46,
+      "video_name": "bb_1_180601_vehicle_253_22174",
+      "pred_basis_dashcam": 8.467816352844238,
+      "pred_basis_other": 1.5321836471557617,
+      "pred_100_dashcam": 84.67816352844238,
+      "pred_100_other": 15.321836471557617,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 47,
+      "video_name": "bb_1_190422_vehicle_238_23523",
+      "pred_basis_dashcam": 7.671422958374023,
+      "pred_basis_other": 2.3285775184631348,
+      "pred_100_dashcam": 76.71422958374023,
+      "pred_100_other": 23.285775184631348,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 48,
+      "video_name": "bb_1_161017_vehicle_41_214",
+      "pred_basis_dashcam": 7.722064018249512,
+      "pred_basis_other": 2.27793550491333,
+      "pred_100_dashcam": 77.22064018249512,
+      "pred_100_other": 22.7793550491333,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 49,
+      "video_name": "bb_1_180531_vehicle_244_22283",
+      "pred_basis_dashcam": 6.784358024597168,
+      "pred_basis_other": 3.215641975402832,
+      "pred_100_dashcam": 67.84358024597168,
+      "pred_100_other": 32.15641975402832,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 50,
+      "video_name": "bb_1_200215_vehicle_127_056",
+      "pred_basis_dashcam": 6.757383823394775,
+      "pred_basis_other": 3.2426164150238037,
+      "pred_100_dashcam": 67.57383823394775,
+      "pred_100_other": 32.42616415023804,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 51,
+      "video_name": "bb_1_180729_vehicle_219_21620",
+      "pred_basis_dashcam": 8.11565113067627,
+      "pred_basis_other": 1.8843488693237305,
+      "pred_100_dashcam": 81.1565113067627,
+      "pred_100_other": 18.843488693237305,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 52,
+      "video_name": "bb_1_210507_vehicle_248_22993",
+      "pred_basis_dashcam": 1.8288519382476807,
+      "pred_basis_other": 8.171148300170898,
+      "pred_100_dashcam": 18.288519382476807,
+      "pred_100_other": 81.71148300170898,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 53,
+      "video_name": "bb_1_160630_vehicle_213_21607",
+      "pred_basis_dashcam": 7.550522804260254,
+      "pred_basis_other": 2.4494776725769043,
+      "pred_100_dashcam": 75.50522804260254,
+      "pred_100_other": 24.494776725769043,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 54,
+      "video_name": "bb_1_170724_vehicle_126_016",
+      "pred_basis_dashcam": 6.801332473754883,
+      "pred_basis_other": 3.1986684799194336,
+      "pred_100_dashcam": 68.01332473754883,
+      "pred_100_other": 31.986684799194336,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 55,
+      "video_name": "bb_1_150330_vehicle_228_22369",
+      "pred_basis_dashcam": 6.9794793128967285,
+      "pred_basis_other": 3.0205204486846924,
+      "pred_100_dashcam": 69.79479312896729,
+      "pred_100_other": 30.205204486846924,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 56,
+      "video_name": "bb_1_190707_vehicle_38_132",
+      "pred_basis_dashcam": 8.470880508422852,
+      "pred_basis_other": 1.529119610786438,
+      "pred_100_dashcam": 84.70880508422852,
+      "pred_100_other": 15.29119610786438,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 57,
+      "video_name": "bb_1_160412_vehicle_130_115",
+      "pred_basis_dashcam": 8.423410415649414,
+      "pred_basis_other": 1.5765902996063232,
+      "pred_100_dashcam": 84.23410415649414,
+      "pred_100_other": 15.765902996063232,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 58,
+      "video_name": "bb_1_210210_vehicle_221_22209",
+      "pred_basis_dashcam": 7.348728656768799,
+      "pred_basis_other": 2.651270627975464,
+      "pred_100_dashcam": 73.48728656768799,
+      "pred_100_other": 26.51270627975464,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 59,
+      "video_name": "bb_1_210827_vehicle_316_051",
+      "pred_basis_dashcam": 6.630756378173828,
+      "pred_basis_other": 3.36924409866333,
+      "pred_100_dashcam": 66.30756378173828,
+      "pred_100_other": 33.6924409866333,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 60,
+      "video_name": "bb_1_210523_vehicle_21_250",
+      "pred_basis_dashcam": 7.577078342437744,
+      "pred_basis_other": 2.4229211807250977,
+      "pred_100_dashcam": 75.77078342437744,
+      "pred_100_other": 24.229211807250977,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 61,
+      "video_name": "bb_1_130801_vehicle_29_158",
+      "pred_basis_dashcam": 3.352038621902466,
+      "pred_basis_other": 6.647961616516113,
+      "pred_100_dashcam": 33.52038621902466,
+      "pred_100_other": 66.47961616516113,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 62,
+      "video_name": "bb_3_160424_vehicle_119_181",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 63,
+      "video_name": "bb_1_211127_vehicle_252_24503",
+      "pred_basis_dashcam": 8.476447105407715,
+      "pred_basis_other": 1.5235525369644165,
+      "pred_100_dashcam": 84.76447105407715,
+      "pred_100_other": 15.235525369644165,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 64,
+      "video_name": "bb_1_200821_vehicle_231_22366",
+      "pred_basis_dashcam": 8.374513626098633,
+      "pred_basis_other": 1.6254864931106567,
+      "pred_100_dashcam": 83.74513626098633,
+      "pred_100_other": 16.254864931106567,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 65,
+      "video_name": "bb_1_200410_vehicle_48_030",
+      "pred_basis_dashcam": 6.916728973388672,
+      "pred_basis_other": 3.08327054977417,
+      "pred_100_dashcam": 69.16728973388672,
+      "pred_100_other": 30.8327054977417,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 66,
+      "video_name": "bb_1_190324_vehicle_312_060",
+      "pred_basis_dashcam": 6.992365837097168,
+      "pred_basis_other": 3.0076348781585693,
+      "pred_100_dashcam": 69.92365837097168,
+      "pred_100_other": 30.076348781585693,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 67,
+      "video_name": "bb_1_160615_vehicle_221_20958",
+      "pred_basis_dashcam": 0.6513584852218628,
+      "pred_basis_other": 9.348641395568848,
+      "pred_100_dashcam": 6.513584852218628,
+      "pred_100_other": 93.48641395568848,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 68,
+      "video_name": "bb_1_170525_vehicle_118_074",
+      "pred_basis_dashcam": 8.491976737976074,
+      "pred_basis_other": 1.5080232620239258,
+      "pred_100_dashcam": 84.91976737976074,
+      "pred_100_other": 15.080232620239258,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 69,
+      "video_name": "bb_1_100222_vehicle_204_21756",
+      "pred_basis_dashcam": 8.48261833190918,
+      "pred_basis_other": 1.5173816680908203,
+      "pred_100_dashcam": 84.8261833190918,
+      "pred_100_other": 15.173816680908203,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 70,
+      "video_name": "bb_1_220414_vehicle_209_22339",
+      "pred_basis_dashcam": 8.326932907104492,
+      "pred_basis_other": 1.6730670928955078,
+      "pred_100_dashcam": 83.26932907104492,
+      "pred_100_other": 16.730670928955078,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 71,
+      "video_name": "bb_1_150926_vehicle_48_191",
+      "pred_basis_dashcam": 3.095306873321533,
+      "pred_basis_other": 6.904692649841309,
+      "pred_100_dashcam": 30.953068733215332,
+      "pred_100_other": 69.04692649841309,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 72,
+      "video_name": "bb_1_151124_vehicle_130_224",
+      "pred_basis_dashcam": 7.4088897705078125,
+      "pred_basis_other": 2.5911102294921875,
+      "pred_100_dashcam": 74.08889770507812,
+      "pred_100_other": 25.911102294921875,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 73,
+      "video_name": "bb_3_150503_vehicle_117_170",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 74,
+      "video_name": "bb_3_140522_vehicle_35_013",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 75,
+      "video_name": "cc_3_150101_vehicle_46_290",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 76,
+      "video_name": "bb_1_140224_vehicle_246_22439",
+      "pred_basis_dashcam": 7.1712870597839355,
+      "pred_basis_other": 2.8287127017974854,
+      "pred_100_dashcam": 71.71287059783936,
+      "pred_100_other": 28.287127017974854,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 77,
+      "video_name": "bb_1_150730_vehicle_223_20151",
+      "pred_basis_dashcam": 6.941559314727783,
+      "pred_basis_other": 3.0584404468536377,
+      "pred_100_dashcam": 69.41559314727783,
+      "pred_100_other": 30.584404468536377,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 78,
+      "video_name": "bb_3_150423_vehicle_29_264",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 79,
+      "video_name": "bb_1_170318_vehicle_253_21783",
+      "pred_basis_dashcam": 8.672736167907715,
+      "pred_basis_other": 1.327263355255127,
+      "pred_100_dashcam": 86.72736167907715,
+      "pred_100_other": 13.27263355255127,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 80,
+      "video_name": "bb_1_211214_vehicle_089_021",
+      "pred_basis_dashcam": 8.876764297485352,
+      "pred_basis_other": 1.1232357025146484,
+      "pred_100_dashcam": 88.76764297485352,
+      "pred_100_other": 11.232357025146484,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 81,
+      "video_name": "bb_1_180216_vehicle_236_23151",
+      "pred_basis_dashcam": 9.366668701171875,
+      "pred_basis_other": 0.6333312392234802,
+      "pred_100_dashcam": 93.66668701171875,
+      "pred_100_other": 6.333312392234802,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 82,
+      "video_name": "bb_1_150112_vehicle_235_22423",
+      "pred_basis_dashcam": 8.49743366241455,
+      "pred_basis_other": 1.502565860748291,
+      "pred_100_dashcam": 84.97433662414551,
+      "pred_100_other": 15.02565860748291,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 83,
+      "video_name": "bb_1_170511_vehicle_249_21872",
+      "pred_basis_dashcam": 1.6986751556396484,
+      "pred_basis_other": 8.301324844360352,
+      "pred_100_dashcam": 16.986751556396484,
+      "pred_100_other": 83.01324844360352,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 84,
+      "video_name": "bb_1_200515_vehicle_47_038",
+      "pred_basis_dashcam": 3.0911853313446045,
+      "pred_basis_other": 6.908814430236816,
+      "pred_100_dashcam": 30.911853313446045,
+      "pred_100_other": 69.08814430236816,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 85,
+      "video_name": "cc_3_211208_vehicle_120_011",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 86,
+      "video_name": "bb_1_120205_vehicle_238_22880",
+      "pred_basis_dashcam": 3.136904239654541,
+      "pred_basis_other": 6.863095760345459,
+      "pred_100_dashcam": 31.36904239654541,
+      "pred_100_other": 68.63095760345459,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 87,
+      "video_name": "bb_1_151215_vehicle_35_117",
+      "pred_basis_dashcam": 2.3558177947998047,
+      "pred_basis_other": 7.644182205200195,
+      "pred_100_dashcam": 23.558177947998047,
+      "pred_100_other": 76.44182205200195,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 88,
+      "video_name": "bb_1_160219_vehicle_142_150",
+      "pred_basis_dashcam": 8.475603103637695,
+      "pred_basis_other": 1.5243966579437256,
+      "pred_100_dashcam": 84.75603103637695,
+      "pred_100_other": 15.243966579437256,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 89,
+      "video_name": "bb_1_180807_vehicle_251_21932",
+      "pred_basis_dashcam": 7.210282325744629,
+      "pred_basis_other": 2.789717674255371,
+      "pred_100_dashcam": 72.10282325744629,
+      "pred_100_other": 27.89717674255371,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 90,
+      "video_name": "bb_1_140624_vehicle_108_240",
+      "pred_basis_dashcam": 0.6670644879341125,
+      "pred_basis_other": 9.332935333251953,
+      "pred_100_dashcam": 6.6706448793411255,
+      "pred_100_other": 93.32935333251953,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 91,
+      "video_name": "bb_1_120105_vehicle_130_132",
+      "pred_basis_dashcam": 8.74216365814209,
+      "pred_basis_other": 1.257835865020752,
+      "pred_100_dashcam": 87.4216365814209,
+      "pred_100_other": 12.57835865020752,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 92,
+      "video_name": "bb_3_001026_vehicle_218_22368",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 93,
+      "video_name": "bb_1_140309_vehicle_108_156",
+      "pred_basis_dashcam": 2.1215436458587646,
+      "pred_basis_other": 7.8784565925598145,
+      "pred_100_dashcam": 21.215436458587646,
+      "pred_100_other": 78.78456592559814,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 94,
+      "video_name": "bb_1_211124_vehicle_30_412",
+      "pred_basis_dashcam": 7.690674781799316,
+      "pred_basis_other": 2.309325695037842,
+      "pred_100_dashcam": 76.90674781799316,
+      "pred_100_other": 23.093256950378418,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 95,
+      "video_name": "bb_1_190921_vehicle_220_22287",
+      "pred_basis_dashcam": 8.500064849853516,
+      "pred_basis_other": 1.499934434890747,
+      "pred_100_dashcam": 85.00064849853516,
+      "pred_100_other": 14.99934434890747,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 96,
+      "video_name": "bb_1_190731_vehicle_206_22117",
+      "pred_basis_dashcam": 3.0963048934936523,
+      "pred_basis_other": 6.903695106506348,
+      "pred_100_dashcam": 30.963048934936523,
+      "pred_100_other": 69.03695106506348,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 97,
+      "video_name": "bb_1_211031_vehicle_225_22188",
+      "pred_basis_dashcam": 1.65084969997406,
+      "pred_basis_other": 8.349149703979492,
+      "pred_100_dashcam": 16.5084969997406,
+      "pred_100_other": 83.49149703979492,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 98,
+      "video_name": "bb_1_170220_vehicle_120_015",
+      "pred_basis_dashcam": 1.6836111545562744,
+      "pred_basis_other": 8.316389083862305,
+      "pred_100_dashcam": 16.836111545562744,
+      "pred_100_other": 83.16389083862305,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 99,
+      "video_name": "bb_1_200409_vehicle_201_23677",
+      "pred_basis_dashcam": 3.08310866355896,
+      "pred_basis_other": 6.916891098022461,
+      "pred_100_dashcam": 30.8310866355896,
+      "pred_100_other": 69.16891098022461,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 100,
+      "video_name": "bb_1_180111_vehicle_145_097",
+      "pred_basis_dashcam": 3.0920186042785645,
+      "pred_basis_other": 6.907981872558594,
+      "pred_100_dashcam": 30.920186042785645,
+      "pred_100_other": 69.07981872558594,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 101,
+      "video_name": "bb_1_180206_vehicle_21_263",
+      "pred_basis_dashcam": 8.501508712768555,
+      "pred_basis_other": 1.4984915256500244,
+      "pred_100_dashcam": 85.01508712768555,
+      "pred_100_other": 14.984915256500244,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 102,
+      "video_name": "bb_3_190113_vehicle_118_035",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 103,
+      "video_name": "bb_1_210607_vehicle_314_057",
+      "pred_basis_dashcam": 6.755185604095459,
+      "pred_basis_other": 3.244814395904541,
+      "pred_100_dashcam": 67.55185604095459,
+      "pred_100_other": 32.44814395904541,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 104,
+      "video_name": "bb_1_180923_vehicle_252_21737",
+      "pred_basis_dashcam": 7.180874347686768,
+      "pred_basis_other": 2.8191254138946533,
+      "pred_100_dashcam": 71.80874347686768,
+      "pred_100_other": 28.191254138946533,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 105,
+      "video_name": "cc_3_220723_vehicle_233_21348",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 106,
+      "video_name": "bb_1_160131_vehicle_260_23522",
+      "pred_basis_dashcam": 3.3552744388580322,
+      "pred_basis_other": 6.644725322723389,
+      "pred_100_dashcam": 33.55274438858032,
+      "pred_100_other": 66.44725322723389,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 107,
+      "video_name": "bb_1_150209_vehicle_211_21382",
+      "pred_basis_dashcam": 8.476200103759766,
+      "pred_basis_other": 1.5237996578216553,
+      "pred_100_dashcam": 84.76200103759766,
+      "pred_100_other": 15.237996578216553,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 108,
+      "video_name": "bb_1_141228_vehicle_185_088",
+      "pred_basis_dashcam": 3.1096553802490234,
+      "pred_basis_other": 6.890345096588135,
+      "pred_100_dashcam": 31.096553802490234,
+      "pred_100_other": 68.90345096588135,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 109,
+      "video_name": "bb_1_170504_vehicle_246_22419",
+      "pred_basis_dashcam": 6.800264835357666,
+      "pred_basis_other": 3.199734926223755,
+      "pred_100_dashcam": 68.00264835357666,
+      "pred_100_other": 31.99734926223755,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 110,
+      "video_name": "bb_1_180723_vehicle_114_143",
+      "pred_basis_dashcam": 6.885658264160156,
+      "pred_basis_other": 3.1143414974212646,
+      "pred_100_dashcam": 68.85658264160156,
+      "pred_100_other": 31.143414974212646,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 111,
+      "video_name": "bb_1_150421_vehicle_244_21576",
+      "pred_basis_dashcam": 4.237919807434082,
+      "pred_basis_other": 5.762080192565918,
+      "pred_100_dashcam": 42.37919807434082,
+      "pred_100_other": 57.62080192565918,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 112,
+      "video_name": "bb_1_181103_vehicle_123_317",
+      "pred_basis_dashcam": 6.6615777015686035,
+      "pred_basis_other": 3.338421583175659,
+      "pred_100_dashcam": 66.61577701568604,
+      "pred_100_other": 33.38421583175659,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 113,
+      "video_name": "bb_1_200917_vehicle_249_21727",
+      "pred_basis_dashcam": 3.4820973873138428,
+      "pred_basis_other": 6.51790189743042,
+      "pred_100_dashcam": 34.82097387313843,
+      "pred_100_other": 65.1790189743042,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 114,
+      "video_name": "bb_3_190127_vehicle_220_21656",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 115,
+      "video_name": "bb_3_190214_vehicle_126_316",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 116,
+      "video_name": "bb_1_170325_vehicle_211_21009",
+      "pred_basis_dashcam": 7.120208263397217,
+      "pred_basis_other": 2.8797922134399414,
+      "pred_100_dashcam": 71.20208263397217,
+      "pred_100_other": 28.797922134399414,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 117,
+      "video_name": "bb_1_180802_vehicle_225_23934",
+      "pred_basis_dashcam": 3.1755361557006836,
+      "pred_basis_other": 6.824464321136475,
+      "pred_100_dashcam": 31.755361557006836,
+      "pred_100_other": 68.24464321136475,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 118,
+      "video_name": "bb_1_210209_vehicle_112_136",
+      "pred_basis_dashcam": 4.994886875152588,
+      "pred_basis_other": 5.005112648010254,
+      "pred_100_dashcam": 49.94886875152588,
+      "pred_100_other": 50.05112648010254,
+      "gt_basis_dashcam": 5.0,
+      "gt_basis_other": 5.0
+    },
+    {
+      "idx": 119,
+      "video_name": "bb_1_170704_vehicle_199_109",
+      "pred_basis_dashcam": 6.786040782928467,
+      "pred_basis_other": 3.2139596939086914,
+      "pred_100_dashcam": 67.86040782928467,
+      "pred_100_other": 32.139596939086914,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 120,
+      "video_name": "bb_3_170120_vehicle_254_21509",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 121,
+      "video_name": "bb_1_131002_vehicle_260_20551",
+      "pred_basis_dashcam": 8.485566139221191,
+      "pred_basis_other": 1.51443350315094,
+      "pred_100_dashcam": 84.85566139221191,
+      "pred_100_other": 15.1443350315094,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 122,
+      "video_name": "bb_1_210927_vehicle_207_22007",
+      "pred_basis_dashcam": 8.472784042358398,
+      "pred_basis_other": 1.5272154808044434,
+      "pred_100_dashcam": 84.72784042358398,
+      "pred_100_other": 15.272154808044434,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 123,
+      "video_name": "bb_1_220801_vehicle_221_24841",
+      "pred_basis_dashcam": 8.372703552246094,
+      "pred_basis_other": 1.6272969245910645,
+      "pred_100_dashcam": 83.72703552246094,
+      "pred_100_other": 16.272969245910645,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 124,
+      "video_name": "bb_1_170507_vehicle_241_24629",
+      "pred_basis_dashcam": 7.81752872467041,
+      "pred_basis_other": 2.1824707984924316,
+      "pred_100_dashcam": 78.1752872467041,
+      "pred_100_other": 21.824707984924316,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 125,
+      "video_name": "bb_1_170404_vehicle_217_46857",
+      "pred_basis_dashcam": 3.4573512077331543,
+      "pred_basis_other": 6.5426483154296875,
+      "pred_100_dashcam": 34.57351207733154,
+      "pred_100_other": 65.42648315429688,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 126,
+      "video_name": "bb_3_130520_vehicle_260_24090",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 127,
+      "video_name": "bb_1_140121_vehicle_229_22175",
+      "pred_basis_dashcam": 3.1130993366241455,
+      "pred_basis_other": 6.886899948120117,
+      "pred_100_dashcam": 31.130993366241455,
+      "pred_100_other": 68.86899948120117,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 128,
+      "video_name": "bb_1_200324_vehicle_223_22795",
+      "pred_basis_dashcam": 6.91657829284668,
+      "pred_basis_other": 3.0834219455718994,
+      "pred_100_dashcam": 69.1657829284668,
+      "pred_100_other": 30.834219455718994,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 129,
+      "video_name": "bb_1_190318_vehicle_229_21641",
+      "pred_basis_dashcam": 8.401119232177734,
+      "pred_basis_other": 1.5988802909851074,
+      "pred_100_dashcam": 84.01119232177734,
+      "pred_100_other": 15.988802909851074,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 130,
+      "video_name": "bb_1_210720_vehicle_206_22387",
+      "pred_basis_dashcam": 8.501768112182617,
+      "pred_basis_other": 1.4982314109802246,
+      "pred_100_dashcam": 85.01768112182617,
+      "pred_100_other": 14.982314109802246,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 131,
+      "video_name": "bb_1_220219_vehicle_210_21470",
+      "pred_basis_dashcam": 3.1535844802856445,
+      "pred_basis_other": 6.846415996551514,
+      "pred_100_dashcam": 31.535844802856445,
+      "pred_100_other": 68.46415996551514,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 132,
+      "video_name": "bb_1_220507_vehicle_243_24810",
+      "pred_basis_dashcam": 3.497973680496216,
+      "pred_basis_other": 6.5020270347595215,
+      "pred_100_dashcam": 34.97973680496216,
+      "pred_100_other": 65.02027034759521,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 133,
+      "video_name": "bb_1_170910_vehicle_225_23789",
+      "pred_basis_dashcam": 8.445974349975586,
+      "pred_basis_other": 1.5540249347686768,
+      "pred_100_dashcam": 84.45974349975586,
+      "pred_100_other": 15.540249347686768,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 134,
+      "video_name": "bb_1_220105_vehicle_116_201",
+      "pred_basis_dashcam": 1.6538423299789429,
+      "pred_basis_other": 8.346158027648926,
+      "pred_100_dashcam": 16.53842329978943,
+      "pred_100_other": 83.46158027648926,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 135,
+      "video_name": "bb_1_171028_vehicle_253_22351",
+      "pred_basis_dashcam": 8.495083808898926,
+      "pred_basis_other": 1.5049159526824951,
+      "pred_100_dashcam": 84.95083808898926,
+      "pred_100_other": 15.049159526824951,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 136,
+      "video_name": "bb_1_170429_vehicle_41_130",
+      "pred_basis_dashcam": 9.37863540649414,
+      "pred_basis_other": 0.6213641166687012,
+      "pred_100_dashcam": 93.7863540649414,
+      "pred_100_other": 6.213641166687012,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 137,
+      "video_name": "bb_1_150219_vehicle_248_21688",
+      "pred_basis_dashcam": 6.918365478515625,
+      "pred_basis_other": 3.081634283065796,
+      "pred_100_dashcam": 69.18365478515625,
+      "pred_100_other": 30.81634283065796,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 138,
+      "video_name": "bb_1_180420_vehicle_142_304",
+      "pred_basis_dashcam": 3.114708423614502,
+      "pred_basis_other": 6.885292053222656,
+      "pred_100_dashcam": 31.14708423614502,
+      "pred_100_other": 68.85292053222656,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 139,
+      "video_name": "bb_1_150710_vehicle_112_251",
+      "pred_basis_dashcam": 9.407270431518555,
+      "pred_basis_other": 0.5927289128303528,
+      "pred_100_dashcam": 94.07270431518555,
+      "pred_100_other": 5.927289128303528,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 140,
+      "video_name": "bb_1_201104_vehicle_244_21504",
+      "pred_basis_dashcam": 8.075441360473633,
+      "pred_basis_other": 1.9245586395263672,
+      "pred_100_dashcam": 80.75441360473633,
+      "pred_100_other": 19.245586395263672,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 141,
+      "video_name": "bb_3_140205_vehicle_224_22335",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 142,
+      "video_name": "bb_1_210713_vehicle_113_094",
+      "pred_basis_dashcam": 6.908111572265625,
+      "pred_basis_other": 3.091888904571533,
+      "pred_100_dashcam": 69.08111572265625,
+      "pred_100_other": 30.918889045715332,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    },
+    {
+      "idx": 143,
+      "video_name": "bb_1_181110_vehicle_194_077",
+      "pred_basis_dashcam": 8.506826400756836,
+      "pred_basis_other": 1.4931731224060059,
+      "pred_100_dashcam": 85.06826400756836,
+      "pred_100_other": 14.931731224060059,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 144,
+      "video_name": "bb_1_161217_vehicle_21_140",
+      "pred_basis_dashcam": 9.470878601074219,
+      "pred_basis_other": 0.529121994972229,
+      "pred_100_dashcam": 94.70878601074219,
+      "pred_100_other": 5.29121994972229,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 145,
+      "video_name": "bb_3_170704_vehicle_193_013",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 146,
+      "video_name": "bb_1_131123_vehicle_206_25217",
+      "pred_basis_dashcam": 6.424044609069824,
+      "pred_basis_other": 3.575955629348755,
+      "pred_100_dashcam": 64.24044609069824,
+      "pred_100_other": 35.75955629348755,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 147,
+      "video_name": "bb_3_150215_vehicle_192_081",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 148,
+      "video_name": "bb_3_100715_vehicle_21_022",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 149,
+      "video_name": "bb_3_150424_vehicle_119_241",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 150,
+      "video_name": "bb_1_150519_vehicle_111_120",
+      "pred_basis_dashcam": 8.466883659362793,
+      "pred_basis_other": 1.5331166982650757,
+      "pred_100_dashcam": 84.66883659362793,
+      "pred_100_other": 15.331166982650757,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 151,
+      "video_name": "bb_1_211129_vehicle_235_21934",
+      "pred_basis_dashcam": 8.469861030578613,
+      "pred_basis_other": 1.530138373374939,
+      "pred_100_dashcam": 84.69861030578613,
+      "pred_100_other": 15.30138373374939,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 152,
+      "video_name": "bb_1_191020_vehicle_117_042",
+      "pred_basis_dashcam": 8.468985557556152,
+      "pred_basis_other": 1.5310139656066895,
+      "pred_100_dashcam": 84.68985557556152,
+      "pred_100_other": 15.310139656066895,
+      "gt_basis_dashcam": 7.0,
+      "gt_basis_other": 3.0
+    },
+    {
+      "idx": 153,
+      "video_name": "bb_1_160422_vehicle_217_22450",
+      "pred_basis_dashcam": 1.6914007663726807,
+      "pred_basis_other": 8.308599472045898,
+      "pred_100_dashcam": 16.914007663726807,
+      "pred_100_other": 83.08599472045898,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 154,
+      "video_name": "bb_1_090619_vehicle_142_138",
+      "pred_basis_dashcam": 8.553980827331543,
+      "pred_basis_other": 1.4460196495056152,
+      "pred_100_dashcam": 85.53980827331543,
+      "pred_100_other": 14.460196495056152,
+      "gt_basis_dashcam": 3.0,
+      "gt_basis_other": 7.0
+    },
+    {
+      "idx": 155,
+      "video_name": "bb_3_141116_vehicle_205_25123",
+      "error": "video_not_found"
+    },
+    {
+      "idx": 156,
+      "video_name": "bb_1_190519_vehicle_141_086",
+      "pred_basis_dashcam": 6.062192440032959,
+      "pred_basis_other": 3.9378082752227783,
+      "pred_100_dashcam": 60.62192440032959,
+      "pred_100_other": 39.37808275222778,
+      "gt_basis_dashcam": 4.0,
+      "gt_basis_other": 6.0
+    },
+    {
+      "idx": 157,
+      "video_name": "bb_1_220313_vehicle_14_011",
+      "pred_basis_dashcam": 9.379862785339355,
+      "pred_basis_other": 0.6201375126838684,
+      "pred_100_dashcam": 93.79862785339355,
+      "pred_100_other": 6.201375126838684,
+      "gt_basis_dashcam": 8.0,
+      "gt_basis_other": 2.0
+    },
+    {
+      "idx": 158,
+      "video_name": "bb_1_150320_vehicle_40_145",
+      "pred_basis_dashcam": 8.536237716674805,
+      "pred_basis_other": 1.4637619256973267,
+      "pred_100_dashcam": 85.36237716674805,
+      "pred_100_other": 14.637619256973267,
+      "gt_basis_dashcam": 6.0,
+      "gt_basis_other": 4.0
+    }
+  ]
+}

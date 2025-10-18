@@ -94,6 +94,74 @@ other_vehicle_info = {
   27 : "Right Turn From Side Road Entered Later",
   28 : "Right Turn Right Lane"
 }
+def _compute_motion_roi_boxes(frames_rgb, thr=25, min_area=0.005, expand=0.15):
+    import cv2, numpy as np
+    boxes=[]; H,W=frames_rgb[0].shape[:2]; min_px=int(min_area*H*W)
+    prev=cv2.cvtColor(frames_rgb[0], cv2.COLOR_RGB2GRAY)
+    for t in range(1,len(frames_rgb)):
+        g=cv2.cvtColor(frames_rgb[t], cv2.COLOR_RGB2GRAY)
+        diff=cv2.absdiff(g,prev); _,m=cv2.threshold(diff,thr,255,cv2.THRESH_BINARY)
+        m=cv2.medianBlur(m,5); cnts,_=cv2.findContours(m,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        if cnts:
+            c=max(cnts,key=cv2.contourArea)
+            if cv2.contourArea(c)>=min_px:
+                x,y,w,h=cv2.boundingRect(c); cx,cy=x+w/2,y+h/2
+                w=int(w*(1+expand)); h=int(h*(1+expand))
+                x1=max(0,int(cx-w/2)); y1=max(0,int(cy-h/2))
+                x2=min(W-1,x1+w); y2=min(H-1,y1+h)
+                boxes.append((x1,y1,x2,y2)); prev=g; continue
+        boxes.append(None); prev=g
+    boxes=[boxes[0] if boxes and boxes[0] is not None else None]+boxes
+    return boxes
+
+def _crop_roi_video(frames_rgb, boxes, out_size=224):
+    import cv2, torch, numpy as np
+    import torchvision.transforms.functional as VF
+    H,W=frames_rgb[0].shape[:2]
+    def center_box():
+        s=min(H,W); x1=(W-s)//2; y1=(H-s)//2; return (x1,y1,x1+s,y1+s)
+    outs=[]
+    for i,fr in enumerate(frames_rgb):
+        x1,y1,x2,y2=(boxes[i] or center_box())
+        crop=cv2.resize(fr[y1:y2, x1:x2], (out_size,out_size))
+        outs.append(torch.from_numpy(crop).permute(2,0,1).float()/255.0)
+    vid=torch.stack(outs,0)
+    vid=VF.normalize(vid, mean=[0.485,0.456,0.406], std=[0.229,0.224,0.225])
+    return vid.permute(1,0,2,3)  # (C,T,H,W)
+
+@torch.no_grad()
+def build_classifier_input(vpath, model, num_frames=16, size=224):
+    import cv2, numpy as np, torch
+    # 1) 원본 프레임 추출
+    cap = cv2.VideoCapture(vpath)
+    total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    idxs = np.linspace(0, max(0, total-1), num_frames).astype(int)
+    frames_rgb = []
+    for idx in idxs:
+        cap.set(cv2.CAP_PROP_POS_FRAMES, int(idx))
+        ok, fr = cap.read()
+        if ok:
+            frames_rgb.append(cv2.cvtColor(fr, cv2.COLOR_BGR2RGB))
+    cap.release()
+    if not frames_rgb:
+        raise RuntimeError(f"no decoded frames: {vpath}")
+
+    # 2) Global 텐서
+    import torch
+    g = [cv2.resize(fr, (size, size)) for fr in frames_rgb]
+    g = torch.from_numpy(np.stack(g)).permute(0,3,1,2).float()/255.0  # (T,C,H,W)
+    mean = torch.tensor([0.485,0.456,0.406]).view(1,3,1,1)
+    std  = torch.tensor([0.229,0.224,0.225]).view(1,3,1,1)
+    g = (g - mean)/std
+    xg = g.permute(1,0,2,3).unsqueeze(0)  # (1,C,T,H,W)
+
+    # 3) Two-Branch면 ROI도 생성
+    if getattr(model, "is_two_branch", False):
+        boxes = _compute_motion_roi_boxes(frames_rgb, thr=25, min_area=0.005, expand=0.15)
+        xr = _crop_roi_video(frames_rgb, boxes, out_size=size).unsqueeze(0)  # (1,C,T,H,W)
+        return (xg, xr)
+    else:
+        return xg
 
 
 
@@ -136,6 +204,28 @@ def normalize_pair_100(p):
     scale = 100.0 / s
     return [a*scale, b*scale]
 
+class TwoBranchVideoClassifier(nn.Module):
+    def __init__(self, n_dv, n_ov):
+        super().__init__()
+        self.is_two_branch = True
+        self.g = r3d_18(weights=R3D_18_Weights.KINETICS400_V1); dim_g = self.g.fc.in_features; self.g.fc = nn.Identity()
+        self.r = r3d_18(weights=R3D_18_Weights.KINETICS400_V1); dim_r = self.r.fc.in_features; self.r.fc = nn.Identity()
+        self.proj_g = nn.Sequential(nn.LayerNorm(dim_g), nn.Linear(dim_g, dim_g), nn.ReLU(), nn.Dropout(0.3))
+        self.proj_r = nn.Sequential(nn.LayerNorm(dim_r), nn.Linear(dim_r, dim_r), nn.ReLU(), nn.Dropout(0.3))
+        self.dv = nn.Linear(dim_g, n_dv)
+        self.fuse = nn.Sequential(nn.LayerNorm(dim_g+dim_r), nn.Linear(dim_g+dim_r, dim_g), nn.ReLU(), nn.Dropout(0.3))
+        self.ov = nn.Linear(dim_g, n_ov)
+        self.is_two_branch = True
+
+    def forward(self, x_pair):
+        xg, xr = x_pair
+        zg = self.g(xg); zr = self.r(xr)
+        hg = self.proj_g(zg); hr = self.proj_r(zr)
+        ldv = self.dv(hg)
+        hf  = self.fuse(torch.cat([hg, hr], dim=-1))
+        lov = self.ov(hf)
+        return ldv, lov
+    
 def to_basis(pair100, target_basis=10.0):
     factor = 100.0 / target_basis
     return [p / factor for p in pair100]
@@ -176,26 +266,11 @@ def compute_metrics(y: np.ndarray, yhat: np.ndarray) -> dict:
         rmse = mean_squared_error(y, yhat, squared=False)
     except TypeError:
         rmse = np.sqrt(mean_squared_error(y, yhat))
-    # 전체(다중출력) R2
     r2 = r2_score(y, yhat)
-
-    # 차량별 R2
-    r2_dc = r2_score(y[:, 0], yhat[:, 0])
-    r2_ov = r2_score(y[:, 1], yhat[:, 1])
-
     mae_dc = mean_absolute_error(y[:, 0], yhat[:, 0])
     mae_ov = mean_absolute_error(y[:, 1], yhat[:, 1])
-
-    return {
-        "MAE": float(mae),
-        "RMSE": float(rmse),
-        "R2": float(r2),
-        "R2_dashcam": float(r2_dc),
-        "R2_other": float(r2_ov),
-        "MAE_dashcam": float(mae_dc),
-        "MAE_other": float(mae_ov),
-        "count": int(len(y)),
-    }
+    return {"MAE": float(mae), "RMSE": float(rmse), "R2": float(r2),
+            "MAE_dashcam": float(mae_dc), "MAE_other": float(mae_ov), "count": int(len(y))}
 
 def save_plots(y: np.ndarray, yhat: np.ndarray, target_basis: float, out_prefix: str) -> dict:
     os.makedirs(os.path.dirname(out_prefix) or ".", exist_ok=True)
@@ -227,6 +302,38 @@ def save_plots(y: np.ndarray, yhat: np.ndarray, target_basis: float, out_prefix:
 # =========================
 # (2) 비디오 로딩 (분류기 입력)
 # =========================
+@torch.no_grad()
+def build_classifier_input(vpath, model, num_frames=16, size=224):
+    # 공통: 원본 프레임도 확보
+    cap = cv2.VideoCapture(vpath)
+    total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    idxs = np.linspace(0, max(0, total-1), num_frames).astype(int)
+    frames_rgb = []
+    for idx in idxs:
+        cap.set(cv2.CAP_PROP_POS_FRAMES, int(idx))
+        ok, frame = cap.read()
+        if not ok: continue
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frames_rgb.append(frame)
+    cap.release()
+    if not frames_rgb:
+        raise RuntimeError(f"no decoded frames: {vpath}")
+
+    # Global
+    g = [cv2.resize(fr, (size,size)) for fr in frames_rgb]
+    g = torch.from_numpy(np.stack(g)).permute(0,3,1,2).float()/255.0  # (T,C,H,W)
+    mean = torch.tensor([0.485,0.456,0.406]).view(1,3,1,1)
+    std  = torch.tensor([0.229,0.224,0.225]).view(1,3,1,1)
+    g = (g - mean)/std
+    xg = g.permute(1,0,2,3).unsqueeze(0)  # (1,C,T,H,W)
+
+    if getattr(model, "is_two_branch", False):
+        boxes = _compute_motion_roi_boxes(frames_rgb, thr=25, min_area=0.005, expand=0.15)
+        xr = _crop_roi_video(frames_rgb, boxes, out_size=size).unsqueeze(0)  # (1,C,T,H,W)
+        return (xg, xr)
+    else:
+        return xg
+    
 @torch.no_grad()
 def load_video_tensor(path, num_frames=16, size=224):
     cap = cv2.VideoCapture(path)
@@ -296,25 +403,24 @@ class TripleHeadVideoClassifier(nn.Module):
             z = out.last_hidden_state.mean(1) # (B, feat)
         return self.dv(z), self.pl(z), self.ov(z)
 
-def load_classifier(ckpt_path: str, backbone="r3d18", device="cuda", pretrained=False):
-    model = TripleHeadVideoClassifier(
-        n_dv=len(LABELS["dv"]), n_pl=len(LABELS["pl"]), n_ov=len(LABELS["ov"]),
-        backbone=backbone, pretrained=pretrained
-    )
-    sd = torch.load(ckpt_path, map_location="cpu")
-    if isinstance(sd, dict) and "model" in sd:
-        sd = sd["model"]
-    # DataParallel 호환
+def load_classifier(ckpt_path: str, backbone="r3d18", device="cuda",
+                    pretrained=False, force_two_branch: bool=False):
+    sd_raw = torch.load(ckpt_path, map_location="cpu")
+    sd = sd_raw.get("model", sd_raw) if isinstance(sd_raw, dict) else sd_raw
+
+    # DataParallel prefix 제거
     new_sd = {}
-    for k,v in sd.items():
-        if k.startswith("module."):
-            new_sd[k[len("module."):]] = v
-        else:
-            new_sd[k] = v
-    model.load_state_dict(new_sd, strict=False)
+    for k, v in sd.items():
+        new_sd[k[7:]] = v if k.startswith("module.") else v
+
+    # 🔴 무조건 Two-Branch로 강제
+    print("[load_classifier] ✅ force Two-Branch (ignore auto-detect)")
+    model = TwoBranchVideoClassifier(n_dv=len(LABELS['dv']), n_ov=len(LABELS['ov']))
+    missing, unexpected = model.load_state_dict(new_sd, strict=False)
+    print(f"[load_classifier] missing={len(missing)} unexpected={len(unexpected)}")
+
     model.to(device).eval()
     return model
-
 # =========================
 # (4) Text→Fault 회귀
 # =========================
@@ -375,30 +481,46 @@ def render_template_from_labels(dv_text: str, ov_text: str, place_text: Optional
 # =========================
 @torch.no_grad()
 def classify_video_and_make_sentence(vpath: str,
-                                     clf_model: TripleHeadVideoClassifier,
+                                     clf_model,
                                      device: str = "cuda",
                                      num_frames: int = 16,
                                      size: int = 224,
                                      use_place: bool = False) -> Dict:
-    x = load_video_tensor(vpath, num_frames=num_frames, size=size).unsqueeze(0).to(device)  # (1,C,T,H,W)
-    ld, lp, lv = clf_model(x)
-    pd_dv = ld.softmax(-1)[0].cpu().numpy()
-    pd_pl = lp.softmax(-1)[0].cpu().numpy()
-    pd_ov = lv.softmax(-1)[0].cpu().numpy()
+    # 🔴 여기서 반드시 build_classifier_input을 사용
+    xin = build_classifier_input(vpath, clf_model, num_frames=num_frames, size=size)
+    if isinstance(xin, tuple):
+        xin = (xin[0].to(device), xin[1].to(device))   # (xg, xr)
+    else:
+        xin = xin.to(device)                           # single-branch fallback
 
-    i_dv = int(pd_dv.argmax()); i_pl = int(pd_pl.argmax()); i_ov = int(pd_ov.argmax())
-    dv_text = LABELS["dv"][i_dv]
-    ov_text = LABELS["ov"][i_ov]
-    place_text = LABELS["pl"][i_pl] if use_place else None
+    out = clf_model(xin)
 
-    sent = render_template_from_labels(dv_text, ov_text, place_text)
+    # 출력 형태 분기(두-브랜치=2헤드, 트리플=3헤드)
+    if isinstance(out, (list, tuple)) and len(out) == 2:
+        ld, lv = out
+        lp = None
+    elif isinstance(out, (list, tuple)) and len(out) == 3:
+        ld, lp, lv = out
+    else:
+        raise RuntimeError("Unexpected classifier outputs")
+
+    pd_dv = ld.softmax(-1)[0].detach().cpu().numpy()
+    pd_ov = lv.softmax(-1)[0].detach().cpu().numpy()
+    i_dv = int(pd_dv.argmax()); i_ov = int(pd_ov.argmax())
+    dv_text = LABELS["dv"][i_dv]; ov_text = LABELS["ov"][i_ov]
+
+    place_text = None
+    if (lp is not None) and use_place:
+        pd_pl = lp.softmax(-1)[0].detach().cpu().numpy()
+        place_text = LABELS["pl"][int(pd_pl.argmax())]
+
+    sent = render_template_from_labels(dv_text, ov_text, place_text if use_place else None)
     return {
         "sentence": sent,
-        "dv_idx": i_dv, "ov_idx": i_ov, "pl_idx": i_pl,
-        "dv_text": dv_text, "ov_text": ov_text, "pl_text": place_text,
-        "dv_probs": pd_dv.tolist(), "ov_probs": pd_ov.tolist(), "pl_probs": pd_pl.tolist()
+        "dv_idx": i_dv, "ov_idx": i_ov,
+        "dv_text": dv_text, "ov_text": ov_text,
+        "pl_text": place_text
     }
-
 # =========================
 # (7) 메인 평가 루프
 # =========================
@@ -417,14 +539,15 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
                                verbose: bool = True,
                                print_every: int = 1,
                                device_classify: str = "cuda:0",
-                               device_fault: str = "cuda:0"):
+                               device_fault: str = "cuda:0", 
+                               force_two_branch: bool = False):
     # 체크
     if not os.path.exists(eval_json_path): raise FileNotFoundError(eval_json_path)
     if not os.path.exists(classifier_ckpt): raise FileNotFoundError(classifier_ckpt)
     if not os.path.exists(fault_ckpt): raise FileNotFoundError(fault_ckpt)
     if not os.path.isdir(video_root): raise NotADirectoryError(video_root)
 
-    wandb.init(project="cls2ratio-final", config={
+    wandb.init(project="cls2ratio", config={
         "eval_json": eval_json_path,
         "classifier_ckpt": classifier_ckpt,
         "fault_ckpt": fault_ckpt,
@@ -437,7 +560,8 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
         "use_place_in_sentence": use_place_in_sentence,
     }, job_type="evaluation")
 
-    clf = load_classifier(classifier_ckpt, backbone=backbone, device=device_classify, pretrained=classifier_pretrained)
+    clf = load_classifier(classifier_ckpt, backbone=backbone, device=device_classify,
+                          pretrained=classifier_pretrained, force_two_branch=force_two_branch)
     fr_model, fr_tok = load_fault_model(fault_ckpt, model_name=model_name, device=device_fault)
 
     data = json.load(open(eval_json_path, "r", encoding="utf-8"))
@@ -601,28 +725,17 @@ def evaluate_on_json_cls2ratio(eval_json_path: str,
             "eval/MAE": metrics.get("MAE"),
             "eval/RMSE": metrics.get("RMSE"),
             "eval/R2": metrics.get("R2"),
-            "eval/R2_dashcam": metrics.get("R2_dashcam"),
-            "eval/R2_other": metrics.get("R2_other"),
             "eval/MAE_dashcam": metrics.get("MAE_dashcam"),
             "eval/MAE_other": metrics.get("MAE_other"),
-
             "eval_cal/MAE": metrics.get("cal/MAE"),
             "eval_cal/RMSE": metrics.get("cal/RMSE"),
             "eval_cal/R2": metrics.get("cal/R2"),
-            "eval_cal/R2_dashcam": metrics.get("cal/R2_dashcam"),
-            "eval_cal/R2_other": metrics.get("cal/R2_other"),
             "eval_cal/MAE_dashcam": metrics.get("cal/MAE_dashcam"),
             "eval_cal/MAE_other": metrics.get("cal/MAE_other"),
-
             "eval_int/MAE": metrics.get("int/MAE"),
             "eval_int/R2": metrics.get("int/R2"),
-            "eval_int/R2_dashcam": metrics.get("int/R2_dashcam"),
-            "eval_int/R2_other": metrics.get("int/R2_other"),
-
             "eval_int_cal/MAE": metrics.get("int_cal/MAE"),
             "eval_int_cal/R2": metrics.get("int_cal/R2"),
-            "eval_int_cal/R2_dashcam": metrics.get("int_cal/R2_dashcam"),
-            "eval_int_cal/R2_other": metrics.get("int_cal/R2_other"),
         }
         log_payload = {k: v for k, v in log_payload.items() if v is not None}
         if log_payload:
@@ -661,12 +774,8 @@ def parse_args():
                    default=os.environ.get("EVAL_JSON", "/app/data/raw/json/text-evaluate/video_accident_ratio_training_results_trimmed_unsignalized_validation_0901.json"))
     p.add_argument("--video_root", type=str,
                    default=os.environ.get("VIDEO_ROOT", "/app/data/raw/videos/validation_reencoded"))
-    # p.add_argument("--classifier_ckpt", type=str,
-    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep5_timesformer_final.pth"))
-    # p.add_argument("--classifier_ckpt", type=str,
-    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep6_videomae_final.pth"))
     p.add_argument("--classifier_ckpt", type=str,
-                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep13_r3d18_final.pth"))
+                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep18_r3d18_lstm_two.pth"))
     # p.add_argument("--classifier_ckpt", type=str,
     #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep13_r3d18.pth"))
     # p.add_argument("--classifier_ckpt", type=str,
@@ -674,7 +783,7 @@ def parse_args():
     p.add_argument("--fault_ckpt", type=str,
                    default=os.environ.get("FAULT_CKPT", "/app/text-train/fault_ratio_bert.pt"))
     p.add_argument("--out_json", type=str,
-                   default=os.environ.get("OUT_JSON", "/app/text-train/result_lstm/cls2ratio_eval.json"))
+                   default=os.environ.get("OUT_JSON", "/app/text-train/result_lstm_two/cls2ratio_eval.json"))
     p.add_argument("--backbone", type=str, default=os.environ.get("BACKBONE", "r3d18"),
                    choices=["r3d18","timesformer","videomae"])
     p.add_argument("--classifier_pretrained", action="store_true",
@@ -689,6 +798,8 @@ def parse_args():
                    help="예: '0' 또는 '0,1' (첫번째는 분류, 두번째는 회귀)")
     p.add_argument("--print_every", type=int, default=int(os.environ.get("PRINT_EVERY", 1)))
     p.add_argument("--quiet", action="store_true")
+    p.add_argument("--force_two_branch", action="store_true",
+               help="항상 Two-Branch 분류기를 사용하고 ROI 입력을 생성합니다.")
     return p.parse_args()
 
 if __name__ == "__main__":
@@ -718,4 +829,5 @@ if __name__ == "__main__":
         print_every=args.print_every,
         device_classify=device_classify,
         device_fault=device_fault,
+        force_two_branch=args.force_two_branch,
     )

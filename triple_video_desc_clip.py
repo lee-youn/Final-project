@@ -1,6 +1,7 @@
 ﻿# train_video_desc.py
 # pip install torch torchvision opencv-python numpy pandas
 import os, csv, json, math, argparse, random, re
+from transformers import CLIPModel, CLIPImageProcessor, CLIPTextModel, CLIPTokenizer
 from typing import List, Dict, Tuple
 import cv2
 import numpy as np
@@ -9,6 +10,7 @@ import torch, torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from torchvision.models.video import r3d_18
+from transformers import CLIPVisionModel, CLIPImageProcessor
 from torchvision.transforms import functional as VF
 from dataclasses import dataclass
 import pandas as pd
@@ -262,15 +264,13 @@ def _maybe_to_idx(val, mapping: Dict[str,int], ncls: int):
     if val in mapping: return mapping[val]
     raise KeyError(f"Unknown label text: {val}")
 
-def load_video_tensor(path, num_frames=16, size=224):
+def load_video_tensor(path, num_frames=16, size=224, normalize="imagenet"):
     import torchvision.transforms.functional as VF
-    import torch
-    import cv2
-    import numpy as np
+    import torch, cv2, numpy as np
 
     cap = cv2.VideoCapture(path)
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    idxs = np.linspace(0, total-1, num_frames).astype(int)
+    idxs = np.linspace(0, max(total-1,0), num_frames).astype(int)
 
     frames = []
     for idx in idxs:
@@ -279,20 +279,20 @@ def load_video_tensor(path, num_frames=16, size=224):
         if not ok: continue
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = cv2.resize(frame, (size, size))
-        ten = torch.from_numpy(frame).permute(2,0,1).float()/255.0  # (C,H,W)
+        ten = torch.from_numpy(frame).permute(2,0,1).float()/255.0  # [C,H,W] in [0,1]
         frames.append(ten)
     cap.release()
 
     if not frames:
         raise RuntimeError(f"no frames in {path}")
 
-    # (T,C,H,W)
-    vid = torch.stack(frames, 0)
+    vid = torch.stack(frames, 0)  # [T,C,H,W]
 
-    # normalize 프레임 단위로
-    vid = VF.normalize(vid, mean=[0.485,0.456,0.406], std=[0.229,0.224,0.225])
+    if normalize == "imagenet":
+        vid = VF.normalize(vid, mean=[0.485,0.456,0.406], std=[0.229,0.224,0.225])
+    # normalize == "none" -> 그대로 반환 (CLIP processor가 정규화 담당)
 
-    return vid  # shape: (T,C,H,W)
+    return vid
 
 # class VideoJsonDataset(Dataset):
 #     """
@@ -327,27 +327,15 @@ def load_video_tensor(path, num_frames=16, size=224):
 #         ov = _maybe_to_idx(meta["other_vehicle_info"], L2I["other_vehicle_info"], NCLS["other_vehicle_info"])
 #         return x, (dv, pl, ov)
 class SingleCsvDataset(Dataset):
-    """
-    하나의 표 파일(확장자 무관: CSV/JSON/JSONL)에서 비디오 경로와 라벨을 읽어오는 데이터셋.
-    지원 컬럼:
-      - (권장) video_name: 확장자 없는 스템 → root에서 파일 탐색
-      - (대안) video_path: 상대/절대 경로 → root와 join 또는 그대로 사용
-    라벨 컬럼:
-      dashcam_vehicle_info, accident_place_feature, other_vehicle_info (문자/정수 모두 OK)
-    """
-    def __init__(self, table_path: str, video_root: str, num_frames=16, size=224):
+    def __init__(self, table_path: str, video_root: str, num_frames=16, size=224, backbone_name="r3d18"):
         self.rows = _read_table_any(table_path)
         if not self.rows:
             raise RuntimeError(f"No rows loaded from {table_path}")
-
         self.video_root = video_root
         self.num_frames = num_frames
         self.size = size
-        
+        self.backbone_name = backbone_name   # ★ 추가
         self.first_col = list(self.rows[0].keys())[0]
-
-        # 라벨 컬럼 확인
-        # need = {"dashcam_vehicle_info","accident_place_feature","other_vehicle_info"}
         need = {"dashcam_vehicle_info","other_vehicle_info"}
         missing = need - set(self.rows[0].keys())
         if missing:
@@ -384,14 +372,13 @@ class SingleCsvDataset(Dataset):
         r = self.rows[i]
         try:
             vpath = self._resolve_video(r)
-            vid = load_video_tensor(vpath, self.num_frames, self.size)  # (T,C,H,W)
-            vid = vid.permute(1,0,2,3)  # (C,T,H,W)
+            norm_mode = "none" if self.backbone_name == "clip_frame" else "imagenet"  # ★ 추가
+            vid = load_video_tensor(vpath, self.num_frames, self.size, normalize=norm_mode)
+            vid = vid.permute(1,0,2,3)  # [C,T,H,W]
         except FileNotFoundError:
-            # 못 찾으면 None 반환
             return None
-
-        dv = _maybe_to_idx(r["dashcam_vehicle_info"],   L2I["dashcam_vehicle_info"],   NCLS["dashcam_vehicle_info"])
-        ov = _maybe_to_idx(r["other_vehicle_info"],     L2I["other_vehicle_info"],     NCLS["other_vehicle_info"])
+        dv = _maybe_to_idx(r["dashcam_vehicle_info"], L2I["dashcam_vehicle_info"], NCLS["dashcam_vehicle_info"])
+        ov = _maybe_to_idx(r["other_vehicle_info"],   L2I["other_vehicle_info"],   NCLS["other_vehicle_info"])
         return vid, (dv, ov)
 
 def collate_skip_none(batch):
@@ -764,14 +751,323 @@ def split_dataset(ds: SingleCsvDataset, val_ratio=0.2, seed=42):
     n_val = int(len(idxs)*val_ratio)
     val_idx, tr_idx = idxs[:n_val], idxs[n_val:]
     return torch.utils.data.Subset(ds, tr_idx), torch.utils.data.Subset(ds, val_idx)
+from transformers import AutoTokenizer, AutoModel
+
+@torch.no_grad()
+def _l2norm(x, dim=-1, eps=1e-6):
+    return x / (x.norm(dim=dim, keepdim=True) + eps)
+
+def _load_prompts(prompts_json: str | None):
+    """
+    JSON 형식 예시 (둘 중 아무거나 지원):
+    1) {"dv": [{"id":0,"templates":["...","..."]}, ...],
+        "ov": [{"id":0,"templates":["...","..."]}, ...] }
+    2) {"classes": [{"id":0,"name":"...", "templates":["...","..."]}, ...]}  # 단일 클래스 목록(공용)
+       → 이 경우 dv/ov 둘 다 동일 텍스트 세트를 씀(간단 실험용)
+    None 이면 LABELS 사전의 라벨 문자열을 한 개 템플릿으로 사용.
+    """
+    if prompts_json is None:
+        # Fallback: LABELS 문자열 그대로 1개 템플릿
+        dv = [{"id": i, "templates": [name]} for i, name in enumerate(LABELS["dashcam_vehicle_info"])]
+        ov = [{"id": i, "templates": [name]} for i, name in enumerate(LABELS["other_vehicle_info"])]
+        return {"dv": dv, "ov": ov}
+
+    with open(prompts_json, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    if "dv" in data and "ov" in data:
+        return data
+    elif "classes" in data:
+        cl = data["classes"]
+        shared = [{"id": c["id"], "templates": c.get("templates", [c.get("name","")])} for c in cl]
+        return {"dv": shared, "ov": shared}
+    else:
+        raise ValueError("prompts_json must contain keys 'dv' and 'ov', or a 'classes' list.")
+
+from transformers import AutoTokenizer, AutoModel, CLIPTextModel, CLIPTokenizer
+
+class TextEncoder(nn.Module):
+    """
+    HF 텍스트 인코더:
+    - CLIP 계열: CLIPTextModel + CLIPTokenizer (max_len=77, EOS 토큰 위치 pooling)
+    - 그 외: AutoModel + AutoTokenizer (mean/CLS 풀링)
+    """
+    def __init__(self, name: str = "xlm-roberta-base", pool: str = "cls", trainable: bool = False):
+        super().__init__()
+        self.name = name
+        self.is_clip = "clip" in name.lower()
+
+        if self.is_clip:
+            self.tok = CLIPTokenizer.from_pretrained(name)
+            # 취약점 우회: safetensors만
+            self.enc = CLIPTextModel.from_pretrained(name, use_safetensors=True)
+            # CLIPTextModel은 pooler_output이 없으므로 EOS 위치로 풀링 예정
+        else:
+            self.tok = AutoTokenizer.from_pretrained(name, use_fast=True)
+            # 취약점 우회: safetensors만
+            self.enc = AutoModel.from_pretrained(name, use_safetensors=True)
+            self.pool = pool  # 'cls' or 'mean'
+
+        if not trainable:
+            for p in self.enc.parameters():
+                p.requires_grad_(False)
+
+    def forward(self, texts: list[str]) -> torch.Tensor:
+        if self.is_clip:
+            # CLIP은 max_length=77이 관례
+            batch = self.tok(texts, padding=True, truncation=True, max_length=77, return_tensors="pt")
+            batch = {k: v.to(next(self.parameters()).device) for k, v in batch.items()}
+            out = self.enc(**batch)  # last_hidden_state만 있음
+            # EOS 위치(hidden state)로 풀링: 각 문장마다 유효 토큰 길이-1 인덱스 사용
+            attn = batch["attention_mask"]                    # [B, L]
+            lengths = attn.sum(dim=1) - 1                     # [B]
+            last = out.last_hidden_state                      # [B, L, D]
+            z = last[torch.arange(last.size(0), device=last.device), lengths]  # [B, D]
+            return z / (z.norm(dim=-1, keepdim=True) + 1e-6)
+
+        # 일반 LM (RoBERTa/XLM-R 등)
+        max_len = 64
+        batch = self.tok(texts, padding=True, truncation=True, max_length=max_len, return_tensors="pt")
+        batch = {k: v.to(next(self.parameters()).device) for k, v in batch.items()}
+        out = self.enc(**batch)
+
+        if hasattr(out, "pooler_output") and out.pooler_output is not None and self.pool == "cls":
+            z = out.pooler_output                               # [B, D]
+        else:
+            # mean-pool
+            attn = batch["attention_mask"].unsqueeze(-1)        # [B, L, 1]
+            z = (out.last_hidden_state * attn).sum(1) / (attn.sum(1).clamp(min=1e-6))
+        return z / (z.norm(dim=-1, keepdim=True) + 1e-6)
+
+def _build_label_matrix(templates_spec, text_encoder: TextEncoder) -> torch.Tensor:
+    """
+    templates_spec: [{"id": k, "templates": ["...", "..."]}, ...]
+    각 id별로 템플릿 임베딩 평균 → [K, d]
+    """
+    device = next(text_encoder.parameters()).device
+    rows = []
+    for item in templates_spec:
+        tlist = item.get("templates", [])
+        if not tlist:
+            tlist = [""]  # safety
+        with torch.no_grad():
+            emb = text_encoder(tlist)           # [m, d]
+            mean = _l2norm(emb.mean(0, keepdim=True), dim=-1)  # [1, d]
+        rows.append(mean)
+    mat = torch.cat(rows, dim=0).to(device)     # [K, d]
+    return mat
+
+class VideoBackboneEncoder(nn.Module):
+    """
+    비디오 백본 → 통일 임베딩 (L2-normalized).
+    r3d18 / timesformer / videomae / clip_frame 지원
+    """
+    def __init__(self, backbone="r3d18", clip_vision_name="openai/clip-vit-base-patch32"):
+        super().__init__()
+        self.backbone_name = backbone
+        self.clip_vision_name = clip_vision_name
+
+        if backbone == "r3d18":
+            from torchvision.models.video import r3d_18, R3D_18_Weights
+            bb = r3d_18(weights=R3D_18_Weights.KINETICS400_V1)
+            feat = bb.fc.in_features
+            bb.fc = nn.Identity()
+            self.encoder = bb
+            self.out_dim = feat
+
+        elif backbone == "timesformer":
+            self.encoder = TimesformerModel.from_pretrained(
+                "facebook/timesformer-base-finetuned-k400", use_safetensors=True
+            )
+            self.out_dim = self.encoder.config.hidden_size
+
+        elif backbone == "videomae":
+            self.encoder = VideoMAEModel.from_pretrained(
+                "MCG-NJU/videomae-base-finetuned-kinetics", use_safetensors=True
+            )
+            self.out_dim = self.encoder.config.hidden_size
+
+        elif backbone == "clip_frame":
+            # 프레임 단위 CLIP → 시간 평균 (512차원으로 바로 투영됨)
+            self.processor = CLIPImageProcessor.from_pretrained(clip_vision_name)
+            self.encoder   = CLIPModel.from_pretrained(clip_vision_name, use_safetensors=True)
+            self.out_dim   = self.encoder.config.projection_dim  # 보통 512
+        else:
+            raise ValueError(f"Unknown backbone: {backbone}")
+
+    def forward(self, x):
+        # x: [B,C,T,H,W], 값범위 [0,1]
+        if self.backbone_name == "r3d18":
+            z = self.encoder(x)  # [B,D]
+            return _l2norm(z, dim=-1)
+
+        elif self.backbone_name in ("timesformer","videomae"):
+            x = x.permute(0,2,1,3,4)  # [B,T,C,H,W]
+            out = self.encoder(x)
+            z = out.last_hidden_state.mean(1)  # [B,D]
+            return _l2norm(z, dim=-1)
+
+        elif self.backbone_name == "clip_frame":
+            B, C, T, H, W = x.shape
+            xt = x.permute(0,2,1,3,4).contiguous().view(B*T, C, H, W)   # [BT,3,H,W] in [0,1]
+            proc = self.processor(images=xt, do_rescale=False, return_tensors="pt")
+            pixel = proc["pixel_values"].to(x.device)                    # [BT,3,224,224]
+            with torch.set_grad_enabled(self.training):
+                feat_bt = self.encoder.get_image_features(pixel_values=pixel)  # [BT,512]
+            feat = feat_bt.view(B, T, -1).mean(1)                        # 시간 평균 → [B,512]
+            return _l2norm(feat, dim=-1)
+        
+class VideoTextCLIPClassifier(nn.Module):
+    def __init__(self, backbone="r3d18", text_encoder_name="xlm-roberta-base",
+                 freeze_backbone=False, train_text=False, temp_init=1.0,
+                 clip_vision_name="openai/clip-vit-base-patch32"):
+        super().__init__()
+        self.venc = VideoBackboneEncoder(backbone=backbone, clip_vision_name=clip_vision_name)  # ← 전달
+        self.tenc = TextEncoder(name=text_encoder_name, pool="cls", trainable=train_text)
+        if freeze_backbone:
+            for p in self.venc.parameters():
+                p.requires_grad_(False)
+        self.logit_scale = nn.Parameter(torch.tensor(float(temp_init)))
+        self.register_buffer("T_dv", torch.empty(1, 1))
+        self.register_buffer("T_ov", torch.empty(1, 1))
+        self._ready = False
+
+    @torch.no_grad()
+    def set_text_mats(self, T_dv: torch.Tensor, T_ov: torch.Tensor):
+        # [K_dv, d], [K_ov, d]
+        self.T_dv = _l2norm(T_dv, dim=-1)
+        self.T_ov = _l2norm(T_ov, dim=-1)
+        self._ready = True
+
+    def forward(self, x):
+        assert self._ready, "Call set_text_mats(...) before forward"
+        v = self.venc(x)                           # [B, d], L2-norm
+        s = self.logit_scale.exp().clamp(1e-2, 100.0)
+        logits_dv = s * (v @ self.T_dv.T)          # [B, K_dv]
+        logits_ov = s * (v @ self.T_ov.T)          # [B, K_ov]
+        return logits_dv, logits_ov
+
+def run_text_conditioned(args):
+    """
+    메인 엔트리: --text_conditioned로 진입.
+    DV/OV용 텍스트 프롬프트를 로드 → 텍스트 임베딩 매트릭스 생성 → 비디오×텍스트 분류 학습.
+    """
+    device = args.device if torch.cuda.is_available() else "cpu"
+
+    # --- 데이터로더 재사용 (비디오/라벨은 기존과 동일 포맷) ---
+    train_ds = SingleCsvDataset(args.train_csv, video_root=args.train_video_root,
+                            num_frames=args.num_frames, size=args.size,
+                            backbone_name=args.backbone)
+    val_ds   = SingleCsvDataset(args.val_csv,   video_root=args.val_video_root,
+                            num_frames=args.num_frames, size=args.size,
+                            backbone_name=args.backbone)
+
+    train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True,
+                              num_workers=args.num_workers, pin_memory=True, drop_last=True,
+                              collate_fn=collate_skip_none)
+    val_loader   = DataLoader(val_ds, batch_size=args.val_batch_size, shuffle=False,
+                              num_workers=args.num_workers, pin_memory=True,
+                              collate_fn=collate_skip_none)
+
+    # --- 모델 ---
+    model = VideoTextCLIPClassifier(
+        backbone=args.backbone,
+        text_encoder_name=args.text_encoder,
+        freeze_backbone=args.freeze_backbone,
+        train_text=(not args.freeze_text),
+        temp_init=args.temp_init,
+        clip_vision_name=args.clip_vision,
+    ).to(device)
+    if torch.cuda.device_count() > 1 and args.dataparallel:
+        model = nn.DataParallel(model)
+
+    # --- 라벨 텍스트 준비 ---
+    spec = _load_prompts(args.prompts_json)  # {"dv":[{id,templates}], "ov":[...]}
+    # device로 올릴 임시 "텍스트 인코더만" 따로 둠 (model.tenc 사용)
+    model.to(device)
+    model.tenc.to(device)
+    T_dv = _build_label_matrix(spec["dv"], model.tenc)   # [K_dv, d]
+    T_ov = _build_label_matrix(spec["ov"], model.tenc)   # [K_ov, d]
+    model.set_text_mats(T_dv.to(device), T_ov.to(device))
+
+    # --- 학습 루프 ---
+    ce = nn.CrossEntropyLoss()
+    opt = torch.optim.AdamW(filter(lambda p: p.requires_grad, model.parameters()),
+                            lr=args.lr, weight_decay=0.01)
+    scaler = torch.cuda.amp.GradScaler(enabled=args.fp16)
+
+    best_f1 = 0.0
+    for ep in range(1, args.epochs+1):
+        model.train()
+        run_loss, seen = 0.0, 0
+        pbar = tqdm(train_loader, desc=f"Train(TXT) [{ep}/{args.epochs}]", dynamic_ncols=True)
+        for batch in pbar:
+            if batch is None: 
+                continue
+            x, (yd, yv) = batch
+            x = x.to(device, non_blocking=True)
+            yd = yd.to(device); yv = yv.to(device)
+
+            opt.zero_grad(set_to_none=True)
+            with torch.cuda.amp.autocast(enabled=args.fp16):
+                ld, lv = model(x)
+                loss = ce(ld, yd) + ce(lv, yv)
+            scaler.scale(loss).backward()
+            scaler.step(opt); scaler.update()
+
+            bs = x.size(0)
+            run_loss += loss.item() * bs
+            seen += bs
+            pbar.set_postfix({"loss": f"{(run_loss/max(1,seen)):.4f}",
+                              "temp": f"{float(model.module.logit_scale.exp() if isinstance(model, nn.DataParallel) else model.logit_scale.exp()):.2f}"})
+
+        # --- 검증 ---
+        val = evaluate(model, val_loader, device, epoch=ep, epochs=args.epochs, backbone=args.backbone)
+        f1_mean = 0.5 * (val["dv"]["f1_macro"] + val["ov"]["f1_macro"])
+        wandb.log({
+            "epoch": ep,
+            "train/loss": run_loss/max(1,seen),
+            "val/loss":  val["loss"],
+            "val/exact_match": val["exact_match"],
+            "val/dv/f1_macro": val["dv"]["f1_macro"],
+            "val/ov/f1_macro": val["ov"]["f1_macro"],
+        })
+
+        if f1_mean > best_f1:
+            best_f1 = f1_mean
+            os.makedirs(args.save_dir, exist_ok=True)
+            ck = os.path.join(args.save_dir, f"best_f1_ep{ep}_{args.backbone}_txtclip2.pth")
+            torch.save({"model": (model.module.state_dict() if isinstance(model, nn.DataParallel) else model.state_dict()),
+                        "epoch": ep, "best_f1": best_f1}, ck)
+            wandb.run.summary["best_f1_txtclip"] = best_f1
+            print(f"[CKPT] Saved best model to {ck}")
+
+    # 최종 리포트/플롯
+    final = evaluate(model, val_loader, device, save_confmat=True, backbone=args.backbone)
+    print("\n=== (TXT-CLIP) Classification Report (DV) ===\n"+final["dv"]["report"])
+    print("\n=== (TXT-CLIP) Classification Report (OV) ===\n"+final["ov"]["report"])
+    plot_summary(final, out_path=f"results_metrics_{args.backbone}_txtclip2.png")
 
 def main():
     best_exact = 0.0 
     best_f1 = 0.0 
     ap = argparse.ArgumentParser(conflict_handler="resolve")
-    ap.add_argument("--backbone", type=str, default="r3d18",
-                choices=["r3d18", "timesformer", "videomae"],
-                help="영상 백본 선택")
+    # === CLIP/백본 관련 옵션들 ===
+    ap.add_argument("--backbone", type=str, default="clip_frame",
+                    choices=["r3d18", "timesformer", "videomae", "clip_frame"],
+                    help="영상 백본 선택")
+    ap.add_argument("--text_conditioned", action="store_true",
+                    help="CLIP-style video×text classification (DV/OV).")
+    ap.add_argument("--prompts_json", type=str, default=None,
+                    help="라벨 문장 템플릿 JSON. None이면 LABELS 문자열 그대로 사용.")
+    ap.add_argument("--text_encoder", type=str, default="openai/clip-vit-base-patch32",
+                    help="텍스트 인코더 이름(HF hub). 예: openai/clip-vit-base-patch32")
+    ap.add_argument("--clip_vision", type=str, default="openai/clip-vit-base-patch32",
+                    help="CLIP 비전 백본 이름(clip_frame 백본일 때 사용)")
+    ap.add_argument("--freeze_text", action="store_true", help="텍스트 인코더 동결")
+    ap.add_argument("--freeze_backbone", action="store_true", help="비디오 백본 동결")
+    ap.add_argument("--temp_init", type=float, default=1.0,
+                    help="cosine logits 온도 초기값 (exp 로지트 스케일)")
     ap.add_argument("--mode", choices=["train","validate","predict"], default="train")
     ap.add_argument(
         "--train_csv",
@@ -792,6 +1088,10 @@ def main():
     ap.add_argument("--val_video_root", type=str,
                 default=os.environ.get("VAL_VIDEO_ROOT", "/app/data/raw/videos/validation_reencoded"),
                 help="Root dir for validation videos (env VAL_VIDEO_ROOT overrides)")
+    ap.add_argument("--text_conditioned", action="store_true",
+                help="Turn on CLIP-style video×text classification for DV/OV.")
+    ap.add_argument("--prompts_json", type=str, default=None,
+                    help="JSON with label text templates (see example). If None, use LABELS strings.")
 
     ap.add_argument("--epochs", type=int, default=10)
     ap.add_argument("--batch_size", type=int, default=8)
@@ -812,7 +1112,9 @@ def main():
     args = ap.parse_args()
 
     device = args.device if torch.cuda.is_available() else "cpu"
-    wandb.init(project="final-video-desc", config=vars(args))
+    wandb.init(project="video-desc-clip", config=vars(args))
+    if args.text_conditioned:
+        return run_text_conditioned(args)  # defined below (appended code)
 
     if args.mode == "train":
         train_ds = SingleCsvDataset(args.train_csv, video_root=args.train_video_root,
@@ -830,7 +1132,6 @@ def main():
         #                                   NCLS["other_vehicle_info"],backbone=args.backbone).to(device)
         model = TripleHeadVideoClassifier(NCLS["dashcam_vehicle_info"],
                                           NCLS["other_vehicle_info"],backbone=args.backbone).to(device)
-        print(model.backbone, flush=True)
         if torch.cuda.device_count() > 1 and args.dataparallel:
             model = nn.DataParallel(model)
 
@@ -892,7 +1193,7 @@ def main():
             if f1_mean > best_f1:
                 best_f1 = f1_mean
                 os.makedirs(args.save_dir, exist_ok=True)
-                ckpt_path = os.path.join(args.save_dir, f"best_f1_ep{ep}_{args.backbone}_final.pth")
+                ckpt_path = os.path.join(args.save_dir, f"best_f1_ep{ep}_{args.backbone}_clip.pth")
                 torch.save({
                     "model": model.state_dict(),
                     "epoch": ep,

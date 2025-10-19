@@ -19,12 +19,6 @@ wandb/
 data/
 checkout/
 checkpoints/
-plots/
-results_*/
-results_*.*
-*.png
-*.jpg
-*.jpeg
 
 # Models / weights / artifacts
 *.pt

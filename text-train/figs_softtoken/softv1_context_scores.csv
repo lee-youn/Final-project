@@ -1,0 +1,51 @@
+phrase,group,context_cos
+going straight,important,0.02463296614587307
+left turn,important,0.030072102323174477
+right turn,important,0.009982427582144737
+u turn,important,-0.017839858308434486
+lane change,important,-0.006933081895112991
+simultaneous lane change,important,-0.013296091929078102
+following vehicle,important,-0.01706709899008274
+facing each other,important,-0.02563384547829628
+departing after stop,important,0.035390205681324005
+safety zone,important,0.010588673874735832
+main road,important,-0.0019921325147151947
+side road,important,-0.03649497032165527
+left road,important,-0.012310057878494263
+right road,important,-0.034127481281757355
+left lane,important,-0.0034375395625829697
+right lane,important,-0.02513153664767742
+left side of lane,important,-0.0006413757801055908
+right side of lane,important,-0.015582003630697727
+green light,important,0.04225287213921547
+yellow light,important,0.019893832504749298
+red light,important,0.0243096761405468
+green left turn signal,important,0.023232268169522285
+pedestrian crossing,important,0.01380311232060194
+stop sign,important,0.04194309189915657
+entered earlier,important,-0.018133316189050674
+entered later,important,0.015399988740682602
+banana,distractor,-0.030890975147485733
+unicorn,distractor,-0.00474998215213418
+microwave,distractor,-0.007440674118697643
+weather,distractor,0.004591781180351973
+education,distractor,0.002672303467988968
+computer,distractor,-0.043165117502212524
+coffee,distractor,-0.013126613572239876
+universe,distractor,-0.008803855627775192
+abstract art,distractor,0.026086606085300446
+random token,distractor,0.020753003656864166
+river,distractor,-0.015731364488601685
+castle,distractor,0.0015676235780119896
+airplane,distractor,-0.013925444334745407
+galaxy,distractor,0.030148496851325035
+software,distractor,-0.02017117105424404
+biology,distractor,-0.0027403496205806732
+cooking,distractor,0.03205661475658417
+basketball,distractor,0.008613372221589088
+waterfall,distractor,0.011145008727908134
+mountain,distractor,-0.0024773376062512398
+smartphone,distractor,-0.016904417425394058
+jazz music,distractor,0.02006535232067108
+knitting,distractor,-0.000710800290107727
+astronomy,distractor,-0.006051747128367424

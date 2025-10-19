@@ -465,7 +465,7 @@ def parse_args():
     p.add_argument("--video_root", type=str,
                    default=os.environ.get("VIDEO_ROOT", "/app/data/raw/videos/validation_reencoded"))
     p.add_argument("--classifier_ckpt", type=str,
-                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep13_r3d18.pth"))
+                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep18_r3d18_final.pth"))
     # 확률-기반/임베딩-기반 ckpt 아무 거나 넣어도 자동감지됨
     p.add_argument("--regressor_ckpt", type=str, default="/app/text-train/checkpoints/best_multi_emb_onelayer_softmax.pt")
     p.add_argument("--backbone", type=str, default="r3d18", choices=["r3d18","timesformer","videomae"])

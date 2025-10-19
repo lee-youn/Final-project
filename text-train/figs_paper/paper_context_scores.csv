@@ -1,0 +1,51 @@
+phrase,group,context_cos
+going straight,important,0.021377082914114
+left turn,important,0.02717491053044796
+right turn,important,0.006665186956524849
+u turn,important,-0.02168203704059124
+lane change,important,-0.010923780500888824
+simultaneous lane change,important,-0.017694760113954544
+following vehicle,important,-0.02171403542160988
+facing each other,important,-0.03135782107710838
+departing after stop,important,0.031872738152742386
+safety zone,important,0.007374241482466459
+main road,important,-0.0060013048350811005
+side road,important,-0.04121347889304161
+left road,important,-0.016489308327436447
+right road,important,-0.03897023946046829
+left lane,important,-0.007259962148964405
+right lane,important,-0.02951394021511078
+left side of lane,important,-0.005817944183945656
+right side of lane,important,-0.02149852178990841
+green light,important,0.04027654975652695
+yellow light,important,0.016624700278043747
+red light,important,0.02138226479291916
+green left turn signal,important,0.020098939538002014
+pedestrian crossing,important,0.0110267773270607
+stop sign,important,0.039687417447566986
+entered earlier,important,-0.022162310779094696
+entered later,important,0.01165188942104578
+banana,distractor,-0.033492207527160645
+unicorn,distractor,-0.007201505824923515
+microwave,distractor,-0.00954775046557188
+weather,distractor,0.002106094965711236
+education,distractor,-0.000444658100605011
+computer,distractor,-0.04669000208377838
+coffee,distractor,-0.016133544966578484
+universe,distractor,-0.01142994686961174
+abstract art,distractor,0.022778648883104324
+random token,distractor,0.017960913479328156
+river,distractor,-0.018927019089460373
+castle,distractor,-0.001432354561984539
+airplane,distractor,-0.016621649265289307
+galaxy,distractor,0.02781832218170166
+software,distractor,-0.023328792303800583
+biology,distractor,-0.005374975502490997
+cooking,distractor,0.029515914618968964
+basketball,distractor,0.005846744403243065
+waterfall,distractor,0.008686371147632599
+mountain,distractor,-0.005472250282764435
+smartphone,distractor,-0.01934555172920227
+jazz music,distractor,0.016756571829319
+knitting,distractor,-0.0027873022481799126
+astronomy,distractor,-0.008495405316352844

@@ -1,0 +1,43 @@
+ Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# Build/venv
+.env
+.venv/
+venv/
+
+# Logs & runs
+logs/
+wandb/
+*.log
+
+# Data & outputs
+data/
+checkout/
+checkpoints/
+plots/
+results_*/
+results_*.*
+*.png
+*.jpg
+*.jpeg
+
+# Models / weights / artifacts
+*.pt
+*.pth
+*.bin
+*.ckpt
+
+# Videos
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Docker
+*.pid
+*.DS_Store

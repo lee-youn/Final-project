@@ -16,6 +16,12 @@ from tqdm.auto import tqdm
 import cv2
 import torch.nn.functional as F
 
+from torchvision.models.video import (
+    r3d_18, R3D_18_Weights,
+    r2plus1d_18, R2Plus1D_18_Weights,
+    mc3_18, MC3_18_Weights
+)
+
 from transformers import AutoModel, AutoTokenizer, TimesformerModel, VideoMAEModel
 from torchvision.models.video import r3d_18, R3D_18_Weights
 
@@ -269,6 +275,15 @@ class TripleHeadVideoClassifier(nn.Module):
                 self.backbone = r3d_18(weights=None)
             feat = self.backbone.fc.in_features
             self.backbone.fc = nn.Identity()
+        elif backbone == "r2plus1d18":
+            self.backbone = r2plus1d_18(weights=R2Plus1D_18_Weights.KINETICS400_V1)
+            feat = self.backbone.fc.in_features
+            self.backbone.fc = nn.Identity()
+
+        elif backbone == "mc3_18":
+            self.backbone = mc3_18(weights=MC3_18_Weights.KINETICS400_V1)
+            feat = self.backbone.fc.in_features
+            self.backbone.fc = nn.Identity()
 
         elif backbone == "timesformer":
             self.backbone = TimesformerModel.from_pretrained(
@@ -283,6 +298,13 @@ class TripleHeadVideoClassifier(nn.Module):
             feat = self.backbone.config.hidden_size
         else:
             raise ValueError(backbone)
+        
+        self.shared_proj = nn.Sequential(
+            nn.LayerNorm(feat),
+            nn.Linear(feat, feat),
+            nn.ReLU(),
+            nn.Dropout(0.3)
+        )
 
         self.dv = nn.Linear(feat, n_dv)
         self.pl = nn.Linear(feat, n_pl)
@@ -290,6 +312,10 @@ class TripleHeadVideoClassifier(nn.Module):
 
     def forward(self, x):
         if self.backbone_name == "r3d18":
+            z = self.backbone(x)              # (B, feat)
+        elif self.backbone_name == "r2plus1d18":
+            z = self.backbone(x)              # (B, feat)
+        elif self.backbone_name == "mc3_18":
             z = self.backbone(x)              # (B, feat)
         else:
             x = x.permute(0,2,1,3,4)          # (B,T,C,H,W)
@@ -749,21 +775,28 @@ def parse_args():
     p.add_argument("--video_root", type=str,
                    default=os.environ.get("VIDEO_ROOT", "/app/data/raw/videos/validation_reencoded"))
     # p.add_argument("--classifier_ckpt", type=str,
-    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep5_timesformer_final.pth"))
+    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep19_r2plus1d18_final.pth"))
     # p.add_argument("--classifier_ckpt", type=str,
     #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep6_videomae_final.pth"))
-    # p.add_argument("--classifier_ckpt", type=str,
-    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep18_r3d18_final.pth"))
     p.add_argument("--classifier_ckpt", type=str,
-                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep13_r3d18_final.pth"))
+                   default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep18_r3d18_final.pth"))
+
     # p.add_argument("--classifier_ckpt", type=str,
-    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep11_r3d18_mlp.pth"))
+    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep13_r3d18_final.pth"))
+
+    # p.add_argument("--classifier_ckpt", type=str,
+    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_f1_ep19_mc3_18_final.pth"))
+
+    # p.add_argument("--classifier_ckpt", type=str,
+    #                default=os.environ.get("CLS_CKPT", "/app/checkpoints/best_exact_ep13_r3d18.pth"))
+    
     p.add_argument("--fault_ckpt", type=str,
                    default=os.environ.get("FAULT_CKPT", "/app/text-train/fault_ratio_bert_modify_softmax.pt"))
     p.add_argument("--out_json", type=str,
                    default=os.environ.get("OUT_JSON", "/app/text-train/result_lstm/cls2ratio_eval.json"))
-    p.add_argument("--backbone", type=str, default=os.environ.get("BACKBONE", "r3d18"),
-                   choices=["r3d18","timesformer","videomae"])
+    p.add_argument("--backbone", type=str, default="r3d18",
+                choices=["r3d18", "r2plus1d18", "mc3_18", "timesformer", "videomae"],
+                help="영상 백본 선택")
     p.add_argument("--classifier_pretrained", action="store_true",
                    help="r3d18일 때 Kinetics400 pretrained stem 사용(ckpt로 덮어씀)")
     p.add_argument("--model_name", type=str, default=os.environ.get("MODEL_NAME","bert-base-uncased"))

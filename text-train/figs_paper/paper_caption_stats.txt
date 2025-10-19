@@ -1,0 +1,5 @@
+P@15 = 0.667
+mean_imp = -0.0014
+mean_dist = -0.0040
+Δ = 0.0025
+permutation p-value = 0.67922

@@ -852,6 +852,39 @@ SEARCH_ROOTS = [
 ]
 VIDEO_EXTS = [".mp4", ".mkv", ".mov", ".avi", ".webm"]
 
+import re
+
+def _clean_generated(text: str) -> str:
+    if not text:
+        return ""
+    # Drop anything that looks like an instruction block
+    text = re.sub(r"(?is)^you are a .*?elements\.\s*", "", text).strip()
+    text = re.sub(r"(?is)^describe .*?positions\.\s*", "", text).strip()
+    text = re.sub(r"(?is)\b(USER|ASSISTANT):.*", "", text).strip()
+    # Keep only first 2–3 sentences max
+    sents = re.split(r"(?<=[.!?])\s+", text)
+    text = " ".join(sents[:3]).strip()
+    # Ensure terminal punctuation
+    if text and text[-1] not in ".!?":
+        text += "."
+    return text
+
+def _enforce_two_line_revise(text: str) -> str:
+    # Keep only the first “Description:” and “Evidence:” lines
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    desc = next((l for l in lines if l.lower().startswith("description:")), "")
+    evid = next((l for l in lines if l.lower().startswith("evidence:")), "")
+    # Fallbacks if model didn’t prefix correctly
+    if not desc:
+        desc = "Description: A collision scenario is visible based on motion and entry order."
+    if not evid:
+        evid = "Evidence: Paths cross near the center of the intersection."
+    # Ensure no truncation mid-word
+    if not re.search(r"[.!?]$", desc):
+        desc += "."
+    if not re.search(r"[.!?]$", evid):
+        evid += "."
+    return desc + "\n" + evid
 # =========================================================
 # Fault-BERT (.pth) - 네가 학습한 모델로부터 임베딩을 뽑는다
 # =========================================================
@@ -996,8 +1029,12 @@ def render_template_from_labels(dv_text: str, ov_text: str) -> str:
 # =========================================================
 def build_video_only_prompt():
     return (
-        "Describe only what is VISIBLE in the frames: motion, entry order, and relative positions. "
-        "Write 2–3 short factual sentences. Do not mention lights, numbers, timestamps, or unseen elements."
+        "You are a traffic-accident legal analyst. "
+        "Describe ONLY what is VISIBLE in the frames. "
+        "Do NOT mention traffic lights, numbers, timestamps, speeds, or any unseen elements.\n"
+        "Write 2–3 short factual sentences focusing on:\n"
+        "- motion (straight/left/right turns), entry order, and relative positions.\n"
+        "- No speculation or hidden context."
     )
 
 def build_prompt(
@@ -1011,13 +1048,14 @@ def build_prompt(
     fault_hint: Optional[str] = None,
 ) -> str:
     system_header = (
-        "You are an expert at analyzing dashcam accident videos. "
-        "Base your description strictly on what is visible. "
-        "If any hint conflicts with visible evidence in the frames, ignore the hint and prioritize the video evidence. State the conflict briefly."
-        "Do not invent traffic lights, lane markings, numbers, timestamps, or unseen objects.\n"
+        "You are a **traffic-accident legal analyst**. "
+        "Always prioritize **what is visible in the video**. "
+        "If any hint (classification/fault estimate) conflicts with the frames, briefly note the conflict and follow the visual evidence. "
+        "Do NOT invent traffic lights, numbers, timestamps, lane counts, speeds, or any unseen objects.\n"
     )
+
     if style == "short":
-        length_rule = "Write exactly one concise sentence (under ~30 words)."
+        length_rule = "Write exactly one concise sentence (~30 words)."
     elif style == "detailed":
         length_rule = "Write 4–6 factual sentences (~80–120 words)."
     else:
@@ -1027,19 +1065,15 @@ def build_prompt(
     hint_lines = []
     if dashcam_info:
         hint_lines.append(f"- Dashcam Vehicle: {dashcam_info}")
-        print(f"[Hint] Ego Vehicle: {dashcam_info}")
     if other_info:
         hint_lines.append(f"- Other Vehicle: {other_info}")
-        print(f"[Hint] Other Vehicle: {other_info}")
     if classifier_topk:
         hint_lines.append(f"- Classifier outputs (top-k): {classifier_topk}")
-        print(f"[Hint] Classifier top-k: {classifier_topk}")
     if fault_hint:
-        hint_lines.append(f"- Fault analysis[Dashcam Vehicle:Other Vehicle]: {fault_hint}")
-        print(f"[Hint] Fault analysis: {fault_hint}")
-    hint_block = ("Always include the following hints exactly once in natural English:\n" + "\n".join(hint_lines) + "\n") if hint_lines else ""
+        hint_lines.append(f"- Fault analysis [Dashcam:Other]: {fault_hint}")
+    hint_block = ("Include the following hints **exactly once** if they agree with visible evidence:\n" + "\n".join(hint_lines) + "\n") if hint_lines else ""
 
-    # Gradio Chatbot은 [{"role": "...", "content": "..."}] 형태
+    # Include recent chat context (if any)
     hist_txt = ""
     if history:
         turns = history[-history_max_turns:]
@@ -1052,28 +1086,28 @@ def build_prompt(
     user_header = (
         f"{hist_txt}"
         "USER:\n"
-        "Describe the accident scene focusing on visible motion, entry order, and relative positions.\n"
+        "Describe the accident focusing on **motion, entry order, and relative positions** visible in the frames.\n"
         f"{length_rule}\n"
         f"{hint_block}"
-        "Apply the provided hints exactly once if they agree with visible evidence.\n"
-        "Then add: the predicted fault ratio (basis 10), identify the likely victim (lower share), "
-        "and one-sentence cause reasoning grounded in visible evidence and the hints.\n"
-        "Avoid: the words 'traffic light', numbers unrelated to the fault ratio, dates, or invented objects. "
-        "Do not mention any element that is not clearly visible.\n"
-        "if any hint conflicts with the frames, briefly note the conflict and prioritize the video evidence.\n"
+        "Output requirements:\n"
+        "1) **Description**: 2–3 factual sentences based ONLY on visible evidence.\n"
+        "2) **Fault (basis N)**: predicted fault ratio (basis N, one decimal), and identify **Victim** (lower share) and **At-fault** vehicle.\n"
+        "3) **Cause**: one-sentence cause grounded in visible evidence (and the hints if they agree).\n"
+        "Avoid: traffic lights/signals, arbitrary numbers (except the fault ratio), dates/timestamps, unseen objects/lanes/speeds. "
+        "If a hint conflicts with the frames, state the conflict briefly and follow the video evidence.\n"
     )
     if user_message and user_message.strip():
-        user_header += f"\nAdditional instruction from user: {user_message.strip()}\n"
+        user_header += f"\nAdditional instruction: {user_message.strip()}\n"
 
-    placeholder = "<video>"  # 실제 토큰은 _ensure_video_token()에서 교체/보장됨
+    placeholder = "<video>"
     return f"{placeholder}\n" + system_header + user_header + "ASSISTANT:"
 
 def build_revise_prompt(draft_text: str, user_message: str, fault_hint_line: str) -> str:
     return (
-        "Revise the DRAFT based ONLY on visible evidence in the frames. "
-        "If the hint agrees, reflect it ONCE; if it conflicts, briefly note the conflict and keep visual evidence. "
+        "You are a traffic-accident legal analyst. Revise the DRAFT based ONLY on visible evidence in the frames. "
+        "If the hint agrees, reflect it ONCE; if it conflicts, briefly note the conflict and keep the visual evidence.\n"
         "Return EXACTLY TWO LINES:\n"
-        "Description: <one or two concise sentences>\n"
+        "Description: <one or two concise factual sentences>\n"
         "Evidence: <the single most decisive visible cue>\n"
         f"DRAFT:\n{draft_text}\n"
         f"HINT:\n{fault_hint_line}\n"
@@ -1181,9 +1215,9 @@ def predict_classifier(video_path, clf_model, device="cuda", topk=3):
     def _topk_text(logits, label_list, k):
         probs = logits.softmax(dim=-1)[0]
         val, idx = probs.topk(k=k, dim=-1)
-        pairs = [f"{label_list[i]}:{probs[i].item():.2f}" for i in idx.tolist()]
-        top1 = label_list[idx[0].item()]
-        return top1, ", ".join(pairs)
+        names = [label_list[i] for i in idx.tolist()]
+        top1 = names[0]
+        return top1, ", ".join(names)
 
     dv1, dv_topk = _topk_text(ld, LABELS["dv"], topk)
     ov1, ov_topk = _topk_text(lv, LABELS["ov"], topk)
@@ -1424,7 +1458,7 @@ class VideoLLaVAChatEngine:
     @torch.no_grad()
     def generate_video_only(self, frames: List[Image.Image], chat_prompt: str,
                             temperature: float = 0.2, do_sample: bool = False,
-                            max_new_tokens: int = 160) -> str:
+                            max_new_tokens: int = 256) -> str:
         model = self.model
         processor = self.processor
         device = self.device
@@ -1449,8 +1483,11 @@ class VideoLLaVAChatEngine:
         attn      = proc["attention_mask"].to(device)
 
         bad_words = ["traffic light","signalized","timestamp","AM","PM"]
-        bad_ids = [tok(w, add_special_tokens=False).input_ids
-                   for w in bad_words if tok(w, add_special_tokens=False).input_ids]
+        bad_ids = []
+        for w in bad_words:
+            ids = tok(w, add_special_tokens=False).input_ids
+            if ids:  # 빈 리스트 방지
+                bad_ids.append(ids)
 
         gen_ids = model.generate(
             **vision,
@@ -1466,11 +1503,30 @@ class VideoLLaVAChatEngine:
             eos_token_id=eos_id,
             pad_token_id=pad_id,
         )
-        gen_only = gen_ids[0, input_ids.shape[1]:]               # ✨ 생성분만
+        gen_only = gen_ids[0, input_ids.shape[1]:]
         text_out = tok.decode(gen_only, skip_special_tokens=True).strip()
+
+        # >>> NEW: never fall back to full decode (that re-inserts the prompt)
+        text_out = _clean_generated(text_out)
         if not text_out:
-            text_out = tok.decode(gen_ids[0], skip_special_tokens=True).strip()  # 백업
-        return text_out
+            # one retry with mild sampling to avoid empty output
+            gen_ids = model.generate(
+                **vision,
+                input_ids=input_ids,
+                attention_mask=attn,
+                max_new_tokens=max_new_tokens,
+                temperature=max(0.3, temperature),
+                do_sample=True,
+                num_beams=1,
+                no_repeat_ngram_size=3,
+                repetition_penalty=1.05,
+                bad_words_ids=bad_ids if bad_ids else None,
+                eos_token_id=eos_id,
+                pad_token_id=pad_id,
+            )
+            gen_only = gen_ids[0, input_ids.shape[1]:]
+            text_out = _clean_generated(tok.decode(gen_only, skip_special_tokens=True).strip())
+        return text_out or "The vehicles converge in the intersection based on their visible paths."
 
     @torch.no_grad()
     def generate_with_soft_tokens_from_fault(
@@ -1572,7 +1628,7 @@ class VideoLLaVAChatEngine:
     def revise_with_soft_tokens(self, frames: List[Image.Image], chat_prompt: str,
                                 soft_tokens: Optional[torch.Tensor], gain: float = 0.5,
                                 temperature: float = 0.2, do_sample: bool = False,
-                                max_new_tokens: int = 120) -> str:
+                                max_new_tokens: int = 180) -> str:
         # gain으로 세기 조절
         if soft_tokens is not None:
             soft_tokens = soft_tokens * float(gain)
@@ -1676,7 +1732,7 @@ def ui_generate(
         user_message=user_msg or "",
         dashcam_info=dv_hint,
         other_info=ov_hint,
-        classifier_topk=topk_text,
+        classifier_topk=(None if interp_mode else topk_text),  # ← 이렇게 변경
         style=style,
         history=history,
         fault_hint=fault_hint
@@ -1715,6 +1771,7 @@ def ui_generate(
                 do_sample=bool(sampling),
                 max_new_tokens=120,
             )
+            text = _enforce_two_line_revise(text)
             aux_header = f"📝 DRAFT (video-only): {draft}\n✏️ REVISED: {text}\n⚙️ soft_gain={float(soft_gain):.2f}, use_soft={bool(use_soft)}"
         else:
             # 단일 패스 (소프트 토큰 켜짐/꺼짐 반영)

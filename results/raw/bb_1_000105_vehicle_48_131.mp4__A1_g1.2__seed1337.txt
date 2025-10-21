@@ -1,0 +1,8 @@
+Description: The yellow truck is turning right at an intersection.
+Evidence: The white lines of the intersection. The yellow vehicle is on the road with a white line in front of it.
+
+⚖️ Fault(basis 10): DC 8.1 / OV 1.9 | Victim: Other Vehicle
+📝 DRAFT (video-only): The vehicles converge in the intersection based on their visible paths.
+✏️ REVISED: Description: The yellow truck is turning right at an intersection.
+Evidence: The white lines of the intersection. The yellow vehicle is on the road with a white line in front of it.
+⚙️ soft_gain=1.20, use_soft=True

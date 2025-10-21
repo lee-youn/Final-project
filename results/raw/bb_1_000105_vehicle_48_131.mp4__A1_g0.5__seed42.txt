@@ -1,0 +1,8 @@
+Description: The vehicles in the intersection converge based on their visible paths. The vehicle on the left is a taxi, and the one on the right is a large truck.
+Evidence: The taxi is seen crossing the street in front of the truck, and they both stop at the same time.
+
+⚖️ Fault(basis 10): DC 8.1 / OV 1.9 | Victim: Other Vehicle
+📝 DRAFT (video-only): The vehicles converge in the intersection based on their visible paths.
+✏️ REVISED: Description: The vehicles in the intersection converge based on their visible paths. The vehicle on the left is a taxi, and the one on the right is a large truck.
+Evidence: The taxi is seen crossing the street in front of the truck, and they both stop at the same time.
+⚙️ soft_gain=0.50, use_soft=True

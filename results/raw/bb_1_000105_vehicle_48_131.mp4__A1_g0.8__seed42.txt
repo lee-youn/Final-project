@@ -1,0 +1,8 @@
+Description: The vehicles in the intersection converge based on their visible paths. The vehicle on the far left is a dashcam van, while the other vehicle is a large truck. The truck is at an unsignalized intersection and the van is on the side road, entering later than the main road vehicle.
+Evidence: Paths cross near the center of the intersection.
+
+⚖️ Fault(basis 10): DC 8.1 / OV 1.9 | Victim: Other Vehicle
+📝 DRAFT (video-only): The vehicles converge in the intersection based on their visible paths.
+✏️ REVISED: Description: The vehicles in the intersection converge based on their visible paths. The vehicle on the far left is a dashcam van, while the other vehicle is a large truck. The truck is at an unsignalized intersection and the van is on the side road, entering later than the main road vehicle.
+Evidence: Paths cross near the center of the intersection.
+⚙️ soft_gain=0.80, use_soft=True

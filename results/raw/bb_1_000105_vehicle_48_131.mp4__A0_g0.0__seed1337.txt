@@ -1,0 +1,8 @@
+Description: A collision scenario is visible based on motion and entry order.
+Evidence: Paths cross near the center of the intersection.
+
+⚖️ Fault(basis 10): DC 8.1 / OV 1.9 | Victim: Other Vehicle
+📝 DRAFT (video-only): The vehicles converge in the intersection based on their visible paths.
+✏️ REVISED: Description: A collision scenario is visible based on motion and entry order.
+Evidence: Paths cross near the center of the intersection.
+⚙️ soft_gain=0.00, use_soft=False

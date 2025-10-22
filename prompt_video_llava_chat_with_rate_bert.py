@@ -1102,11 +1102,21 @@ def build_prompt(
     placeholder = "<video>"
     return f"{placeholder}\n" + system_header + user_header + "ASSISTANT:"
 
+# def build_revise_prompt(draft_text: str, user_message: str, fault_hint_line: str) -> str:
+#     return (
+#         "You are a traffic-accident legal analyst. Revise the DRAFT based ONLY on visible evidence in the frames. "
+#         "If the hint agrees, reflect it ONCE; if it conflicts, briefly note the conflict and keep the visual evidence.\n"
+#         "Return EXACTLY TWO LINES:\n"
+#         "Description: <one or two concise factual sentences>\n"
+#         "Evidence: <the single most decisive visible cue>\n"
+#         f"DRAFT:\n{draft_text}\n"
+#         f"HINT:\n{fault_hint_line}\n"
+#         f"{('Additional instruction: ' + user_message.strip()) if user_message else ''}"
+#     )
 def build_revise_prompt(draft_text: str, user_message: str, fault_hint_line: str) -> str:
     return (
         "You are a traffic-accident legal analyst. Revise the DRAFT based ONLY on visible evidence in the frames. "
         "If the hint agrees, reflect it ONCE; if it conflicts, briefly note the conflict and keep the visual evidence.\n"
-        "Return EXACTLY TWO LINES:\n"
         "Description: <one or two concise factual sentences>\n"
         "Evidence: <the single most decisive visible cue>\n"
         f"DRAFT:\n{draft_text}\n"
@@ -1771,7 +1781,7 @@ def ui_generate(
                 do_sample=bool(sampling),
                 max_new_tokens=120,
             )
-            text = _enforce_two_line_revise(text)
+            # text = _enforce_two_line_revise(text)
             aux_header = f"📝 DRAFT (video-only): {draft}\n✏️ REVISED: {text}\n⚙️ soft_gain={float(soft_gain):.2f}, use_soft={bool(use_soft)}"
         else:
             # 단일 패스 (소프트 토큰 켜짐/꺼짐 반영)

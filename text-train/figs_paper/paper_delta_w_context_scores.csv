@@ -1,0 +1,96 @@
+phrase,group,context_cos
+right of way,important,-0.001810634508728981
+failed to yield,important,0.02881786786019802
+give way,important,-0.020635586231946945
+yield to pedestrian,important,0.0038248938508331776
+yield to oncoming traffic,important,0.016037873923778534
+unprotected left turn,important,-0.03349742293357849
+protected left turn,important,0.04738495498895645
+four way stop,important,-0.014768678694963455
+first come first served,important,0.047138601541519165
+merge conflict,important,0.030788281932473183
+zipper merge,important,0.0318329893052578
+cut in,important,0.05790618807077408
+lane merge,important,-0.007338886149227619
+blocked the box,important,-0.015337202697992325
+encroached into intersection,important,-0.010670501738786697
+rolling stop,important,0.017150986939668655
+creeping into intersection,important,-0.03225826472043991
+tailgating,important,-0.06348623335361481
+overtaking,important,0.03441151976585388
+right turn on red,important,0.01746412366628647
+no turn on red,important,-0.01159676443785429
+flashing yellow,important,-0.031202176585793495
+flashing red,important,-0.029017873108386993
+red arrow,important,-0.006942292675375938
+green arrow,important,0.011042103171348572
+left turn arrow,important,0.02458363026380539
+solid green,important,0.004985278472304344
+solid red,important,-0.01417052373290062
+solid yellow,important,-0.019009528681635857
+turn signal,important,0.00605460349470377
+signal violation,important,0.022201482206583023
+red light running,important,0.044005490839481354
+yellow light dilemma,important,0.03814998269081116
+stop line,important,0.04815376549959183
+stop line violation,important,0.06037960946559906
+pedestrian signal walk,important,0.011723116040229797
+pedestrian signal dont walk,important,0.022259404882788658
+crosswalk stop,important,0.03999128192663193
+full stop,important,0.027667902410030365
+complete stop,important,0.05883067846298218
+stop and go,important,0.003620910458266735
+depart after stop,important,0.03402911499142647
+hard braking,important,-0.03642868623137474
+sudden braking,important,-0.029753506183624268
+abrupt acceleration,important,0.003224654123187065
+creeping start,important,0.032303586602211
+rolling start,important,0.04512424394488335
+stopped in crosswalk,important,0.0486595518887043
+stopped before stop line,important,0.05675889551639557
+proceeded after stop,important,0.04552529752254486
+hesitation to proceed,important,0.01778915710747242
+banana,distractor,-0.028107721358537674
+unicorn,distractor,-0.002492985688149929
+microwave,distractor,-0.005378022789955139
+weather,distractor,0.0066899266093969345
+education,distractor,0.0054143331944942474
+computer,distractor,-0.040283843874931335
+coffee,distractor,-0.010424105450510979
+universe,distractor,-0.006341586820781231
+abstract art,distractor,0.028156794607639313
+random token,distractor,0.02216898836195469
+river,distractor,-0.01307328324764967
+castle,distractor,0.004208076745271683
+airplane,distractor,-0.011141123250126839
+galaxy,distractor,0.031205954030156136
+software,distractor,-0.017061587423086166
+biology,distractor,-0.0003989022225141525
+cooking,distractor,0.033464569598436356
+basketball,distractor,0.010687969624996185
+waterfall,distractor,0.012848550453782082
+mountain,distractor,0.0001667458564043045
+smartphone,distractor,-0.014242004603147507
+jazz music,distractor,0.022589566186070442
+knitting,distractor,0.001117435283958912
+astronomy,distractor,-0.003703121095895767
+chocolate,distractor,-0.05133382976055145
+violin,distractor,-0.025309164077043533
+volcano,distractor,-0.05503830313682556
+pineapple,distractor,0.015359479933977127
+bookshelf,distractor,0.07088582217693329
+rainbow,distractor,0.026996344327926636
+postcard,distractor,-0.0027427691966295242
+cupcake,distractor,-0.0006112009286880493
+lighthouse,distractor,0.03959879279136658
+pillow,distractor,-0.019416168332099915
+dinosaur,distractor,-0.010144580155611038
+sunflower,distractor,0.0767320990562439
+origami,distractor,-0.004922141321003437
+toothpaste,distractor,0.029674295336008072
+telescope,distractor,-0.04604127258062363
+wallpaper,distractor,-0.004837796092033386
+teapot,distractor,-0.024461280554533005
+hammock,distractor,0.05027134716510773
+marble,distractor,0.023595210164785385
+circus,distractor,0.006166078150272369

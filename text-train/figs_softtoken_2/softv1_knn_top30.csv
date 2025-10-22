@@ -1,0 +1,31 @@
+rank,phrase,group,cosine
+1,green light,important,0.03727643936872482
+2,cooking,distractor,0.0350591242313385
+3,stop sign,important,0.03488139435648918
+4,galaxy,distractor,0.033035799860954285
+5,left turn,important,0.028289131820201874
+6,departing after stop,important,0.02520204521715641
+7,abstract art,distractor,0.023993130773305893
+8,going straight,important,0.02364460751414299
+9,red light,important,0.023477770388126373
+10,jazz music,distractor,0.021116120740771294
+11,random token,distractor,0.020199371501803398
+12,yellow light,important,0.01972336694598198
+13,green left turn signal,important,0.019281337037682533
+14,entered later,important,0.01835397072136402
+15,pedestrian crossing,important,0.017029818147420883
+16,waterfall,distractor,0.016132840886712074
+17,basketball,distractor,0.015685560181736946
+18,right turn,important,0.014051495119929314
+19,safety zone,important,0.014000928960740566
+20,weather,distractor,0.01084018312394619
+21,education,distractor,0.010725465603172779
+22,castle,distractor,0.009472697973251343
+23,left side of lane,important,0.007794113829731941
+24,main road,important,0.006567325443029404
+25,mountain,distractor,0.005602974910289049
+26,left lane,important,0.0055092498660087585
+27,knitting,distractor,0.00472825113683939
+28,biology,distractor,0.004477843642234802
+29,lane change,important,0.0032134652137756348
+30,unicorn,distractor,0.0020157690159976482

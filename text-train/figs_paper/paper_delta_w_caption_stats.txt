@@ -1,0 +1,7 @@
+P@15 = 0.800
+mean_imp = 0.0130
+mean_dist = 0.0027
+Δ = 0.0102
+permutation p-value = 0.092995
+AUROC = 0.607
+AP = 0.638

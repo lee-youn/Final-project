@@ -1,0 +1,71 @@
+label,group,x,y,kmeans_cluster
+stop line violation,important,-0.2132158577442169,0.2778262794017792,0
+complete stop,important,-0.1147549077868461,0.3267152309417724,0
+cut in,important,0.1910652816295623,0.1794931590557098,2
+stopped before stop line,important,-0.020096868276596,0.3740230500698089,2
+green light going straight,important,0.3148517310619354,-0.3531867265701294,1
+stopped in crosswalk,important,-0.1555637866258621,0.1261468529701233,0
+stop line,important,0.0172136332839727,0.4195001721382141,2
+protected left turn,important,0.2046810686588287,0.3512555360794067,2
+first come first served,important,0.1438364833593368,0.0499734245240688,0
+proceeded after stop,important,-0.2116516232490539,0.2011882662773132,0
+rolling start,important,-0.1153647154569625,0.0361953526735305,0
+red light running,important,0.1464572548866272,0.0319038815796375,0
+crosswalk stop,important,-0.2329257875680923,0.2090927213430404,0
+departing after stop,important,-0.2016663551330566,0.2181843221187591,0
+yellow light dilemma,important,-0.2127084732055664,-0.0653452426195144,0
+overtaking,important,-0.2034184336662292,-0.0173300318419933,0
+depart after stop,important,-0.1925566792488098,0.2564660310745239,0
+yellow light going straight,important,0.2427598983049392,-0.3855697512626648,1
+green light going straight collided with red light vehicle,important,0.0935730189085006,-0.2409005463123321,1
+creeping start,important,-0.2280304729938507,-0.0070985769852995,0
+zipper merge,important,-0.4102475643157959,-0.0165158957242965,0
+going straight from main road entered later,important,0.4441186189651489,-0.3388541936874389,1
+merge conflict,important,-0.3611821830272674,0.0341221615672111,0
+failed to yield,important,-0.2715275287628174,0.0206270758062601,0
+full stop,important,-0.0190317314118146,0.3529213666915893,2
+green left turn signal left turn collided with red light vehicle,important,0.1390753835439682,0.3147392868995666,2
+going straight from main road,important,0.4804809093475342,-0.4246056675910949,1
+yellow light left turn collided with red light vehicle,important,0.0557566247880458,0.1555669009685516,0
+left turn arrow,important,0.1981741040945053,0.3289967179298401,2
+right turn from main road entered later,important,0.5247390270233154,0.198817029595375,2
+pedestrian signal dont walk,important,-0.3143716156482696,0.0647521838545799,0
+signal violation,important,-0.428184449672699,0.0486171282827854,0
+following vehicle going straight after leaving safety zone,important,0.1155475080013275,-0.3153907060623169,1
+right turn entered later,important,0.3970565795898437,0.3238784670829773,2
+going straight from left road,important,0.5877141356468201,-0.3215652406215668,1
+going straight lane change inside intersection,important,0.0753145292401313,-0.251969039440155,1
+going straight from the right entered later,important,0.590796947479248,-0.258733332157135,1
+right turn from main road,important,0.5832685232162476,0.2409174740314483,2
+hesitation to proceed,important,-0.3242990970611572,-0.0598269142210483,0
+right turn on red,important,0.4754771888256073,0.4149081707000732,2
+rolling stop,important,-0.1740501075983047,0.2031096071004867,0
+yield to oncoming traffic,important,-0.262307345867157,-0.0432272441685199,0
+going straight from side road left,important,0.5923815369606018,-0.2719562649726867,1
+going straight from main road entered earlier,important,0.3838336169719696,-0.3606505990028381,1
+right turn,important,0.4732158482074737,0.4519220292568207,2
+pedestrian signal walk,important,-0.3606047034263611,0.0711365491151809,0
+going straight from the right,important,0.6463767886161804,-0.3200839161872864,1
+green arrow,important,-0.1024201512336731,-0.0157828088849782,0
+following vehicle going straight,important,0.2223315834999084,-0.4766236543655395,1
+left turn from right road,important,0.6417402029037476,0.310121476650238,2
+following vehicle going straight left side of lane,important,0.3841843008995056,-0.2899303138256073,1
+left turn from side road,important,0.5375177264213562,0.2679414749145508,2
+right turn from main road entered earlier,important,0.4677752256393432,0.1705387830734253,2
+going straight from right road,important,0.627750813961029,-0.3254441916942596,1
+turn signal,important,-0.0592707097530365,0.4202011227607727,2
+right turn from side road entered later,important,0.5520622730255127,0.2101739943027496,2
+solid green,important,-0.0730933621525764,-0.042414478957653,0
+going straight from side road right,important,0.6319162845611572,-0.2791232466697693,1
+yield to pedestrian,important,-0.3815294504165649,0.016567725688219,0
+stop and go,important,0.1572636514902115,0.3544075787067413,2
+abrupt acceleration,important,-0.4516054987907409,-0.0799182578921318,0
+going straight from the right entered earlier,important,0.5354281663894653,-0.2881015241146087,1
+facing each other going straight,important,0.2157299369573593,-0.4339783191680908,1
+following vehicle going straight right side of lane,important,0.424573540687561,-0.2968634366989136,1
+right turn entered earlier,important,0.3247330784797668,0.2876860201358795,2
+right of way,important,0.5168561935424805,0.1271394044160843,2
+right turn from side road,important,0.6099051237106323,0.2517696022987366,2
+right turn right lane,important,0.455093502998352,0.2871949672698974,2
+red arrow,important,-0.0911720842123031,0.0403471514582634,0
+lane merge,important,-0.2642906904220581,-0.0020238980650901,0

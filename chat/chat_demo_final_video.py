@@ -35,6 +35,117 @@ PROMPT_TAIL_RE  = re.compile(
     re.I
 )
 
+import random
+import hashlib
+
+def _pick_by_seed(candidates, seed_key: str | None):
+    if not candidates:
+        return ""
+    if seed_key:
+        h = int(hashlib.md5(seed_key.encode("utf-8")).hexdigest(), 16)
+        idx = h % len(candidates)
+        return candidates[idx]
+    return random.choice(candidates)
+
+def _assistant_text_bubble(text: str):
+    # Chatbot(type="messages") 안전한 텍스트 버블
+    return {"role": "assistant", "content": [{"type": "text", "text": text}]}
+
+WHO_EV_VICTIM = [
+    "From the visible maneuvers, the ego vehicle seems to be the victim, with the other vehicle primarily at fault.",
+    "Based on the scene, the ego vehicle appears to be the impacted party, while the other vehicle bears the main responsibility.",
+    "The evidence suggests the ego vehicle is the victim and the other vehicle holds the greater fault.",
+    "It looks like the ego vehicle suffered the harm, and the other vehicle is chiefly at fault.",
+    "Observations indicate the ego vehicle is the victim; primary fault lies with the other vehicle.",
+]
+
+WHO_OV_VICTIM = [
+    "From the visible maneuvers, the other vehicle seems to be the victim, with the ego vehicle primarily at fault.",
+    "Based on the scene, the other vehicle appears to be the impacted party, while the ego vehicle bears the main responsibility.",
+    "The evidence suggests the other vehicle is the victim and the ego vehicle holds the greater fault.",
+    "It looks like the other vehicle suffered the harm, and the ego vehicle is chiefly at fault.",
+    "Observations indicate the other vehicle is the victim; primary fault lies with the ego vehicle.",
+]
+
+WHO_UNCERTAIN = [
+    "Given the visible evidence, identifying the victim and the primarily at-fault party is inconclusive.",
+    "With the current view, it’s difficult to determine clear victim and fault.",
+    "Evidence is insufficient to confidently decide who is the victim and who is primarily at fault.",
+    "The scene doesn’t clearly reveal a single primarily at-fault party.",
+    "It remains ambiguous which party is the victim or mainly responsible.",
+]
+
+
+
+def pick_who_line(ev: float, ov: float, seed_key: str | None = None) -> str:
+    # seed_key를 넘기면 "같은 상황 = 같은 문장" 보장, None이면 매 클릭마다 랜덤
+    if ev < ov:
+        return _pick_by_seed(WHO_EV_VICTIM, seed_key)
+    elif ev > ov:
+        return _pick_by_seed(WHO_OV_VICTIM, seed_key)
+    else:
+        return _pick_by_seed(WHO_UNCERTAIN, seed_key)
+
+def _render_who_line(ev: float, ov: float, style: str = "short", seed_key: str = "") -> str:
+    """
+    ev < ov  -> EV 피해자 (OV 과실↑)
+    ev > ov  -> OV 피해자 (EV 과실↑)
+    ev == ov -> 판단 곤란
+    style: "short" | "brief" | "detailed"
+    """
+    tie_lines = [
+        "From visible evidence alone, it’s difficult to identify a clear victim or at-fault party.",
+        "Based on what is visible, liability is ambiguous and neither side is clearly the victim.",
+        "The frames do not provide enough clarity to determine who is victim or primarily at fault.",
+        "With only the visible cues, it’s not possible to decisively determine victim and fault.",
+    ]
+
+    ev_victim_lines = [
+        "Based on the visible maneuvers, the ego vehicle is the victim, and the other vehicle is primarily at fault.",
+        "Given the observed entry and path interaction, the ego vehicle is the victim; the other vehicle bears the primary fault.",
+        "From the visible trajectories, the ego vehicle is the victim and the other vehicle holds the greater share of fault.",
+        "Considering the visible approach and conflict point, the ego vehicle is the victim while the other vehicle is mainly at fault.",
+        "By the visible evidence, the ego vehicle is the victim; the other vehicle is chiefly responsible.",
+    ]
+
+    ov_victim_lines = [
+        "Based on the visible maneuvers, the other vehicle is the victim, and the ego vehicle is primarily at fault.",
+        "Given the observed entry and path interaction, the other vehicle is the victim; the ego vehicle bears the primary fault.",
+        "From the visible trajectories, the other vehicle is the victim and the ego vehicle holds the greater share of fault.",
+        "Considering the visible approach and conflict point, the other vehicle is the victim while the ego vehicle is mainly at fault.",
+        "By the visible evidence, the other vehicle is the victim; the ego vehicle is chiefly responsible.",
+    ]
+
+    if abs(ev - ov) < 1e-6:
+        base = _pick_by_seed(tie_lines, seed_key)
+    elif ev < ov:
+        base = _pick_by_seed(ev_victim_lines, seed_key)   # EV 피해자
+    else:
+        base = _pick_by_seed(ov_victim_lines, seed_key)   # OV 피해자
+
+    if style == "detailed":
+        # 아주 짧은 근거 한 토막 덧붙이기(문장 길이 과도하게 늘리지 않게 중립 문구 사용)
+        tail = " This judgment is drawn strictly from visible motion, entry order, and where their paths converge."
+        return base if base.endswith(".") else (base + ".") + tail
+    return base
+
+def _is_model_loaded_text(msg: str) -> bool:
+    # ui_load_model의 반환 문자열이 "Loaded model: ..." 형태면 True
+    m = (msg or "").strip().lower()
+    return m.startswith("loaded model:") or ("loaded" in m and "model" in m)
+
+def gate_controls(video_name_val, model_ok: bool):
+    """
+    - 영상 선택됨 + 모델 로드됨 = 챗 버튼 활성화
+    - 그 외에는 비활성화
+    """
+    video_ok = bool((video_name_val or "").strip())
+    ok = bool(video_ok and model_ok)
+    return (
+        gr.update(interactive=ok),  # btn_ratio
+        gr.update(interactive=ok),  # btn_who
+    )
+
 def _strip_admin_and_hint(text: str) -> str:
     """Revised DRAFT:, HINT:, <hint>...</hint>, 프롬프트 꼬리문 제거 + 라인 정리"""
     if not text:
@@ -208,7 +319,7 @@ def _assistant_video_preview_bubble(video_path: str, caption: str = "I’ll anal
     return {
         "role": "assistant",
         "content": [
-            {"type": "video", "path": video_path, "alt_text": caption}
+            {"type": "video", "video": video_path, "alt_text": caption}
         ]
     }
 
@@ -257,7 +368,11 @@ ALLOWED_PATHS = [
 VIDEO_EXTS = [".mp4", ".mkv", ".mov", ".avi", ".webm"]
 
 SAMPLE_VIDEOS = [
-    "bb_1_170415_vehicle_193_011.mp4"    
+    "bb_1_170415_vehicle_193_011.mp4",
+    # "bb_1_130527_vehicle_119_219.mp4"
+    "bb_1_170630_vehicle_192_035.mp4",
+    "bb_1_220613_vehicle_199_116.mp4"
+    
 ]
 def find_video_path_by_name(name: str) -> Optional[str]:
     name = name.strip().strip('"').strip("'")
@@ -341,12 +456,22 @@ def _ensure_analysis(session, device, video_path, clf_ckpt, clf_backbone, clf_pr
         except Exception:
             session["soft_tokens"] = None
 
+# def build_ratio_draft_prompt():
+#     return (
+#         "You are a traffic-accident legal analyst.\n"
+#         "Using ONLY what is VISIBLE in the frames, write 1–2 sentences that justify which side bears more fault.\n"
+#         "Base the reasoning strictly on: (a) entry order into the conflict zone, (b) turning vs straight trajectories, "
+#         "and (c) where/why their paths converge (cut-in, encroachment, failure to yield). "
+#         "Do NOT mention numbers, percentages, timestamps, signals/lights, lane counts, speed, or unseen context.\n"
+#         "Focus on WHY one vehicle’s visible maneuver created the conflict point."
+#     )
 def build_ratio_draft_prompt():
     return (
         "You are a traffic-accident legal analyst.\n"
         "Using ONLY what is VISIBLE in the frames, write 1–2 sentences that justify which side bears more fault.\n"
-        "Base the reasoning strictly on: (a) entry order into the conflict zone, (b) turning vs straight trajectories, "
-        "and (c) where/why their paths converge (cut-in, encroachment, failure to yield). "
+        "Refer to vehicles ONLY as **Ego Vehicle (EV)** and **Other Vehicle (OV)**.\n"
+        "Do NOT mention colors, makes, models, or generic labels (e.g., 'the car', 'the truck').\n"
+        "Base the reasoning strictly on: (a) entry order, (b) turning vs straight trajectories, (c) conflict point.\n"
         "Do NOT mention numbers, percentages, timestamps, signals/lights, lane counts, speed, or unseen context.\n"
         "Focus on WHY one vehicle’s visible maneuver created the conflict point."
     )
@@ -408,14 +533,17 @@ def _answer_for_intent(intent, frames, history, style, temperature, sampling,
         if ev is None or ov is None:
             return "Unable to determine who is at fault from the current frames."
 
-        if ev < ov:
-            # OV 과실이 더 큼 → EV가 피해자
-            who_line = "Based on the visible maneuvers, the ego vehicle appears to be the victim, and the other vehicle appears primarily at fault."
-        elif ev > ov:
-            # EV 과실이 더 큼 → OV가 피해자
-            who_line = "Based on the visible maneuvers, the other vehicle appears to be the victim, and the ego vehicle appears primarily at fault."
-        else:
-            who_line = "From the visible evidence, it is difficult to determine the victim and the at-fault party."
+        # if ev < ov:
+        #     # OV 과실이 더 큼 → EV가 피해자
+        #     who_line = "Based on the visible maneuvers, the ego vehicle appears to be the victim, and the other vehicle appears primarily at fault."
+        # elif ev > ov:
+        #     # EV 과실이 더 큼 → OV가 피해자
+        #     who_line = "Based on the visible maneuvers, the other vehicle appears to be the victim, and the ego vehicle appears primarily at fault."
+        # else:
+        #     who_line = "From the visible evidence, it is difficult to determine the victim and the at-fault party."
+
+        seed_key = f"{session.get('video_name','')}-{ev:.2f}-{ov:.2f}"
+        who_line = pick_who_line(ev, ov, seed_key=None) 
 
         # (선택) 한 문장 더: 근거를 1문장으로 정리
         why_draft = ENGINE.generate_video_only(
@@ -659,17 +787,31 @@ def render_template_from_labels(dv_text: str, ov_text: str) -> str:
 # =========================================================
 # 비디오 분류기 (DV/OV 라벨 예측)
 # =========================================================
+# def build_video_only_prompt():
+#     return (
+#         "You are a traffic-accident legal analyst.\n"
+#         "Describe ONLY what is VISIBLE in the frames.\n"
+#         "No traffic lights, numbers, timestamps, speeds, lane counts, or unseen context.\n"
+#         "Write 3–5 short factual sentences (70–120 words total) covering:\n"
+#         "1) initial positions and approach directions of both vehicles,\n"
+#         "2) entry order into the intersection or merge zone,\n"
+#         "3) turning/straight trajectories and where the paths converge,\n"
+#         "4) immediate visible outcome (e.g., evasive action, contact, stop).\n"
+#         "Avoid vague phrases like 'parked' unless the vehicles are clearly stationary for the entire clip."
+#     )
 def build_video_only_prompt():
     return (
         "You are a traffic-accident legal analyst.\n"
         "Describe ONLY what is VISIBLE in the frames.\n"
+        "Use only the terms **Ego Vehicle (EV)** and **Other Vehicle (OV)** to refer to vehicles.\n"
+        "Never mention colors, makes, models, or generic labels like 'the car' or 'the truck'.\n"
         "No traffic lights, numbers, timestamps, speeds, lane counts, or unseen context.\n"
         "Write 3–5 short factual sentences (70–120 words total) covering:\n"
-        "1) initial positions and approach directions of both vehicles,\n"
+        "1) initial positions and approach directions of EV and OV,\n"
         "2) entry order into the intersection or merge zone,\n"
         "3) turning/straight trajectories and where the paths converge,\n"
-        "4) immediate visible outcome (e.g., evasive action, contact, stop).\n"
-        "Avoid vague phrases like 'parked' unless the vehicles are clearly stationary for the entire clip."
+        "4) immediate visible outcome.\n"
+        "Avoid vague phrases like 'parked' unless vehicles are clearly stationary for the entire clip."
     )
 
 def build_prompt(
@@ -1499,6 +1641,7 @@ def ui_generate(
         fault_hint = f"[fault error: {e}]; Template: {sentence}"
         dc_f, ov_f, victim = 5.0, 5.0, "Undetermined"
 
+
     # 4) Video-LLaVA 로드
     load_msg = ENGINE.load_model(model_id)
     print(load_msg)
@@ -1634,26 +1777,91 @@ def _use_sample(session, chatbot, sample_path):
     session["video_path"] = None
     session["video_name"] = os.path.basename(sample_path)
     _reset_session_analysis(session)
-    chat = (chatbot or []) + [_assistant_video_preview_bubble(sample_path, f"Selected {session['video_name']}")]
+    # chat = (chatbot or []) + [_assistant_video_preview_bubble(sample_path, f"Selected {session['video_name']}")]
+    note = f"Selected **{session['video_name']}**. Use **🔍 Enlarge** to preview."
+    chat = (chatbot or []) + [_assistant_text_bubble(note)]
+
     return session, chat, session["video_name"]
 
 FIGMA_URL = "https://www.figma.com/proto/84JeG8TuIXS1nbqvp0kw4U/%EC%A1%B8%EC%A0%84%ED%8C%90%EB%84%AC?page-id=245%3A2&node-id=245-119&viewport=116%2C366%2C0.11&t=b76hxXeN7oTO1v2r-1&scaling=contain&content-scaling=fixed&starting-point-node-id=245%3A119"
 
 with gr.Blocks(title="Video-LLaVA Chatbot") as demo:
-    with gr.Row():
-        ppt_btn = gr.Button("📑 PPT로 이동 (Figma)", variant="primary", elem_id="ppt-open-btn")
-        ppt_btn.click(
-            fn=None,                   # ← 파이썬 함수 안 씀
-            inputs=[],
-            outputs=[],
-            # ← JS는 반드시 화살표 함수 형태여야 함
-            js=f"() => {{ window.open({json.dumps(FIGMA_URL)}, '_blank'); }}",
-            queue=False,
-            show_progress="hidden",
-        )
-    gr.Markdown("## 🎥 Video-LLaVA Chatbot — Multi-turn video-first accident analysis")
+    # with gr.Row():
+    #     ppt_btn = gr.Button("📑 PPT로 이동 (Figma)", variant="primary", elem_id="ppt-open-btn")
+    #     ppt_btn.click(
+    #         fn=None,                   # ← 파이썬 함수 안 씀
+    #         inputs=[],
+    #         outputs=[],
+    #         # ← JS는 반드시 화살표 함수 형태여야 함
+    #         js=f"() => {{ window.open({json.dumps(FIGMA_URL)}, '_blank'); }}",
+    #         queue=False,
+    #         show_progress="hidden",
+    #     )
+    # gr.Markdown("## 🎥 Video-LLaVA Chatbot — Multi-turn video-first accident analysis")
+    title_md = gr.Markdown(
+        "## 🎥 Video-LLaVA Chatbot — Multi-turn video-first accident analysis",
+        elem_id="app-title"
+    )
+
     gr.HTML("""
     <style>
+    /* 샘플 리스트 스크롤 */
+    #sample-list {
+        max-height: 250px;   /* 필요 시 높이 조절 */
+        overflow-y: auto;
+        padding-right: 6px;
+    }
+    /* 스크롤바 살짝 보이게(선택) */
+    #sample-list::-webkit-scrollbar { width: 8px; }
+    #sample-list::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.25);
+        border-radius: 6px;
+    }
+    /* 각 아이템 간격(선택) */
+    .sample-item { margin-bottom: 8px; }
+            
+    /* 제목 아래 여백 압축 */
+    #app-title { 
+        margin: 0 !important; 
+        padding: 0 !important; 
+    }
+    #app-title h2 {
+        margin: 0 !important;          /* 기본 h2 margin 제거 */
+        line-height: 1.2 !important;   /* 높이도 살짝 압축 */
+    }
+
+    /* 제목 바로 다음 섹션과의 간격도 줄이고 싶다면: */
+    #app-title + .gradio-container, 
+    #app-title + div {
+        margin-top: 6px !important;
+    }
+            
+    #howto-body {
+        background: linear-gradient(180deg, rgba(33, 150, 243, 0.06) 0%, rgba(33, 150, 243, 0.03) 100%);
+        border: 1px solid rgba(33, 150, 243, 0.18);
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-top: 8px;
+    }
+    #howto-body .gr-box,
+    #howto-body .gr-panel,
+    #howto-body .gr-group,
+    #howto-body .gr-block,
+    #howto-body .gr-markdown,
+    #howto-body * {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /* ✅ 핵심: 코드/프리 배경, 테두리, 폰트 제거 */
+    #howto-body pre,
+    #howto-body code,
+    #howto-body .gr-markdown pre,
+    #howto-body .gr-markdown code,
+    #howto-body .prose pre,
+    #howto-body .prose code {
+        background: transparent !important;
+    }
     /* 풀스크린 모달 오버레이 */
     #video-modal {
         position: fixed; inset: 0; 
@@ -1709,6 +1917,7 @@ with gr.Blocks(title="Video-LLaVA Chatbot") as demo:
 
     # ===== 상단 2열 레이아웃 (같은 Row) =====
     with gr.Row():
+        model_ready = gr.State(False) 
         # ---- 왼쪽: 채팅영역 ----
         with gr.Column(scale=5):
             chatbot = gr.Chatbot(height=560, show_copy_button=True, type="messages")
@@ -1716,40 +1925,92 @@ with gr.Blocks(title="Video-LLaVA Chatbot") as demo:
             session = gr.State(_default_session()) # 세션 캐시
 
             with gr.Row():
-                btn_ratio = gr.Button("Give split-liability ratio")
-                btn_who   = gr.Button("Who is at fault?")
-
+                btn_ratio = gr.Button("Give split-liability ratio", interactive=False)
+                btn_who   = gr.Button("Who is at fault?",           interactive=False)
         # ---- 오른쪽: 동영상/모델/옵션 ----
         with gr.Column(scale=5):
             # 👉 먼저 선언 (아래 버튼 outputs에서 참조하므로)
-            video_name = gr.Textbox(label="Video Name", placeholder="예) crash_000123.mp4 또는 2024-09-*.mp4")
 
-            with gr.Accordion("📦 Sample videos (preview ▶, then Use / Zoom)", open=True):
+            video_name = gr.Textbox(label="Video Name", placeholder="예) crash_000123.mp4 또는 2024-09-*.mp4", visible=False)
+
+            with gr.Accordion("✨ 데모 실행방법"):
+                gr.Markdown(
+                            """
+                    **1) 샘플 영상 선택**
+                    - `🎥 Use`: 해당 영상을 분석 대상으로 등록합니다.
+                    - `🔍 Enlarge`: 선택한 영상을 큰 화면으로 미리보기 합니다.
+                    - 다른 영상으로 챗봇을 이용하려면 하단의 페이지 새로고침 버튼을 눌러주세요.
+
+                    **2) 챗봇 실행**
+                    - `EV`: Ego-Vehicle | `OV`: Other-Vehicle
+                    - `Give split-liability ratio`: 차량의 과실비율을 산출하고, 사고 상황을 서술합니다.
+                    - `Who is at fault?`: 피해자와 가해자를 판단합니다.
+                            """
+                        )
+
+                    # 🔄 Reset: 현재 페이지 전체 새로고침 (세션/캐시 초기화 효과)
+                reset_btn = gr.Button("🔄 Reset (페이지 새로고침)", variant="secondary")
+
+                # 👉 Reset 버튼 동작: JS로 브라우저 새로고침
+                reset_btn.click(
+                    fn=lambda: None,
+                    inputs=[],
+                    outputs=[],
+                    js="() => { window.location.reload(); }",  # ← 함수 리터럴 형태로!
+                    queue=False,
+                    show_progress="hidden",
+                )
+
+            with gr.Accordion("📦 샘플 영상 (preview ▶, then Use / Zoom)", open=True):
                 samples = _build_sample_list()
                 if not samples:
                     gr.Markdown("> No samples found. Put files under a search root (e.g., /mnt/data/videos).")
                 else:
-                    for path, label in samples:
-                        with gr.Column():
-                            thumb = gr.Video(label=label, value=path, interactive=False, height=140)
-                            with gr.Row(scale=1):
-                                gr.Button(f"Use: {label}").click(
-                                    _use_sample,
-                                    inputs=[session, chatbot, gr.State(_resolve_sample_path(path))],
-                                    outputs=[session, chatbot, video_name],
-                                    queue=False, show_progress="hidden"
-                                )
-                                gr.Button("🔍 Enlarge").click(
-                                    lambda p=_resolve_sample_path(path): (gr.update(visible=True), gr.update(value=p)),
-                                    inputs=None,
-                                    outputs=[modal_group, modal_video]
-                                )
+                    with gr.Column(elem_id="sample-list"):
+                        for path, label in samples:
+                            with gr.Column():
+                                thumb = gr.Video(label=label, value=path, interactive=False, height=140)
+                                with gr.Row(scale=1):
+                                    gr.Button(f"🎥 Use").click(
+                                        _use_sample,
+                                        inputs=[session, chatbot, gr.State(_resolve_sample_path(path))],
+                                        outputs=[session, chatbot, video_name],
+                                        queue=False, show_progress="hidden"
+                                    ).then(
+                                        fn=gate_controls,
+                                        inputs=[video_name, model_ready],
+                                        outputs=[btn_ratio, btn_who],
+                                        queue=False
+                                    )
 
-            model_id = gr.Textbox(label="HF Model ID / local path", value="LanguageBind/Video-LLaVA-7B-hf")
+                                    gr.Button("🔍 Enlarge").click(
+                                        lambda p=_resolve_sample_path(path): (gr.update(visible=True), gr.update(value=p)),
+                                        inputs=None,
+                                        outputs=[modal_group, modal_video]
+                                    )
+
+            model_id = gr.Textbox(label="HF Model ID / local path", value="LanguageBind/Video-LLaVA-7B-hf", visible=False)
 
             with gr.Column():
-                load_btn = gr.Button("Load / Reload Model")
-                load_status = gr.Textbox(label="Load status", value="", interactive=False)
+                # load_btn = gr.Button("Load / Reload Model")
+                load_status = gr.Textbox(label="Load status", value="", interactive=False, visible=False)
+
+            demo.load(
+                fn=ui_load_model,
+                inputs=[model_id],
+                outputs=[load_status],
+                queue=False
+            ).then(
+                fn=lambda s: _is_model_loaded_text(s),
+                inputs=[load_status],
+                outputs=[model_ready],
+                queue=False
+            ).then(
+                fn=gate_controls,
+                inputs=[video_name, model_ready],
+                outputs=[btn_ratio, btn_who],
+                queue=False
+            )
 
             # 옵션들
             with gr.Accordion("⚙️ Options", open=False):
@@ -1762,8 +2023,8 @@ with gr.Blocks(title="Video-LLaVA Chatbot") as demo:
                     num_frames = gr.Slider(4, 16, value=8, step=1, label="Frames")
                 with gr.Row():
                     frame_size   = gr.Slider(160, 336, value=224, step=16, label="Frame size")
-                    temperature  = gr.Slider(0.0, 1.0, value=0.2, step=0.05, label="Temperature")
-                    sampling     = gr.Checkbox(value=False, label="Enable sampling")
+                    temperature  = gr.Slider(0.0, 1.0, value=0.35, step=0.05, label="Temperature")
+                    sampling     = gr.Checkbox(value=True, label="Enable sampling")
                 with gr.Row():
                     clf_ckpt     = gr.Textbox(label="Classifier CKPT", value="/app/checkpoints/best_exact_ep13_r3d18.pth")
                     clf_backbone = gr.Dropdown(label="Backbone", choices=["r3d18","timesformer","videomae"], value="r3d18")
@@ -1784,14 +2045,27 @@ with gr.Blocks(title="Video-LLaVA Chatbot") as demo:
             #     enlarge_current = gr.Button("🔍 Enlarge preview")
 
     # ===== 버튼/이벤트 바인딩 (기존 로직 유지) =====
-    load_btn.click(
-        ui_load_model, inputs=[model_id], outputs=[load_status],
-        queue=False, show_progress="minimal",
-    )
-    model_id.submit(
-        ui_load_model, inputs=[model_id], outputs=[load_status],
-        queue=False, show_progress="minimal",
-    )
+    # load_btn.click(
+    #     fn=ui_load_model,
+    #     inputs=[model_id],
+    #     outputs=[load_status],
+    #     queue=False,
+    #     show_progress="minimal",
+    # ).then(
+    #     fn=lambda s: _is_model_loaded_text(s),
+    #     inputs=[load_status],
+    #     outputs=[model_ready],
+    #     queue=False
+    # ).then(
+    #     fn=gate_controls,
+    #     inputs=[video_name, model_ready],
+    #     outputs=[btn_ratio, btn_who],
+    #     queue=False
+    # )
+    # model_id.submit(
+    #     ui_load_model, inputs=[model_id], outputs=[load_status],
+    #     queue=False, show_progress="minimal",
+    # )
 
     # 스캔 → 드롭다운 채우기
     # scan_btn.click(_fill_dropdown, None, [video_picker], queue=False, show_progress="minimal")

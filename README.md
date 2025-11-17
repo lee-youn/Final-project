@@ -1,7 +1,8 @@
 
 
 ## 데모 실행방법 ##
-```cd chat
+```
+cd chat
 python3 chat_demo_final_video.py
 ```
 
